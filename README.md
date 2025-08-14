@@ -17,7 +17,7 @@ Clonez ce dépôt sur votre machine locale avec Git.
 
 ```scheme
 git clone https://github.com/stephanekonan/portfolio_dev
-cd astro-zen
+cd portfolio_dev
 ```
 
 | Commande         | Action                                         |
