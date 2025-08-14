@@ -1,23 +1,21 @@
 import type { SiteConfig, SiteContent } from "../types";
 
 export const SITE_CONFIG: SiteConfig = {
-  title: "Alejandro Múnez — Mobile & Web Developer",
-  author: "Alejandro Múnez Cuntez",
+  title: "Stéphane Konan — Mobile & Web Developer",
+  author: "Stéphane Konan",
   description:
     "Software Engineer based in San Francisco, USA. I specialize in UI design, web and mobile application development and maintenance.",
   lang: "en",
-  siteLogo: "/alejandro-small.jpg",
+  siteLogo: "/me-small.png",
   navLinks: [
-    { text: "Experience", href: "#experience" },
-    { text: "Projects", href: "#projects" },
-    { text: "About", href: "#about" },
+    { text: "Expériences", href: "#experience" },
+    { text: "Projets", href: "#projects" },
+    { text: "A propos de moi", href: "#about" },
   ],
   socialLinks: [
-    { text: "Twitter", href: "https://github.com/immois/astro-zen" },
-    { text: "LinkedIn", href: "https://github.com/immois/astro-zen" },
-    { text: "Github", href: "https://github.com/immois/astro-zen" },
-    { text: "Youtube", href: "https://github.com/immois/astro-zen" },
-    { text: "Dribbble", href: "https://github.com/immois/astro-zen" },
+    { text: "LinkedIn", href: "https://www.linkedin.com/in/st%C3%A9phane-konan-59120a199" },
+    { text: "Github", href: "https://github.com/stephanekonan" },
+    { text: "Tik Tok", href: "https://www.tiktok.com/@stephanekonan69" },
   ],
   socialImage: "/zen-og.png",
   canonicalURL: "https://astro-zen.vercel.app",
@@ -25,73 +23,113 @@ export const SITE_CONFIG: SiteConfig = {
 
 export const SITE_CONTENT: SiteContent = {
   hero: {
-    name: "Alejandro Múnez",
-    specialty: "Mobile & Web Developer",
+    name: "Stéphane Konan",
+    specialty: "Software Developer",
     summary:
-      "Developer based in San Francisco, USA. I specialize in UI design, web and mobile application development and maintenance.",
+      "Développeur basé à Abidjan, Côte d’Ivoire. Spécialisé dans la conception d’interfaces, le développement et la maintenance d’applications web et mobiles performantes, avec une expertise en Laravel, Golang, Angular, Nextjs, MySQL, Firebase, Flutter et Kotlin Android.",
     email: "example@email.com",
   },
   experience: [
     {
-      company: "Zalmart",
-      position: "Lead Android Developer",
-      startDate: "May 2018",
-      endDate: "Sept 2020",
+      company: "Wadibu",
+      position: "CEO & Lead Developer",
+      startDate: "1 Juin 2025",
+      endDate: "Aujourd'hui",
       summary: [
-        "Implemented advanced memory management and code optimization techniques, resulting in a reduction in application load time by 40% and a decrease in crashes by 25%. This significantly improved user experience and increased user retention by 20%.",
-        "I led a team of developers in building and integrating new features using Jetpack Android components such as LiveData and ViewModel. This enabled us to build scalable and maintainable applications, reducing the crash rate by 20% and speeding up the time to delivery of new features by 15%.",
-        "Integrated Google Pay for in-app purchases, resulting in a 35% increase in mobile transaction revenue. Additionally, implemented Firebase Analytics to gain insights into user behavior, enabling data-driven optimizations and a 30% increase in user retention.",
-      ],
+        "Conception et développement complet des applications Wadibu : application client, application livreur, application restaurant (admin).",
+        "Mise en place et déploiement du site web vitrine ainsi que de l’API backend, assurant la cohérence et la performance de l’ensemble de l’écosystème.",
+        "Architecture, intégration et optimisation des fonctionnalités clés, en garantissant une base technique robuste prête pour une future publication sur les stores."
+      ]
     },
     {
-      company: "Bankit",
-      position: "Mobile Developer",
-      startDate: "Feb 2017",
-      endDate: "May 2018",
+      company: "Ablele",
+      position: "Développeur Mobile & Backend",
+      startDate: "Octobre 2023",
+      endDate: "Aujourd'hui",
       summary: [
-        "I designed and developed a mobile application using Flutter, allowing it to be deployed on both Android and iOS with a single codebase. This reduced development time by 50% and maintenance costs by 30%, facilitating a consistent user experience on both platforms.",
-        "I integrated biometric authentication and data encryption, significantly improving the security of user data. This implementation resulted in a 40% increase in user trust and a 25% reduction in unauthorized access attempts.",
-      ],
+        "Développement d’une application de gestion complète et d’une application de lavage auto, avec backend Laravel et frontend Flutter.",
+        "Déploiement sur APK Pure, avec architecture et code prêts pour une future mise en ligne sur les stores officiels.",
+        "Intégration d’outils modernes (Figma, Illustrator) pour la création d’interfaces attractives et la communication des concepts techniques."
+      ]
     },
     {
-      company: "Driveer",
-      position: "Frontend Developer",
-      startDate: "Jun 2015",
-      endDate: "Oct 2016",
-      summary:
-        "Developed and integrated a real-time vehicle tracking system using WebSockets, improving accuracy and data update in the application. This functionality increased user satisfaction by 30% and reduced customer service inquiries by 25%.",
+      company: "Vague Digitale",
+      position: "Développeur Frontend Laravel",
+      startDate: "Avril 2023",
+      endDate: "Octobre 2023",
+      summary: [
+        "Conception et développement d’une application de gestion avec Laravel, intégrant des fonctionnalités avancées pour optimiser la productivité.",
+        "Création de supports visuels (Illustrator) et montage vidéo pour le marketing et la communication interne."
+      ]
     },
-  ],
+    {
+      company: "Weni Livraison",
+      position: "Développeur Frontend Angular & WordPress",
+      startDate: "Novembre 2021",
+      endDate: "Avril 2021",
+      summary: [
+        "Création et maintenance du site vitrine de l’entreprise et d’un site e-commerce avec Angular et WordPress.",
+        "Réalisation d’affiches publicitaires (Illustrator, Photoshop) et de vidéos promotionnelles pour renforcer la notoriété.",
+        "Gestion de la page Facebook (community management) et animation de la communauté.",
+        "Gestion de la flotte téléphonique des livreurs et support opérationnel.",
+        "Maintenance et amélioration de l’application web interne avec Vue.js."
+      ]
+    }
+  ]
+
+  ,
   projects: [
     {
-      name: "Spotifu Music",
-      summary: "A music streaming app that emulates Spotify's core features.",
-      linkPreview: "/",
-      linkSource: "https://github.com/immois/astro-zen",
-      image: "/spotifu.png",
+      name: "Wadibu Site web",
+      summary: "Plateforme en ligne présentant l’écosystème Wadibu et ses services",
+      linkPreview: "https://www.wadibu.ci",
+      linkSource: "/",
+      image: "/wadibu.png",
     },
     {
-      name: "Shopp App",
-      summary: "An e-commerce platform that replicates Shopify's key features.",
+      name: "Wadibu Apps",
+      summary: "Suite d’applications dédiée à la livraison et à la restauration",
       linkPreview: "/",
-      linkSource: "https://github.com/immois/astro-zen",
-      image: "/shopify-clon.png",
+      linkSource: "/",
+      image: "/app_wadibu.png",
     },
     {
-      name: "ClonTagram",
-      summary: "A social network that replicates the features of Instagram",
+      name: "MotoTrack-AI",
+      summary: "Application pensée pour optimiser les courses tout en plaçant la sécurité et le bien-être des livreurs",
       linkPreview: "/",
-      linkSource: "https://github.com/immois/astro-zen",
-      image: "/clone-ig.png",
+      linkSource: "/",
+      image: "/moto_track.png",
+    },
+    {
+      name: "Aboutik App",
+      summary: "Application de gestion de stock multi-magasins développée avec Laravel et Flutter.",
+      linkPreview: "https://apkpure.com/aboutik/com.example.ashop",
+      linkSource: "/",
+      image: "/aboutik.jpg",
+    },
+    {
+      name: "djaxa .r",
+      summary: "Application de gestion spécialisée pour les ateliers de réparation de téléphones.",
+      linkPreview: "/",
+      linkSource: "/",
+      image: "/djaxa.png",
+    },
+    {
+      name: "Weni CI",
+      summary: "Weni te permet d’envoyer des colis facilement sans bouger de chez toi",
+      linkPreview: "https://weni.ci",
+      linkSource: "/",
+      image: "/weni.png",
     },
   ],
   about: {
     description: `
-      Hi, I’m Alejandro Múnez, a passionate Mobile and Web Developer with a knack for crafting seamless digital experiences. With a strong background in both Android and iOS development, as well as front-end web technologies, I thrive in the intersection where creativity meets technology.
-
-      Over the years, I’ve honed my skills in building robust, user-friendly applications that not only meet the needs of users but also push the boundaries of what’s possible. My projects range from innovative mobile applications to responsive web designs, all with a focus on performance, security, and scalability.
+      Je suis développeur mobile et web, passionné par la création d’expériences simples, efficaces et agréables à utiliser.
+      J’aime autant concevoir des applications Android et iOS que développer des sites et applications web performants.
+      Mon objectif : proposer des solutions utiles, bien pensées et fiables, qui répondent vraiment aux besoins des utilisateurs.
+      Chaque projet est pour moi l’occasion d’allier créativité et technique, avec un soin particulier apporté à la performance, à la sécurité et à l’évolutivité.
     `,
-    image: "/alejandro-big.jpg",
+    image: "/me-small.png",
   },
 };
 

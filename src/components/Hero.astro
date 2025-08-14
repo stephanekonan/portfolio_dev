@@ -1,8 +1,10 @@
 ---
 import type { HeroProps } from "@types";
+import { IoLogoWhatsapp } from "react-icons/io";
+
 type Props = HeroProps;
 
-const { name, specialty, summary, email } = Astro.props;
+const { name, specialty, summary } = Astro.props;
 ---
 
 <section class="py-24 md:py-32" id="#hero">
@@ -21,7 +23,12 @@ const { name, specialty, summary, email } = Astro.props;
   </p>
 
   <a
-    class="inline-block rounded-full bg-primary px-8 py-5 text-sm leading-5 font-medium text-[#fff]"
-    href={`mailto:${email}`}>Get in Touch</a
+    class="inline-flex items-center gap-2 rounded-full bg-primary px-8 py-5 text-sm leading-5 font-medium text-[#fff]"
+    href={`https://wa.me/2250769883730`}
+    target="_blank"
+    rel="noopener noreferrer"
   >
+    <IoLogoWhatsapp size={20} />
+    WhatsApp
+  </a>
 </section>
