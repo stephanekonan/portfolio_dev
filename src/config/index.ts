@@ -4,8 +4,8 @@ export const SITE_CONFIG: SiteConfig = {
   title: "Stéphane Konan — Mobile & Web Developer",
   author: "Stéphane Konan",
   description:
-    "Software Engineer based in San Francisco, USA. I specialize in UI design, web and mobile application development and maintenance.",
-  lang: "en",
+    "Développeur basé à Abidjan, Côte d’Ivoire. Spécialisé dans la conception d’interfaces, le développement et la maintenance d’applications web et mobiles performantes, avec une expertise en Laravel, Golang, Angular, Nextjs, MySQL, Firebase, Flutter et Kotlin Android.",
+  lang: "fr",
   siteLogo: "/me-small.png",
   navLinks: [
     { text: "Expériences", href: "#experience" },
@@ -17,8 +17,6 @@ export const SITE_CONFIG: SiteConfig = {
     { text: "Github", href: "https://github.com/stephanekonan" },
     { text: "Tik Tok", href: "https://www.tiktok.com/@stephanekonan69" },
   ],
-  socialImage: "/zen-og.png",
-  canonicalURL: "https://astro-zen.vercel.app",
 };
 
 export const SITE_CONTENT: SiteContent = {
@@ -27,7 +25,7 @@ export const SITE_CONTENT: SiteContent = {
     specialty: "Software Developer",
     summary:
       "Développeur basé à Abidjan, Côte d’Ivoire. Spécialisé dans la conception d’interfaces, le développement et la maintenance d’applications web et mobiles performantes, avec une expertise en Laravel, Golang, Angular, Nextjs, MySQL, Firebase, Flutter et Kotlin Android.",
-    email: "example@email.com",
+    email: "stephanekonan.dev@gmail.com",
   },
   experience: [
     {
