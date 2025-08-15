@@ -42,6 +42,22 @@ const ogImgUrl = canonicalURL + socialImage;
     <meta property="twitter:title" content={title} />
     <meta property="twitter:description" content={description} />
     <meta property="twitter:image" content={ogImgUrl} />
+    <script>
+      (function (h, o, t, j) {
+        h.hj =
+          h.hj ||
+          function () {
+            if (!h.hj) return;
+            (h.hj.q = h.hj.q || []).push(arguments);
+          };
+        h._hjSettings = { hjid: 6485478, hjsv: 6 };
+        var a = o.getElementsByTagName("head")[0];
+        var r = o.createElement("script");
+        r.async = true;
+        r.src = t + h._hjSettings.hjid + j + h._hjSettings.hjsv;
+        a.appendChild(r);
+      })(window, document, "https://static.hotjar.com/c/hotjar-", ".js?sv=");
+    </script>
   </head>
   <body class="bg-black font-sans">
     <Header siteLogo={siteLogo} navLinks={navLinks} />
