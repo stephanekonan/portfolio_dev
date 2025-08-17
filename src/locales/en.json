@@ -1,0 +1,104 @@
+{
+  "site": {
+    "title": "Stéphane Konan — Mobile & Web Developer",
+    "description": "Developer based in Abidjan, Ivory Coast. Specialized in interface design and high-performance web and mobile applications development.",
+    "nav": {
+      "experience": "Experiences",
+      "projects": "Projects",
+      "about": "About me"
+    }
+  },
+  "hero": {
+    "name": "Stéphane Konan",
+    "specialty": "Software Developer",
+    "summary": "Developer based in Abidjan, specialized in interface design and high-performance applications with Laravel, Golang, Angular, Nextjs, Flutter and Kotlin Android.",
+    "email": "stephanekonan.dev@gmail.com"
+  },
+  "experience": {
+    "title": "Work Experience",
+    "items": [
+      {
+        "company": "Wadibu",
+        "position": "CEO & Lead Developer",
+        "dates": "June 2025 - Present",
+        "summary": [
+          "Complete design and development of Wadibu applications: customer app, delivery app, restaurant app (admin).",
+          "Implementation and deployment of the showcase website and backend API, ensuring consistency and performance across the ecosystem.",
+          "Architecture, integration and optimization of key features, guaranteeing a robust technical base ready for future store publication."
+        ]
+      },
+      {
+        "company": "Ablele",
+        "position": "Mobile & Backend Developer",
+        "dates": "October 2023 - Present",
+        "summary": [
+          "Development of a complete management application and a car wash application, with Laravel backend and Flutter frontend.",
+          "Deployment on APK Pure, with architecture and code ready for future release on official stores.",
+          "Integration of modern tools (Figma, Illustrator) for creating attractive interfaces and communicating technical concepts."
+        ]
+      },
+      {
+        "company": "Vague Digitale",
+        "position": "Laravel Frontend Developer",
+        "dates": "April 2023 - October 2023",
+        "summary": [
+          "Design and development of a management application with Laravel, integrating advanced features to optimize productivity.",
+          "Creation of visual materials (Illustrator) and video editing for marketing and internal communication."
+        ]
+      },
+      {
+        "company": "Weni Delivery",
+        "position": "Angular & WordPress Frontend Developer",
+        "dates": "November 2021 - April 2021",
+        "summary": [
+          "Creation and maintenance of the company showcase website and an e-commerce site with Angular and WordPress.",
+          "Production of advertising posters (Illustrator, Photoshop) and promotional videos to strengthen brand awareness.",
+          "Management of the Facebook page (community management) and community engagement.",
+          "Management of delivery drivers' phone fleet and operational support.",
+          "Maintenance and improvement of the internal web application with Vue.js."
+        ]
+      }
+    ]
+  },
+  "projects": {
+    "title": "Featured Projects",
+    "source": "Source code",
+    "preview": "View project",
+    "items": [
+      {
+        "name": "Wadibu Website",
+        "summary": "Online platform showcasing the Wadibu ecosystem and its services"
+      },
+      {
+        "name": "Wadibu Apps",
+        "summary": "Dedicated application suite for delivery and restaurant services"
+      },
+      {
+        "name": "MotoTrack-AI",
+        "summary": "Application designed to optimize deliveries while prioritizing driver safety and well-being"
+      },
+      {
+        "name": "Aboutik App",
+        "summary": "Multi-store inventory management application developed with Laravel and Flutter"
+      },
+      {
+        "name": "djaxa .r",
+        "summary": "Specialized management application for phone repair workshops"
+      },
+      {
+        "name": "Weni CI",
+        "summary": "Solution to easily send packages without leaving home"
+      }
+    ]
+  },
+  "about": {
+    "title": "About Me",
+    "description": "I'm a mobile and web developer, passionate about creating simple, effective and enjoyable user experiences.\nI love designing Android and iOS apps as much as developing performant websites and web applications.\nMy goal: to provide useful, well thought out and reliable solutions that truly meet users' needs.\nEach project is an opportunity for me to combine creativity and technical skills, with special attention paid to performance, security and scalability."
+  },
+  "techStack": {
+    "title": "Technical Skills"
+  },
+  "footer": {
+    "description": "Designed and developed by"
+  }
+}

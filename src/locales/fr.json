@@ -1,0 +1,104 @@
+{
+  "site": {
+    "title": "Stéphane Konan — Développeur Mobile & Web",
+    "description": "Développeur basé à Abidjan, Côte d'Ivoire. Spécialisé dans la conception d'interfaces, le développement et la maintenance d'applications web et mobiles performantes.",
+    "nav": {
+      "experience": "Expériences",
+      "projects": "Projets",
+      "about": "À propos"
+    }
+  },
+  "hero": {
+    "name": "Stéphane Konan",
+    "specialty": "Développeur Logiciel",
+    "summary": "Développeur basé à Abidjan, spécialisé dans la conception d'interfaces et le développement d'applications performantes avec Laravel, Golang, Angular, Nextjs, Flutter et Kotlin Android.",
+    "email": "stephanekonan.dev@gmail.com"
+  },
+  "experience": {
+    "title": "Expériences Professionnelles",
+    "items": [
+      {
+        "company": "Wadibu",
+        "position": "CEO & Lead Developer",
+        "dates": "Juin 2025 - Aujourd'hui",
+        "summary": [
+          "Conception et développement complet des applications Wadibu : application client, application livreur, application restaurant (admin).",
+          "Mise en place et déploiement du site web vitrine ainsi que de l'API backend, assurant la cohérence et la performance de l'ensemble de l'écosystème.",
+          "Architecture, intégration et optimisation des fonctionnalités clés, en garantissant une base technique robuste prête pour une future publication sur les stores."
+        ]
+      },
+      {
+        "company": "Ablele",
+        "position": "Développeur Mobile & Backend",
+        "dates": "Octobre 2023 - Aujourd'hui",
+        "summary": [
+          "Développement d'une application de gestion complète et d'une application de lavage auto, avec backend Laravel et frontend Flutter.",
+          "Déploiement sur APK Pure, avec architecture et code prêts pour une future mise en ligne sur les stores officiels.",
+          "Intégration d'outils modernes (Figma, Illustrator) pour la création d'interfaces attractives et la communication des concepts techniques."
+        ]
+      },
+      {
+        "company": "Vague Digitale",
+        "position": "Développeur Frontend Laravel",
+        "dates": "Avril 2023 - Octobre 2023",
+        "summary": [
+          "Conception et développement d'une application de gestion avec Laravel, intégrant des fonctionnalités avancées pour optimiser la productivité.",
+          "Création de supports visuels (Illustrator) et montage vidéo pour le marketing et la communication interne."
+        ]
+      },
+      {
+        "company": "Weni Livraison",
+        "position": "Développeur Frontend Angular & WordPress",
+        "dates": "Novembre 2021 - Avril 2021",
+        "summary": [
+          "Création et maintenance du site vitrine de l'entreprise et d'un site e-commerce avec Angular et WordPress.",
+          "Réalisation d'affiches publicitaires (Illustrator, Photoshop) et de vidéos promotionnelles pour renforcer la notoriété.",
+          "Gestion de la page Facebook (community management) et animation de la communauté.",
+          "Gestion de la flotte téléphonique des livreurs et support opérationnel.",
+          "Maintenance et amélioration de l'application web interne avec Vue.js."
+        ]
+      }
+    ]
+  },
+  "projects": {
+    "title": "Projets réalisés",
+    "source": "Code source",
+    "preview": "Voir le projet",
+    "items": [
+      {
+        "name": "Wadibu Site web",
+        "summary": "Plateforme en ligne présentant l'écosystème Wadibu et ses services"
+      },
+      {
+        "name": "Wadibu Apps",
+        "summary": "Suite d'applications dédiée à la livraison et à la restauration"
+      },
+      {
+        "name": "MotoTrack-AI",
+        "summary": "Application pensée pour optimiser les courses tout en plaçant la sécurité et le bien-être des livreurs"
+      },
+      {
+        "name": "Aboutik App",
+        "summary": "Application de gestion de stock multi-magasins développée avec Laravel et Flutter"
+      },
+      {
+        "name": "djaxa .r",
+        "summary": "Application de gestion spécialisée pour les ateliers de réparation de téléphones"
+      },
+      {
+        "name": "Weni CI",
+        "summary": "Solution pour envoyer des colis facilement sans bouger de chez soi"
+      }
+    ]
+  },
+  "about": {
+    "title": "À propos de moi",
+    "description": "Je suis développeur mobile et web, passionné par la création d'expériences simples, efficaces et agréables à utiliser.\nJ'aime autant concevoir des applications Android et iOS que développer des sites et applications web performants.\nMon objectif : proposer des solutions utiles, bien pensées et fiables, qui répondent vraiment aux besoins des utilisateurs.\nChaque projet est pour moi l'occasion d'allier créativité et technique, avec un soin particulier apporté à la performance, à la sécurité et à l'évolutivité."
+  },
+  "techStack": {
+    "title": "Technologies Maîtrisées"
+  },
+  "footer": {
+    "description": "Designé & Developé par"
+  }
+}

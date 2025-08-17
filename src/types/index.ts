@@ -1,7 +1,7 @@
 export interface SiteConfig extends HeaderProps {
   title: string;
   description: string;
-  lang: string;
+  lang: 'fr' | 'en'; 
   author: string;
   socialLinks: { text: string; href: string }[];
 }
@@ -19,6 +19,7 @@ export interface HeroProps {
   specialty: string;
   summary: string;
   email: string;
+  lang: 'fr' | 'en';
 }
 
 export interface TechStackProps {
@@ -26,6 +27,7 @@ export interface TechStackProps {
   alt: string;
   width?: number;
   height?: number;
+  lang: 'fr' | 'en';
 }
 
 export interface ExperienceProps {
@@ -33,7 +35,7 @@ export interface ExperienceProps {
   position: string;
   startDate: string;
   endDate: string;
-  summary: string | string[];
+  summary: string[];
 }
 
 export interface ProjectProps {
@@ -42,14 +44,26 @@ export interface ProjectProps {
   image: string;
   linkPreview?: string;
   linkSource?: string;
+  index?: number;
+  lang: 'fr' | 'en';
 }
 
 export interface AboutProps {
   description: string;
+  title: string;
   image: string;
+  lang: 'fr' | 'en';
 }
 
 export interface HeaderProps {
   siteLogo: string;
   navLinks: { text: string; href: string }[];
+  lang: 'fr' | 'en';
+}
+
+export interface FooterProps {
+  socialHref: string;
+  socialText: string;
+  description: string;
+  lang: 'fr' | 'en';
 }

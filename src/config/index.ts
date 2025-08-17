@@ -23,83 +23,93 @@ export const SITE_CONTENT: SiteContent = {
   hero: {
     name: "Stéphane Konan",
     specialty: "Software Developer",
-    summary:
-      "Développeur basé à Abidjan, Côte d’Ivoire. Spécialisé dans la conception d’interfaces, le développement et la maintenance d’applications web et mobiles performantes, avec une expertise en Laravel, Golang, Angular, Nextjs, MySQL, Firebase, Flutter et Kotlin Android.",
+    summary: "Développeur basé à Abidjan, Côte d’Ivoire. Spécialisé dans la conception d’interfaces, le développement et la maintenance d’applications web et mobiles performantes, avec une expertise en Laravel, Golang, Angular, Nextjs, MySQL, Firebase, Flutter et Kotlin Android.",
     email: "stephanekonan.dev@gmail.com",
+    lang: "fr"
   },
   techStack: [
     {
       url: "https://res.cloudinary.com/dw6xejg8r/image/upload/v1755389885/laravel_juecw5.png",
       alt: "Laravel",
       // width: 50,
-      height: 50
+      height: 50,
+      lang: "fr"
     },
     {
       url: "https://res.cloudinary.com/dw6xejg8r/image/upload/v1755389883/flutter_yhordj.png",
       alt: "Flutter",
       // width: 50,
-      height: 50
+      height: 50,
+      lang: "fr"
     },
     {
       url: "https://res.cloudinary.com/dw6xejg8r/image/upload/v1755393316/angular-logo_h9nsqr.png",
       alt: "Angular",
       // width: 50,
-      height: 50
+      height: 50,
+      lang: "fr"
     },
     {
       url: "https://res.cloudinary.com/dw6xejg8r/image/upload/v1755389884/go_m8fvqz.png",
       alt: "Go",
       // width: 50,
-      height: 50
+      height: 50,
+      lang: "fr"
     },
     {
       url: "https://res.cloudinary.com/dw6xejg8r/image/upload/v1755389882/firebase_hh7ahe.png",
       alt: "Firebase",
       // width: 50,
-      height: 50
+      height: 50,
+      lang: "fr"
     },
     {
       url: "https://res.cloudinary.com/dw6xejg8r/image/upload/v1755389888/sql_y2d6mh.png",
       alt: "Sql",
       // width: 50,
-      height: 50
+      height: 50,
+      lang: "fr"
     },
     {
       url: "https://res.cloudinary.com/dw6xejg8r/image/upload/v1755391607/Github-desktop-logo-symbol.svg_kvr1zq.png",
       alt: "GitHub",
       // width: 50,
-      height: 50
+      height: 50,
+      lang: "fr"
     },
     {
       url: "https://res.cloudinary.com/dw6xejg8r/image/upload/v1755389889/vercel_gjkmnx.png",
       alt: "Vercel",
       // width: 50,
-      height: 50
+      height: 50,
+      lang: "fr"
     },
     {
       url: "https://res.cloudinary.com/dw6xejg8r/image/upload/v1755389884/hostinger_g2m20p.png",
       alt: "Hostinger",
       // width: 50,
-      height: 50
+      height: 50,
+      lang: "fr"
     },
     {
       url: "https://res.cloudinary.com/dw6xejg8r/image/upload/v1755389887/render_wvzuiz.png",
       alt: "Render",
       // width: 50,
-      height: 50
+      height: 50,
+      lang: "fr"
     }
   ],
   experience: [
     {
       company: "Wadibu",
       position: "CEO & Lead Developer",
-      startDate: "1 Juin 2025",
+      startDate: "Juin 2025",
       endDate: "Aujourd'hui",
       summary: [
         "Conception et développement complet des applications Wadibu : application client, application livreur, application restaurant (admin).",
         "Mise en place et déploiement du site web vitrine ainsi que de l’API backend, assurant la cohérence et la performance de l’ensemble de l’écosystème.",
         "Architecture, intégration et optimisation des fonctionnalités clés, en garantissant une base technique robuste prête pour une future publication sur les stores."
-      ]
+      ],
     },
     {
       company: "Ablele",
@@ -110,7 +120,7 @@ export const SITE_CONTENT: SiteContent = {
         "Développement d’une application de gestion complète et d’une application de lavage auto, avec backend Laravel et frontend Flutter.",
         "Déploiement sur APK Pure, avec architecture et code prêts pour une future mise en ligne sur les stores officiels.",
         "Intégration d’outils modernes (Figma, Illustrator) pour la création d’interfaces attractives et la communication des concepts techniques."
-      ]
+      ],
     },
     {
       company: "Vague Digitale",
@@ -120,7 +130,7 @@ export const SITE_CONTENT: SiteContent = {
       summary: [
         "Conception et développement d’une application de gestion avec Laravel, intégrant des fonctionnalités avancées pour optimiser la productivité.",
         "Création de supports visuels (Illustrator) et montage vidéo pour le marketing et la communication interne."
-      ]
+      ],
     },
     {
       company: "Weni Livraison",
@@ -133,7 +143,7 @@ export const SITE_CONTENT: SiteContent = {
         "Gestion de la page Facebook (community management) et animation de la communauté.",
         "Gestion de la flotte téléphonique des livreurs et support opérationnel.",
         "Maintenance et amélioration de l’application web interne avec Vue.js."
-      ]
+      ],
     }
   ],
   projects: [
@@ -143,6 +153,7 @@ export const SITE_CONTENT: SiteContent = {
       linkPreview: "https://www.wadibu.ci",
       linkSource: "/",
       image: "/wadibu.png",
+      lang: "fr"
     },
     {
       name: "Wadibu Apps",
@@ -150,6 +161,7 @@ export const SITE_CONTENT: SiteContent = {
       linkPreview: "/",
       linkSource: "/",
       image: "/app_wadibu.png",
+      lang: "fr"
     },
     {
       name: "MotoTrack-AI",
@@ -157,6 +169,7 @@ export const SITE_CONTENT: SiteContent = {
       linkPreview: "/",
       linkSource: "/",
       image: "/moto_track.png",
+      lang: "fr"
     },
     {
       name: "Aboutik App",
@@ -164,6 +177,7 @@ export const SITE_CONTENT: SiteContent = {
       linkPreview: "https://apkpure.com/aboutik/com.example.ashop",
       linkSource: "/",
       image: "/aboutik.jpg",
+      lang: "fr"
     },
     {
       name: "djaxa .r",
@@ -171,6 +185,7 @@ export const SITE_CONTENT: SiteContent = {
       linkPreview: "/",
       linkSource: "/",
       image: "/djaxa.png",
+      lang: "fr"
     },
     {
       name: "Weni CI",
@@ -178,6 +193,7 @@ export const SITE_CONTENT: SiteContent = {
       linkPreview: "https://weni.ci",
       linkSource: "/",
       image: "/weni.png",
+      lang: "fr"
     },
   ],
   about: {
@@ -188,6 +204,8 @@ export const SITE_CONTENT: SiteContent = {
       Chaque projet est pour moi l’occasion d’allier créativité et technique, avec un soin particulier apporté à la performance, à la sécurité et à l’évolutivité.
     `,
     image: "/me-small.png",
+    title: "",
+    lang: "fr"
   },
 };
 

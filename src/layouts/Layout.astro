@@ -5,31 +5,24 @@ import "@fontsource-variable/gabarito";
 import { SITE_CONFIG } from "@config";
 import Footer from "@components/Footer.astro";
 import Analytics from "@vercel/analytics/astro";
+import { t } from "../locales";
+const lang = Astro.url.pathname.startsWith("/en") ? "en" : "fr";
 
-const {
-  title,
-  description,
-  siteLogo,
-  navLinks,
-  lang,
-  author,
-  socialLinks,
-} = SITE_CONFIG;
-
+const { siteLogo, navLinks, author, socialLinks } = SITE_CONFIG;
 ---
 
 <!doctype html>
 <html lang={lang} class="scroll-pt-16 scroll-smooth">
   <head>
     <meta charset="UTF-8" />
-    <meta name="description" content={description} />
+    <meta name="description" content={t(lang).site.description} />
     <meta name="author" content={author} />
     <meta name="viewport" content="width=device-width" />
     <link rel="icon" type="image/svg+xml" href="/favicon.ico" />
-    <title>{title}</title>
+    <title>{t(lang).site.title}</title>
 
-    <meta property="og:title" content={title} />
-    <meta property="og:description" content={description} />
+    <meta property="og:title" content={t(lang).site.title} />
+    <meta property="og:description" content={t(lang).site.description} />
 
     <script>
       (function (h, o, t, j) {
@@ -49,11 +42,11 @@ const {
     </script>
   </head>
   <body class="bg-black font-sans">
-    <Header siteLogo={siteLogo} navLinks={navLinks} />
+    <Header lang={lang} siteLogo={siteLogo} navLinks={navLinks} />
     <main class="mx-auto max-w-3xl px-5">
       <slot />
     </main>
-    <Footer author={author} socialLinks={socialLinks} />
+    <Footer author={author} socialLinks={socialLinks} lang={lang} />
     <Analytics />
   </body>
 </html>

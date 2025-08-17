@@ -2,15 +2,17 @@
 import Section from "./Section.astro";
 import { Image } from "astro:assets";
 import type { AboutProps, HeroProps } from "@types";
+import { t } from "../locales";
+const { lang } = Astro.props;
 
 type Props = AboutProps & Pick<HeroProps, "name">;
 
-const { description, image, name } = Astro.props;
+const { image, name } = Astro.props;
 ---
 
-<Section text="A propos de moi" href="about">
+<Section text={t(lang).about.title} href="about">
   <div class="flex flex-col items-center gap-12 md:flex-row md:gap-8">
-    <p class="w-auto text-base text-neutral md:pr-5">{description}</p>
+    <p class="w-auto text-base text-neutral md:pr-5">{t(lang).about.description}</p>
     <div
       class="h-80 w-64 flex-shrink-0 rotate-[5deg] bg-white p-4 md:rotate-[7deg]"
     >

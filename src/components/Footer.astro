@@ -1,9 +1,10 @@
 ---
 import type { SiteConfig } from "@types";
+import { t } from "../locales";
 
-type Props = Pick<SiteConfig, "author" | "socialLinks">;
+type Props = Pick<SiteConfig, "author" | "socialLinks" | "lang">;
 
-const { author, socialLinks } = Astro.props;
+const { author, socialLinks, lang } = Astro.props;
 const currentYear = new Date().getFullYear();
 ---
 
@@ -26,8 +27,9 @@ const currentYear = new Date().getFullYear();
     }
   </ul>
   <p class="text-xs">
-    {author} © {currentYear}. <span class="text-neutral"
-      >Designé & Developé par</span
-    > Stéphane Konan
+    © {currentYear}. <span class="text-neutral"
+      >{t(lang).footer.description}</span
+    >
+    {author}
   </p>
 </footer>
