@@ -27,6 +27,68 @@ export const SITE_CONTENT: SiteContent = {
       "Développeur basé à Abidjan, Côte d’Ivoire. Spécialisé dans la conception d’interfaces, le développement et la maintenance d’applications web et mobiles performantes, avec une expertise en Laravel, Golang, Angular, Nextjs, MySQL, Firebase, Flutter et Kotlin Android.",
     email: "stephanekonan.dev@gmail.com",
   },
+  techStack: [
+    {
+      url: "https://res.cloudinary.com/dw6xejg8r/image/upload/v1755389885/laravel_juecw5.png",
+      alt: "Laravel",
+      // width: 50,
+      height: 50
+    },
+    {
+      url: "https://res.cloudinary.com/dw6xejg8r/image/upload/v1755389883/flutter_yhordj.png",
+      alt: "Flutter",
+      // width: 50,
+      height: 50
+    },
+    {
+      url: "https://res.cloudinary.com/dw6xejg8r/image/upload/v1755393316/angular-logo_h9nsqr.png",
+      alt: "Angular",
+      // width: 50,
+      height: 50
+    },
+    {
+      url: "https://res.cloudinary.com/dw6xejg8r/image/upload/v1755389884/go_m8fvqz.png",
+      alt: "Go",
+      // width: 50,
+      height: 50
+    },
+    {
+      url: "https://res.cloudinary.com/dw6xejg8r/image/upload/v1755389882/firebase_hh7ahe.png",
+      alt: "Firebase",
+      // width: 50,
+      height: 50
+    },
+    {
+      url: "https://res.cloudinary.com/dw6xejg8r/image/upload/v1755389888/sql_y2d6mh.png",
+      alt: "Sql",
+      // width: 50,
+      height: 50
+    },
+    {
+      url: "https://res.cloudinary.com/dw6xejg8r/image/upload/v1755391607/Github-desktop-logo-symbol.svg_kvr1zq.png",
+      alt: "GitHub",
+      // width: 50,
+      height: 50
+    },
+    {
+      url: "https://res.cloudinary.com/dw6xejg8r/image/upload/v1755389889/vercel_gjkmnx.png",
+      alt: "Vercel",
+      // width: 50,
+      height: 50
+    },
+    {
+      url: "https://res.cloudinary.com/dw6xejg8r/image/upload/v1755389884/hostinger_g2m20p.png",
+      alt: "Hostinger",
+      // width: 50,
+      height: 50
+    },
+    {
+      url: "https://res.cloudinary.com/dw6xejg8r/image/upload/v1755389887/render_wvzuiz.png",
+      alt: "Render",
+      // width: 50,
+      height: 50
+    }
+  ],
   experience: [
     {
       company: "Wadibu",
@@ -73,9 +135,7 @@ export const SITE_CONTENT: SiteContent = {
         "Maintenance et amélioration de l’application web interne avec Vue.js."
       ]
     }
-  ]
-
-  ,
+  ],
   projects: [
     {
       name: "Wadibu Site web",

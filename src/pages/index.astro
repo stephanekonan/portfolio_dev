@@ -7,10 +7,12 @@ import Projects from "@components/Projects.astro";
 import About from "@components/About.astro";
 
 import "../styles/global.css";
+import TechStack from "@components/TechStack.astro";
 ---
 
 <Layout>
   <Hero {...SITE_CONTENT.hero} />
+  <TechStack logos={SITE_CONTENT.techStack} />
   <Experience experience={SITE_CONTENT.experience} />
   <Projects projects={SITE_CONTENT.projects} />
   <About {...SITE_CONTENT.about} name={SITE_CONTENT.hero.name} />

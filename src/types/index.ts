@@ -8,6 +8,7 @@ export interface SiteConfig extends HeaderProps {
 
 export interface SiteContent {
   hero: HeroProps;
+  techStack: TechStackProps[];
   experience: ExperienceProps[];
   projects: ProjectProps[];
   about: AboutProps;
@@ -18,6 +19,13 @@ export interface HeroProps {
   specialty: string;
   summary: string;
   email: string;
+}
+
+export interface TechStackProps {
+  url: string;
+  alt: string;
+  width?: number;
+  height?: number;
 }
 
 export interface ExperienceProps {

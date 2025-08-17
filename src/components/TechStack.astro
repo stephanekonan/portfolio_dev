@@ -1,0 +1,91 @@
+---
+import type { TechStackProps } from "@types";
+import { Image } from "astro:assets";
+
+interface Props {
+  logos: TechStackProps[];
+}
+
+const { logos } = Astro.props;
+---
+
+<section class="tech-stack">
+  <div class="scrolling-logos">
+    <div class="logos-track">
+      {
+        logos.map((logo) => (
+          <Image
+            src={logo.url}
+            alt={logo.alt}
+            width={logo.width ?? 50}
+            height={logo.height ?? 50}
+            loading="lazy"
+            class="tech-logo"
+            format="webp"
+          />
+        ))
+      }
+      {
+        logos.map((logo) => (
+          <Image
+            src={logo.url}
+            alt={logo.alt}
+            width={logo.width ?? 50}
+            height={logo.height ?? 50}
+            loading="lazy"
+            class="tech-logo"
+            format="webp"
+          />
+        ))
+      }
+    </div>
+  </div>
+</section>
+
+<style>
+  .tech-stack {
+    padding: 2rem 0;
+    overflow: hidden;
+  }
+
+  .scrolling-logos {
+    display: flex;
+    overflow-x: auto;
+    scroll-behavior: smooth;
+    scrollbar-width: none;
+  }
+  .scrolling-logos::-webkit-scrollbar {
+    display: none;
+  }
+
+  .logos-track {
+    display: flex;
+    gap: 2rem;
+    min-width: max-content;
+    animation: scroll 20s linear infinite;
+  }
+
+  .scrolling-logos:hover .logos-track {
+    animation-play-state: paused;
+  }
+
+  .tech-logo {
+    max-height: 60px;
+    width: auto;
+    flex-shrink: 0;
+    transition: transform 0.2s;
+  }
+
+  .tech-logo:hover {
+    transform: scale(1.1);
+  }
+
+  @keyframes scroll {
+    0% {
+      transform: translateX(0);
+    }
+    100% {
+      transform: translateX(-50%);
+    }
+  }
+</style>
