@@ -6,6 +6,7 @@ import { SITE_CONFIG } from "@config";
 import Footer from "@components/Footer.astro";
 import Analytics from "@vercel/analytics/astro";
 import { t } from "../locales";
+import Contact from "@components/Contact.astro";
 const lang = Astro.url.pathname.startsWith("/en") ? "en" : "fr";
 
 const { siteLogo, navLinks, author, socialLinks } = SITE_CONFIG;
@@ -46,6 +47,7 @@ const { siteLogo, navLinks, author, socialLinks } = SITE_CONFIG;
     <main class="mx-auto max-w-3xl px-5">
       <slot />
     </main>
+    <Contact />
     <Footer author={author} socialLinks={socialLinks} lang={lang} />
     <Analytics />
   </body>

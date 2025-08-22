@@ -1,0 +1,194 @@
+---
+// Contact component with EmailJS integration
+---
+
+<script>
+  declare global {
+    interface Window {
+      emailjs: any;
+    }
+  }
+</script>
+
+<section class="py-16">
+  <div class="mx-auto max-w-4xl px-4">
+    <div class="mb-12 text-center">
+      <h2 class="mb-4 text-4xl font-bold text-white">Contactez-moi</h2>
+      <p class="text-lg text-white">
+        N'hésitez pas à me contacter pour discuter de vos projets
+      </p>
+    </div>
+
+    <form id="contact-form" class="space-y-6">
+      <div class="grid grid-cols-1 gap-6 md:grid-cols-2">
+        <div>
+           <label for="name"
+             class="mb-2 block text-sm font-medium text-white">Nom <span class="text-red-500">*</span></label
+           >
+           <input
+             type="text"
+             id="name"
+             name="name"
+             required
+             class="w-full rounded-lg border border-gray-300 px-3 py-2 text-white focus:border-transparent focus:ring-2 focus:ring-orange-500"
+           />
+        </div>
+        <div>
+                     <label
+             for="email"
+             class="mb-2 block text-sm font-medium text-white">Email <span class="text-red-500">*</span></label
+           >
+                     <input
+             type="email"
+             id="email"
+             name="email"
+             required
+             class="w-full rounded-lg border border-gray-300 px-3 py-2 text-white focus:border-transparent focus:ring-2 focus:ring-orange-500"
+           />
+        </div>
+      </div>
+
+      <div>
+                 <label for="subject" class="mb-2 block text-sm font-medium text-white"
+           >Objet <span class="text-red-500">*</span></label
+         >
+                 <input
+           type="text"
+           id="subject"
+           name="subject"
+           required
+           class="w-full rounded-lg border border-gray-300 px-3 py-2 text-white focus:border-transparent focus:ring-2 focus:ring-orange-500"
+         />
+      </div>
+
+      <div>
+                 <label for="message" class="mb-2 block text-sm font-medium text-white"
+           >Message <span class="text-red-500">*</span></label
+         >
+                 <textarea
+           id="message"
+           name="message"
+           rows="5"
+           required
+           class="w-full resize-none rounded-lg border border-gray-300 px-3 py-2 text-white focus:border-transparent focus:ring-2 focus:ring-orange-500"
+         ></textarea>
+      </div>
+
+      <div class="text-center">
+        <button
+          type="submit"
+          id="submit-btn"
+          class="mx-auto flex cursor-pointer items-center justify-center rounded-lg bg-orange-600 px-8 py-3 font-semibold text-white transition-colors duration-200 hover:bg-orange-700"
+        >
+          <span id="btn-text">Envoyer le message</span>
+          <div id="loading-spinner" class="ml-2 hidden">
+            <div
+              class="h-5 w-5 animate-spin rounded-full border-b-2 border-white"
+            >
+            </div>
+          </div>
+        </button>
+      </div>
+    </form>
+
+    <div
+      id="success-message"
+      class="mt-6 hidden rounded-lg border border-green-400 bg-green-100 p-4 text-green-700"
+    >
+      Votre message a été envoyé avec succès ! Je vous répondrai dans les plus
+      brefs délais.
+    </div>
+    <div
+      id="error-message"
+      class="mt-6 hidden rounded-lg border border-red-400 bg-red-100 p-4 text-red-700"
+    >
+      Une erreur s'est produite lors de l'envoi du message. Veuillez réessayer.
+    </div>
+  </div>
+</section>
+
+<script>
+  (function () {
+    const script = document.createElement("script");
+    script.src =
+      "https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js";
+    script.onload = function () {
+      const publicKey =
+        import.meta.env.PUBLIC_EMAILJS_PUBLIC_KEY || "YOUR_PUBLIC_KEY";
+      (window as any).emailjs.init(publicKey);
+
+      setupContactForm();
+    };
+    document.head.appendChild(script);
+  })();
+
+  function setupContactForm() {
+    const form = document.getElementById("contact-form") as HTMLFormElement;
+    const submitBtn = document.getElementById(
+      "submit-btn"
+    ) as HTMLButtonElement;
+    const btnText = document.getElementById("btn-text");
+    const loadingSpinner = document.getElementById("loading-spinner");
+    const successMessage = document.getElementById("success-message");
+    const errorMessage = document.getElementById("error-message");
+
+    if (
+      !form ||
+      !submitBtn ||
+      !btnText ||
+      !loadingSpinner ||
+      !successMessage ||
+      !errorMessage
+    ) {
+      console.error("Some form elements not found");
+      return;
+    }
+
+    form.addEventListener("submit", function (e) {
+      e.preventDefault();
+
+      submitBtn.disabled = true;
+      btnText.textContent = "Envoi en cours...";
+      loadingSpinner.classList.remove("hidden");
+
+      successMessage.classList.add("hidden");
+      errorMessage.classList.add("hidden");
+
+      const formData = new FormData(form);
+      const templateParams = {
+        name: formData.get("name") as string,
+        email: formData.get("email") as string,
+        subject: formData.get("subject") as string,
+        message: formData.get("message") as string,
+      };
+
+      const serviceId =
+        import.meta.env.PUBLIC_EMAILJS_SERVICE_ID || "YOUR_SERVICE_ID";
+      const templateId =
+        import.meta.env.PUBLIC_EMAILJS_TEMPLATE_ID || "YOUR_TEMPLATE_ID";
+
+      (window as any).emailjs
+        .send(serviceId, templateId, templateParams)
+        .then(function (response: any) {
+          console.log("SUCCESS!", response.status, response.text);
+
+          successMessage.classList.remove("hidden");
+
+          form.reset();
+
+          submitBtn.disabled = false;
+          btnText.textContent = "Envoyer le message";
+          loadingSpinner.classList.add("hidden");
+        })
+        .catch(function (error: any) {
+          console.log("FAILED...", error);
+
+          errorMessage.classList.remove("hidden");
+
+          submitBtn.disabled = false;
+          btnText.textContent = "Envoyer le message";
+          loadingSpinner.classList.add("hidden");
+        });
+    });
+  }
+</script>
