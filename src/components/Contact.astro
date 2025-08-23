@@ -30,56 +30,59 @@ const contact = t(lang).contact;
     <form id="contact-form" class="space-y-6">
       <div class="grid grid-cols-1 gap-6 md:grid-cols-2">
         <div>
-           <label for="name"
-             class="mb-2 block text-sm font-medium text-white">{contact.name} <span class="text-red-500">{contact.required}</span></label
-           >
-           <input
-             type="text"
-             id="name"
-             name="name"
-             required
-             class="w-full rounded-lg border border-gray-300 px-3 py-2 text-white focus:border-transparent focus:ring-2 focus:ring-orange-500"
-           />
+          <label for="name" class="mb-2 block text-sm font-medium text-white"
+            >{contact.name}
+            <span class="text-red-500">{contact.required}</span></label
+          >
+          <input
+            type="text"
+            id="name"
+            name="name"
+            required
+            class="w-full rounded-lg border border-gray-300 px-3 py-2 text-white focus:border-transparent focus:ring-2 focus:ring-orange-500"
+          />
         </div>
         <div>
-                     <label
-             for="email"
-             class="mb-2 block text-sm font-medium text-white">{contact.email} <span class="text-red-500">{contact.required}</span></label
-           >
-                     <input
-             type="email"
-             id="email"
-             name="email"
-             required
-             class="w-full rounded-lg border border-gray-300 px-3 py-2 text-white focus:border-transparent focus:ring-2 focus:ring-orange-500"
-           />
+          <label for="email" class="mb-2 block text-sm font-medium text-white"
+            >{contact.email}
+            <span class="text-red-500">{contact.required}</span></label
+          >
+          <input
+            type="email"
+            id="email"
+            name="email"
+            required
+            class="w-full rounded-lg border border-gray-300 px-3 py-2 text-white focus:border-transparent focus:ring-2 focus:ring-orange-500"
+          />
         </div>
       </div>
 
       <div>
-                 <label for="subject" class="mb-2 block text-sm font-medium text-white"
-           >{contact.subject} <span class="text-red-500">{contact.required}</span></label
-         >
-                 <input
-           type="text"
-           id="subject"
-           name="subject"
-           required
-           class="w-full rounded-lg border border-gray-300 px-3 py-2 text-white focus:border-transparent focus:ring-2 focus:ring-orange-500"
-         />
+        <label for="subject" class="mb-2 block text-sm font-medium text-white"
+          >{contact.subject}
+          <span class="text-red-500">{contact.required}</span></label
+        >
+        <input
+          type="text"
+          id="subject"
+          name="subject"
+          required
+          class="w-full rounded-lg border border-gray-300 px-3 py-2 text-white focus:border-transparent focus:ring-2 focus:ring-orange-500"
+        />
       </div>
 
       <div>
-                 <label for="message" class="mb-2 block text-sm font-medium text-white"
-           >{contact.message} <span class="text-red-500">{contact.required}</span></label
-         >
-                 <textarea
-           id="message"
-           name="message"
-           rows="5"
-           required
-           class="w-full resize-none rounded-lg border border-gray-300 px-3 py-2 text-white focus:border-transparent focus:ring-2 focus:ring-orange-500"
-         ></textarea>
+        <label for="message" class="mb-2 block text-sm font-medium text-white"
+          >{contact.message}
+          <span class="text-red-500">{contact.required}</span></label
+        >
+        <textarea
+          id="message"
+          name="message"
+          rows="5"
+          required
+          class="w-full resize-none rounded-lg border border-gray-300 px-3 py-2 text-white focus:border-transparent focus:ring-2 focus:ring-orange-500"
+        ></textarea>
       </div>
 
       <div class="text-center">
@@ -101,30 +104,48 @@ const contact = t(lang).contact;
 
     <div
       id="success-message"
-      class="mt-6 hidden rounded-lg border border-green-400 bg-green-100 p-4 text-green-700 relative"
+      class="relative mt-6 hidden rounded-lg border border-green-400 bg-green-100 p-4 text-green-700"
     >
       <button
         id="close-success"
-        class="absolute top-2 right-2 text-green-600 hover:text-green-800 transition-colors duration-200"
+        class="absolute top-2 right-2 text-green-600 transition-colors duration-200 hover:text-green-800"
         aria-label={contact.close}
       >
-        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+        <svg
+          class="h-5 w-5"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M6 18L18 6M6 6l12 12"></path>
         </svg>
       </button>
       <p class="pr-8">{contact.success}</p>
     </div>
     <div
       id="error-message"
-      class="mt-6 hidden rounded-lg border border-red-400 bg-red-100 p-4 text-red-700 relative"
+      class="relative mt-6 hidden rounded-lg border border-red-400 bg-red-100 p-4 text-red-700"
     >
       <button
         id="close-error"
-        class="absolute top-2 right-2 text-red-600 hover:text-red-800 transition-colors duration-200"
+        class="absolute top-2 right-2 text-red-600 transition-colors duration-200 hover:text-red-800"
         aria-label={contact.close}
       >
-        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L6 6M6 6l12 12"></path>
+        <svg
+          class="h-5 w-5"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M6 18L6 6M6 6l12 12"></path>
         </svg>
       </button>
       <p class="pr-8">{contact.error}</p>
@@ -139,7 +160,7 @@ const contact = t(lang).contact;
       "https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js";
     script.onload = function () {
       const publicKey =
-        import.meta.env.PUBLIC_EMAILJS_PUBLIC_KEY || "YOUR_PUBLIC_KEY";
+        import.meta.env.PUBLIC_EMAILJS_PUBLIC_KEY || "cnui7KAqK2jhxUp99";
       window.emailjs.init(publicKey);
 
       setupContactForm();
@@ -177,11 +198,11 @@ const contact = t(lang).contact;
       errorMessage.classList.add("hidden");
     }
 
-    closeSuccessBtn.addEventListener("click", function() {
+    closeSuccessBtn.addEventListener("click", function () {
       successMessage.classList.add("hidden");
     });
 
-    closeErrorBtn.addEventListener("click", function() {
+    closeErrorBtn.addEventListener("click", function () {
       errorMessage.classList.add("hidden");
     });
 
@@ -212,9 +233,9 @@ const contact = t(lang).contact;
       };
 
       const serviceId =
-        import.meta.env.PUBLIC_EMAILJS_SERVICE_ID || "YOUR_SERVICE_ID";
+        import.meta.env.PUBLIC_EMAILJS_SERVICE_ID || "service_8q1nbuj";
       const templateId =
-        import.meta.env.PUBLIC_EMAILJS_TEMPLATE_ID || "YOUR_TEMPLATE_ID";
+        import.meta.env.PUBLIC_EMAILJS_TEMPLATE_ID || "template_dd83wfj";
 
       window.emailjs
         .send(serviceId, templateId, templateParams)
