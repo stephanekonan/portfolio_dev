@@ -1,5 +1,13 @@
 ---
 // Contact component with EmailJS integration
+import { t } from "../locales";
+
+interface Props {
+  lang: "fr" | "en";
+}
+
+const { lang } = Astro.props;
+const contact = t(lang).contact;
 ---
 
 <script>
@@ -11,11 +19,11 @@
 </script>
 
 <section class="py-16">
-  <div class="mx-auto max-w-4xl px-4">
+  <div class="mx-auto max-w-xl px-4">
     <div class="mb-12 text-center">
-      <h2 class="mb-4 text-4xl font-bold text-white">Contactez-moi</h2>
+      <h2 class="mb-4 text-4xl font-bold text-white">{contact.title}</h2>
       <p class="text-lg text-white">
-        N'hésitez pas à me contacter pour discuter de vos projets
+        {contact.subtitle}
       </p>
     </div>
 
@@ -23,7 +31,7 @@
       <div class="grid grid-cols-1 gap-6 md:grid-cols-2">
         <div>
            <label for="name"
-             class="mb-2 block text-sm font-medium text-white">Nom <span class="text-red-500">*</span></label
+             class="mb-2 block text-sm font-medium text-white">{contact.name} <span class="text-red-500">{contact.required}</span></label
            >
            <input
              type="text"
@@ -36,7 +44,7 @@
         <div>
                      <label
              for="email"
-             class="mb-2 block text-sm font-medium text-white">Email <span class="text-red-500">*</span></label
+             class="mb-2 block text-sm font-medium text-white">{contact.email} <span class="text-red-500">{contact.required}</span></label
            >
                      <input
              type="email"
@@ -50,7 +58,7 @@
 
       <div>
                  <label for="subject" class="mb-2 block text-sm font-medium text-white"
-           >Objet <span class="text-red-500">*</span></label
+           >{contact.subject} <span class="text-red-500">{contact.required}</span></label
          >
                  <input
            type="text"
@@ -63,7 +71,7 @@
 
       <div>
                  <label for="message" class="mb-2 block text-sm font-medium text-white"
-           >Message <span class="text-red-500">*</span></label
+           >{contact.message} <span class="text-red-500">{contact.required}</span></label
          >
                  <textarea
            id="message"
@@ -80,7 +88,7 @@
           id="submit-btn"
           class="mx-auto flex cursor-pointer items-center justify-center rounded-lg bg-orange-600 px-8 py-3 font-semibold text-white transition-colors duration-200 hover:bg-orange-700"
         >
-          <span id="btn-text">Envoyer le message</span>
+          <span id="btn-text">{contact.submit}</span>
           <div id="loading-spinner" class="ml-2 hidden">
             <div
               class="h-5 w-5 animate-spin rounded-full border-b-2 border-white"
@@ -93,21 +101,38 @@
 
     <div
       id="success-message"
-      class="mt-6 hidden rounded-lg border border-green-400 bg-green-100 p-4 text-green-700"
+      class="mt-6 hidden rounded-lg border border-green-400 bg-green-100 p-4 text-green-700 relative"
     >
-      Votre message a été envoyé avec succès ! Je vous répondrai dans les plus
-      brefs délais.
+      <button
+        id="close-success"
+        class="absolute top-2 right-2 text-green-600 hover:text-green-800 transition-colors duration-200"
+        aria-label={contact.close}
+      >
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+        </svg>
+      </button>
+      <p class="pr-8">{contact.success}</p>
     </div>
     <div
       id="error-message"
-      class="mt-6 hidden rounded-lg border border-red-400 bg-red-100 p-4 text-red-700"
+      class="mt-6 hidden rounded-lg border border-red-400 bg-red-100 p-4 text-red-700 relative"
     >
-      Une erreur s'est produite lors de l'envoi du message. Veuillez réessayer.
+      <button
+        id="close-error"
+        class="absolute top-2 right-2 text-red-600 hover:text-red-800 transition-colors duration-200"
+        aria-label={contact.close}
+      >
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L6 6M6 6l12 12"></path>
+        </svg>
+      </button>
+      <p class="pr-8">{contact.error}</p>
     </div>
   </div>
 </section>
 
-<script>
+<script define:vars={{ contact }}>
   (function () {
     const script = document.createElement("script");
     script.src =
@@ -115,7 +140,7 @@
     script.onload = function () {
       const publicKey =
         import.meta.env.PUBLIC_EMAILJS_PUBLIC_KEY || "YOUR_PUBLIC_KEY";
-      (window as any).emailjs.init(publicKey);
+      window.emailjs.init(publicKey);
 
       setupContactForm();
     };
@@ -123,14 +148,14 @@
   })();
 
   function setupContactForm() {
-    const form = document.getElementById("contact-form") as HTMLFormElement;
-    const submitBtn = document.getElementById(
-      "submit-btn"
-    ) as HTMLButtonElement;
+    const form = document.getElementById("contact-form");
+    const submitBtn = document.getElementById("submit-btn");
     const btnText = document.getElementById("btn-text");
     const loadingSpinner = document.getElementById("loading-spinner");
     const successMessage = document.getElementById("success-message");
     const errorMessage = document.getElementById("error-message");
+    const closeSuccessBtn = document.getElementById("close-success");
+    const closeErrorBtn = document.getElementById("close-error");
 
     if (
       !form ||
@@ -138,28 +163,52 @@
       !btnText ||
       !loadingSpinner ||
       !successMessage ||
-      !errorMessage
+      !errorMessage ||
+      !closeSuccessBtn ||
+      !closeErrorBtn
     ) {
       console.error("Some form elements not found");
       return;
+    }
+
+    // Fonction helper pour fermer les messages
+    function hideMessages() {
+      successMessage.classList.add("hidden");
+      errorMessage.classList.add("hidden");
+    }
+
+    closeSuccessBtn.addEventListener("click", function() {
+      successMessage.classList.add("hidden");
+    });
+
+    closeErrorBtn.addEventListener("click", function() {
+      errorMessage.classList.add("hidden");
+    });
+
+    // Fermeture automatique des messages après 8 secondes
+    function autoHideMessage(messageElement) {
+      setTimeout(() => {
+        if (!messageElement.classList.contains("hidden")) {
+          messageElement.classList.add("hidden");
+        }
+      }, 8000);
     }
 
     form.addEventListener("submit", function (e) {
       e.preventDefault();
 
       submitBtn.disabled = true;
-      btnText.textContent = "Envoi en cours...";
+      btnText.textContent = contact.sending;
       loadingSpinner.classList.remove("hidden");
 
-      successMessage.classList.add("hidden");
-      errorMessage.classList.add("hidden");
+      hideMessages();
 
       const formData = new FormData(form);
       const templateParams = {
-        name: formData.get("name") as string,
-        email: formData.get("email") as string,
-        subject: formData.get("subject") as string,
-        message: formData.get("message") as string,
+        name: formData.get("name"),
+        email: formData.get("email"),
+        subject: formData.get("subject"),
+        message: formData.get("message"),
       };
 
       const serviceId =
@@ -167,26 +216,28 @@
       const templateId =
         import.meta.env.PUBLIC_EMAILJS_TEMPLATE_ID || "YOUR_TEMPLATE_ID";
 
-      (window as any).emailjs
+      window.emailjs
         .send(serviceId, templateId, templateParams)
-        .then(function (response: any) {
+        .then(function (response) {
           console.log("SUCCESS!", response.status, response.text);
 
           successMessage.classList.remove("hidden");
+          autoHideMessage(successMessage);
 
           form.reset();
 
           submitBtn.disabled = false;
-          btnText.textContent = "Envoyer le message";
+          btnText.textContent = contact.submit;
           loadingSpinner.classList.add("hidden");
         })
-        .catch(function (error: any) {
+        .catch(function (error) {
           console.log("FAILED...", error);
 
           errorMessage.classList.remove("hidden");
+          autoHideMessage(errorMessage);
 
           submitBtn.disabled = false;
-          btnText.textContent = "Envoyer le message";
+          btnText.textContent = contact.submit;
           loadingSpinner.classList.add("hidden");
         });
     });

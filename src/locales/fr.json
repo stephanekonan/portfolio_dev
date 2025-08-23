@@ -100,5 +100,19 @@
   },
   "footer": {
     "description": "Designé & Developé par"
+  },
+  "contact": {
+    "title": "Contactez-moi",
+    "subtitle": "N'hésitez pas à me contacter pour discuter de vos projets futurs",
+    "name": "Nom",
+    "email": "Email",
+    "subject": "Objet",
+    "message": "Message",
+    "required": "*",
+    "submit": "Envoyer le message",
+    "sending": "Envoi en cours...",
+    "success": "Votre message a été envoyé avec succès ! Je vous répondrai dans les plus brefs délais.",
+    "error": "Une erreur s'est produite lors de l'envoi du message. Veuillez réessayer.",
+    "close": "Fermer"
   }
 }
