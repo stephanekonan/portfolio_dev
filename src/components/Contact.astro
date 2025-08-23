@@ -1,5 +1,5 @@
 ---
-// Contact component with EmailJS integration
+// Contact component
 import { t } from "../locales";
 
 interface Props {
@@ -10,14 +10,6 @@ const { lang } = Astro.props;
 const contact = t(lang).contact;
 ---
 
-<script>
-  declare global {
-    interface Window {
-      emailjs: any;
-    }
-  }
-</script>
-
 <section class="py-16">
   <div class="mx-auto max-w-xl px-4">
     <div class="mb-12 text-center">
@@ -27,7 +19,7 @@ const contact = t(lang).contact;
       </p>
     </div>
 
-    <form id="contact-form" class="space-y-6">
+    <form id="contact-form" class="space-y-6" action="/api/contact" method="POST">
       <div class="grid grid-cols-1 gap-6 md:grid-cols-2">
         <div>
           <label for="name" class="mb-2 block text-sm font-medium text-white"
@@ -154,20 +146,6 @@ const contact = t(lang).contact;
 </section>
 
 <script define:vars={{ contact }}>
-  (function () {
-    const script = document.createElement("script");
-    script.src =
-      "https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js";
-    script.onload = function () {
-      const publicKey =
-        import.meta.env.PUBLIC_EMAILJS_PUBLIC_KEY || "cnui7KAqK2jhxUp99";
-      window.emailjs.init(publicKey);
-
-      setupContactForm();
-    };
-    document.head.appendChild(script);
-  })();
-
   function setupContactForm() {
     const form = document.getElementById("contact-form");
     const submitBtn = document.getElementById("submit-btn");
@@ -192,7 +170,6 @@ const contact = t(lang).contact;
       return;
     }
 
-    // Fonction helper pour fermer les messages
     function hideMessages() {
       successMessage.classList.add("hidden");
       errorMessage.classList.add("hidden");
@@ -206,7 +183,6 @@ const contact = t(lang).contact;
       errorMessage.classList.add("hidden");
     });
 
-    // Fermeture automatique des messages après 8 secondes
     function autoHideMessage(messageElement) {
       setTimeout(() => {
         if (!messageElement.classList.contains("hidden")) {
@@ -224,43 +200,23 @@ const contact = t(lang).contact;
 
       hideMessages();
 
-      const formData = new FormData(form);
-      const templateParams = {
-        name: formData.get("name"),
-        email: formData.get("email"),
-        subject: formData.get("subject"),
-        message: formData.get("message"),
-      };
+      setTimeout(() => {
+        successMessage.classList.remove("hidden");
+        autoHideMessage(successMessage);
 
-      const serviceId =
-        import.meta.env.PUBLIC_EMAILJS_SERVICE_ID || "service_8q1nbuj";
-      const templateId =
-        import.meta.env.PUBLIC_EMAILJS_TEMPLATE_ID || "template_dd83wfj";
+        form.reset();
 
-      window.emailjs
-        .send(serviceId, templateId, templateParams)
-        .then(function (response) {
-          console.log("SUCCESS!", response.status, response.text);
-
-          successMessage.classList.remove("hidden");
-          autoHideMessage(successMessage);
-
-          form.reset();
-
-          submitBtn.disabled = false;
-          btnText.textContent = contact.submit;
-          loadingSpinner.classList.add("hidden");
-        })
-        .catch(function (error) {
-          console.log("FAILED...", error);
-
-          errorMessage.classList.remove("hidden");
-          autoHideMessage(errorMessage);
-
-          submitBtn.disabled = false;
-          btnText.textContent = contact.submit;
-          loadingSpinner.classList.add("hidden");
-        });
+        submitBtn.disabled = false;
+        btnText.textContent = contact.submit;
+        loadingSpinner.classList.add("hidden");
+      }, 1000);
     });
+  }
+
+  // Initialize form when DOM is loaded
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", setupContactForm);
+  } else {
+    setupContactForm();
   }
 </script>
