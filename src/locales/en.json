@@ -11,7 +11,7 @@
   "hero": {
     "name": "Stéphane Konan",
     "specialty": "Software Developer",
-    "summary": "Developer based in Abidjan, specialized in interface design and high-performance applications with Laravel, Golang, Angular, Nextjs, Flutter and Kotlin Android.",
+    "summary": "Fullstack developer focused on clean architecture. I build high-performance, scalable applications using Laravel, Go, and Flutter, with a strong emphasis on real-world business systems (delivery, e-commerce, management, payments, multi-actor platforms).",
     "email": "stephanekonan.dev@gmail.com"
   },
   "experience": {
@@ -74,6 +74,10 @@
         "summary": "Dedicated application suite for delivery and restaurant services"
       },
       {
+        "name": "Smarty +",
+        "summary": "Personal expense management application"
+      },
+      {
         "name": "MotoTrack-AI",
         "summary": "Application designed to optimize deliveries while prioritizing driver safety and well-being"
       },
@@ -93,7 +97,7 @@
   },
   "about": {
     "title": "About Me",
-    "description": "I'm a mobile and web developer, passionate about creating simple, effective and enjoyable user experiences.\nI love designing Android and iOS apps as much as developing performant websites and web applications.\nMy goal: to provide useful, well thought out and reliable solutions that truly meet users' needs.\nEach project is an opportunity for me to combine creativity and technical skills, with special attention paid to performance, security and scalability."
+    "description": "I am a web and mobile developer focused on clean architecture.\nI design high-performance applications and platforms with an approach centered on scalability, security, and maintainability.\nMy goal is to build useful, well-structured solutions tailored to real business needs, combining product vision with technical rigor."
   },
   "techStack": {
     "title": "Technical Skills"

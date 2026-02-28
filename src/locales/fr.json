@@ -11,7 +11,7 @@
   "hero": {
     "name": "Stéphane Konan",
     "specialty": "Développeur Logiciel",
-    "summary": "Développeur basé à Abidjan, spécialisé dans la conception d'interfaces et le développement d'applications performantes avec Laravel, Golang, Angular, Nextjs, Flutter et Kotlin Android.",
+    "summary": "Développeur fullstack orienté architecture propre. Je conçois des applications performantes et scalables avec Laravel, Go et Flutter, en mettant l’accent sur des systèmes métiers réels (livraison, e-commerce, gestion,payments, multi-acteurs).",
     "email": "stephanekonan.dev@gmail.com"
   },
   "experience": {
@@ -74,6 +74,10 @@
         "summary": "Suite d'applications dédiée à la livraison et à la restauration"
       },
       {
+        "name": "Smarty +",
+        "summary": "Application de gestion de dépenses personnelle"
+      },
+      {
         "name": "MotoTrack-AI",
         "summary": "Application pensée pour optimiser les courses tout en plaçant la sécurité et le bien-être des livreurs"
       },
@@ -93,7 +97,7 @@
   },
   "about": {
     "title": "À propos de moi",
-    "description": "Je suis développeur mobile et web, passionné par la création d'expériences simples, efficaces et agréables à utiliser.\nJ'aime autant concevoir des applications Android et iOS que développer des sites et applications web performants.\nMon objectif : proposer des solutions utiles, bien pensées et fiables, qui répondent vraiment aux besoins des utilisateurs.\nChaque projet est pour moi l'occasion d'allier créativité et technique, avec un soin particulier apporté à la performance, à la sécurité et à l'évolutivité."
+    "description": "Je suis développeur backend et mobile, orienté architecture propre.\n Je conçois des applications et plateformes performantes avec une approche centrée sur la scalabilité, la sécurité et la maintenabilité.\nMon objectif est de construire des solutions utiles, bien structurées et adaptées aux réalités métiers, en alliant vision produit et rigueur technique."
   },
   "techStack": {
     "title": "Technologies Maîtrisées"

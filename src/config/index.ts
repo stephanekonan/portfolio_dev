@@ -1,4 +1,7 @@
-import type { SiteConfig, SiteContent } from "../types";
+import type {
+  SiteConfig,
+  SiteContent,
+} from "../types";
 
 export const SITE_CONFIG: SiteConfig = {
   title: "Stéphane Konan — Mobile & Web Developer",
@@ -158,9 +161,17 @@ export const SITE_CONTENT: SiteContent = {
     {
       name: "Wadibu Apps",
       summary: "Suite d’applications dédiée à la livraison et à la restauration",
-      linkPreview: "/",
+      linkPreview: "https://apkpure.com/fr/wadibu/com.wadibu.app",
       linkSource: "/",
       image: "/app_wadibu.png",
+      lang: "fr"
+    },
+    {
+      name: "Smart Spending",
+      summary: "Application de gestion de dépenses personnelle",
+      linkPreview: "https://apkpure.com/p/com.smart_spending",
+      linkSource: "/",
+      image: "/smart_spending.png",
       lang: "fr"
     },
     {
