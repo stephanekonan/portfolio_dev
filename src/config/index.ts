@@ -151,6 +151,14 @@ export const SITE_CONTENT: SiteContent = {
   ],
   projects: [
     {
+      name: "LPA - League of African Peoples",
+      summary: "Website of a Christian organization/African evangelical mission, focused on faith, evangelism, and social transformation through Christian values",
+      linkPreview: "https://www.lpa.ci/",
+      linkSource: "/",
+      image: "/lpa.png",
+      lang: "fr"
+    },
+    {
       name: "Wadibu Site web",
       summary: "Plateforme en ligne présentant l’écosystème Wadibu et ses services",
       linkPreview: "https://www.wadibu.ci",
@@ -192,7 +200,7 @@ export const SITE_CONTENT: SiteContent = {
     },
     {
       name: "djaxa .r",
-      summary: "Application de gestion spécialisée pour les ateliers de réparation de téléphones.",
+      summary: "Application de gestion spécialisée pour les ateliers de réparation de téléphones (développée avec Kotlin Mobile & Firebase)",
       linkPreview: "/",
       linkSource: "/",
       image: "/djaxa.png",

@@ -66,20 +66,24 @@
     "preview": "View project",
     "items": [
       {
+        "name": "LPA - League of African Peoples",
+        "summary": "Website of a Christian organization/African evangelical mission, focused on faith, evangelism, and social transformation through Christian values"
+      },
+      {
         "name": "Wadibu Website",
-        "summary": "Online platform showcasing the Wadibu ecosystem and its services"
+        "summary": "Online platform showcasing the Wadibu ecosystem and its services (developed with React)"
       },
       {
         "name": "Wadibu Apps",
-        "summary": "Dedicated application suite for delivery and restaurant services"
+        "summary": "Dedicated application suite for delivery and restaurant services (developed with Flutter)"
       },
       {
         "name": "Smarty +",
-        "summary": "Personal expense management application"
+        "summary": "Personal expense management application (developed with Flutter and SQLite)"
       },
       {
         "name": "MotoTrack-AI",
-        "summary": "Application designed to optimize deliveries while prioritizing driver safety and well-being"
+        "summary": "Application designed to optimize deliveries while prioritizing driver safety and well-being (developed with Flutter)"
       },
       {
         "name": "Aboutik App",
@@ -87,11 +91,11 @@
       },
       {
         "name": "djaxa .r",
-        "summary": "Specialized management application for phone repair workshops"
+        "summary": "Specialized management application for phone repair workshops (developed with Kotlin Mobile & Firebase)"
       },
       {
         "name": "Weni CI",
-        "summary": "Solution to easily send packages without leaving home"
+        "summary": "Solution to easily send packages without leaving home (developed with WordPress)"
       }
     ]
   },

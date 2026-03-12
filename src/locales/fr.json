@@ -66,20 +66,24 @@
     "preview": "Voir le projet",
     "items": [
       {
+        "name": "LPA - ligue des peuples africains",
+        "summary": "Site d’une organisation chrétienne/mission évangélique africaine, centrée sur la foi, l’évangélisation et la transformation sociale à travers les valeurs chrétiennes"
+      },
+      {
         "name": "Wadibu Site web",
-        "summary": "Plateforme en ligne présentant l'écosystème Wadibu et ses services"
+        "summary": "Plateforme en ligne présentant l'écosystème Wadibu et ses services (développé avec React)"
       },
       {
         "name": "Wadibu Apps",
-        "summary": "Suite d'applications dédiée à la livraison et à la restauration"
+        "summary": "Suite d'applications dédiée à la livraison et à la restauration (développé avec Flutter)"
       },
       {
         "name": "Smarty +",
-        "summary": "Application de gestion de dépenses personnelle"
+        "summary": "Application de gestion de dépenses personnelle (développé avec Flutter et SQLite)"
       },
       {
         "name": "MotoTrack-AI",
-        "summary": "Application pensée pour optimiser les courses tout en plaçant la sécurité et le bien-être des livreurs"
+        "summary": "Application pensée pour optimiser les courses tout en plaçant la sécurité et le bien-être des livreurs (développé avec Flutter)"
       },
       {
         "name": "Aboutik App",
@@ -87,11 +91,11 @@
       },
       {
         "name": "djaxa .r",
-        "summary": "Application de gestion spécialisée pour les ateliers de réparation de téléphones"
+        "summary": "Application de gestion spécialisée pour les ateliers de réparation de téléphones (développée avec Kotlin Mobile & Firebase)"
       },
       {
         "name": "Weni CI",
-        "summary": "Solution pour envoyer des colis facilement sans bouger de chez soi"
+        "summary": "Solution pour envoyer des colis facilement sans bouger de chez soi (développée avec WordPress)"
       }
     ]
   },
