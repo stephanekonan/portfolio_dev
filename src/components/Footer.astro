@@ -8,28 +8,33 @@ const { author, socialLinks, lang } = Astro.props;
 const currentYear = new Date().getFullYear();
 ---
 
-<footer
-  class="w-full border-t border-neutral/20 px-5 pt-5 pb-8 text-center text-white"
->
-  <ul class="mb-5 flex flex-wrap justify-center gap-x-5 text-xs">
+<footer class="relative border-t border-[#1e2d3d] px-5 py-10 text-center">
+  <!-- Glow line -->
+  <div class="absolute top-0 left-1/2 h-px w-32 -translate-x-1/2 bg-gradient-to-r from-transparent via-primary/50 to-transparent"></div>
+
+  <!-- Social links -->
+  <ul class="mb-6 flex flex-wrap justify-center gap-2">
     {
       socialLinks.map(({ text, href }) => (
         <li>
           <a
             href={href}
             target="_blank"
-            class="inline-block px-4 py-3 after:relative after:bottom-[-4px] after:content-[url(/external.svg)] hover:text-primary"
+            class="inline-flex items-center gap-1.5 rounded-lg border border-[#1e2d3d] px-4 py-2 text-xs text-neutral transition-all duration-200 hover:border-primary/40 hover:text-white"
           >
             {text}
+            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+              <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>
+              <polyline points="15 3 21 3 21 9"/>
+              <line x1="10" y1="14" x2="21" y2="3"/>
+            </svg>
           </a>
         </li>
       ))
     }
   </ul>
-  <p class="text-xs">
-    © {currentYear}. <span class="text-neutral"
-      >{t(lang).footer.description}</span
-    >
-    {author}
+
+  <p class="font-mono text-xs text-neutral">
+    © {currentYear} · <span class="text-primary">{author}</span> · {t(lang).footer.description}
   </p>
 </footer>

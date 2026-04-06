@@ -11,18 +11,44 @@ const { image, name } = Astro.props;
 ---
 
 <Section text={t(lang).about.title} href="about">
-  <div class="flex flex-col items-center gap-12 md:flex-row md:gap-8">
-    <p class="w-auto text-base text-neutral md:pr-5">{t(lang).about.description}</p>
-    <div
-      class="h-80 w-64 flex-shrink-0 rotate-[5deg] bg-white p-4 md:rotate-[7deg]"
-    >
-      <Image
-        class="object-cover"
-        src={image}
-        width="260"
-        height="260"
-        alt={name}
-      />
+  <div class="flex flex-col items-center gap-12 md:flex-row md:gap-14">
+    <!-- Text -->
+    <div class="flex-1 animate-on-scroll">
+      <p class="text-base leading-relaxed text-neutral">{t(lang).about.description}</p>
+
+      <!-- Tech tags -->
+      <div class="mt-8 flex flex-wrap gap-2">
+        {["Laravel", "Go", "Flutter", "Angular", "Firebase", "MySQL", "Kotlin"].map((tech) => (
+          <span class="rounded-lg border border-[#1e2d3d] bg-[#0d1620] px-3 py-1.5 font-mono text-xs text-neutral transition-colors hover:border-primary/40 hover:text-primary">
+            {tech}
+          </span>
+        ))}
+      </div>
+    </div>
+
+    <!-- Photo -->
+    <div class="animate-on-scroll delay-2 flex-shrink-0">
+      <div class="relative">
+        <!-- Decorative frame offset -->
+        <div class="absolute -bottom-3 -right-3 h-full w-full rounded-2xl border border-primary/20"></div>
+        <div class="relative h-72 w-56 overflow-hidden rounded-2xl border border-[#1e2d3d]">
+          <Image
+            class="h-full w-full object-cover object-top"
+            src={image}
+            width="224"
+            height="288"
+            alt={name}
+          />
+        </div>
+      </div>
     </div>
   </div>
 </Section>
+
+<script>
+  const observer = new IntersectionObserver(
+    (entries) => entries.forEach(e => e.isIntersecting && e.target.classList.add("visible")),
+    { threshold: 0.1 }
+  );
+  document.querySelectorAll(".animate-on-scroll").forEach(el => observer.observe(el));
+</script>

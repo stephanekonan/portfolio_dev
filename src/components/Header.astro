@@ -10,34 +10,43 @@ const { siteLogo, lang } = Astro.props;
 ---
 
 <header
-  class="sticky top-0 z-50 mx-auto flex max-w-5xl animate-slide-in justify-between bg-black px-5 py-6"
+  class="sticky top-0 z-50 mx-auto flex max-w-5xl animate-slide-in items-center justify-between px-5 py-5"
+  id="main-header"
 >
-  <a href="/" aria-label="Home link">
-    <Image
-      class="rounded-full"
-      src={siteLogo}
-      width="45"
-      height="45"
-      alt="portfolio logo"
-    />
+  <!-- Backdrop -->
+  <div class="absolute inset-0 -z-10 rounded-b-2xl border-b border-[#1e2d3d]/60 bg-[#08101a]/85 backdrop-blur-md"></div>
+
+  <!-- Logo -->
+  <a href="/" aria-label="Home link" class="group flex items-center gap-3">
+    <div class="relative">
+      <Image
+        class="rounded-full ring-2 ring-transparent transition-all duration-300 group-hover:ring-primary/50"
+        src={siteLogo}
+        width="40"
+        height="40"
+        alt="portfolio logo"
+      />
+      <span class="absolute -bottom-0.5 -right-0.5 h-2.5 w-2.5 rounded-full bg-primary ring-2 ring-[#08101a]"></span>
+    </div>
+    <span class="hidden font-serif text-sm font-semibold text-white sm:block">SK</span>
   </a>
 
-  <div class="flex items-center gap-4 sm:hidden">
+  <!-- Mobile controls -->
+  <div class="flex items-center gap-3 sm:hidden">
     <div class="relative">
       <select
-        class="appearance-none rounded-md border border-neutral/40 bg-black px-3 py-1 text-sm text-neutral focus:outline-none"
+        class="appearance-none rounded-lg border border-[#1e2d3d] bg-[#0d1620] px-3 py-1.5 text-xs text-neutral focus:outline-none focus:ring-1 focus:ring-primary/50"
         onchange="window.location.href = this.value"
         aria-label="Language selector"
       >
-        <option value="fr" selected={lang === "fr"}>🇫🇷 FR</option>
-        <option value="en" selected={lang === "en"}>🇬🇧 EN</option>
+        <option value="/" selected={lang === "fr"}>🇫🇷 FR</option>
+        <option value="/en" selected={lang === "en"}>🇬🇧 EN</option>
       </select>
     </div>
-
     <button
       type="button"
       id="menu-button"
-      class="px-1.5 text-neutral"
+      class="rounded-lg border border-[#1e2d3d] p-2 text-neutral transition-colors hover:border-primary/40 hover:text-white"
       aria-expanded="false"
       aria-controls="main-menu"
     >
@@ -45,45 +54,36 @@ const { siteLogo, lang } = Astro.props;
     </button>
   </div>
 
+  <!-- Desktop nav -->
   <nav
-    class="absolute top-20 right-5 hidden rounded-xl border border-neutral/40 bg-black px-4 py-5 text-neutral sm:static sm:flex sm:items-center sm:gap-4 sm:border-0 sm:bg-transparent sm:p-0"
+    class="absolute top-[4.5rem] right-5 hidden rounded-xl border border-[#1e2d3d] bg-[#0d1620]/95 px-4 py-4 backdrop-blur-md sm:static sm:flex sm:items-center sm:gap-2 sm:border-0 sm:bg-transparent sm:p-0"
     id="main-menu"
   >
-    <ul class="gap-2 sm:flex">
-      <li class="relative">
-        <a
-          class={`nav-item relative block p-2 text-sm font-medium transition-all duration-500 after:absolute after:bottom-0 after:left-2/4 after:h-2 after:w-1 after:-translate-x-2/4 after:text-primary after:opacity-0 after:content-['•'] hover:text-white`}
-          href="#experience"
-        >
-          {t(lang).site.nav.experience}
-        </a>
-      </li>
-      <li class="relative">
-        <a
-          class={`nav-item relative block p-2 text-sm font-medium transition-all duration-500 after:absolute after:bottom-0 after:left-2/4 after:h-2 after:w-1 after:-translate-x-2/4 after:text-primary after:opacity-0 after:content-['•'] hover:text-white`}
-          href="#projects"
-        >
-          {t(lang).site.nav.projects}
-        </a>
-      </li>
-      <li class="relative">
-        <a
-          class={`nav-item relative block p-2 text-sm font-medium transition-all duration-500 after:absolute after:bottom-0 after:left-2/4 after:h-2 after:w-1 after:-translate-x-2/4 after:text-primary after:opacity-0 after:content-['•'] hover:text-white`}
-          href="#about"
-        >
-          {t(lang).site.nav.about}
-        </a>
-      </li>
+    <ul class="gap-1 sm:flex">
+      {[
+        { href: "#experience", label: t(lang).site.nav.experience },
+        { href: "#projects", label: t(lang).site.nav.projects },
+        { href: "#about", label: t(lang).site.nav.about },
+      ].map(({ href, label }) => (
+        <li>
+          <a
+            class="nav-item relative block rounded-lg px-3 py-2 text-sm font-medium text-neutral transition-all duration-300 hover:bg-[#1e2d3d]/50 hover:text-white"
+            href={href}
+          >
+            {label}
+          </a>
+        </li>
+      ))}
     </ul>
 
-    <div class="relative hidden px-5 sm:block">
+    <div class="mt-3 border-t border-[#1e2d3d] pt-3 sm:mt-0 sm:ml-4 sm:border-l sm:border-t-0 sm:pl-4 sm:pt-0">
       <select
-        class="appearance-none rounded-md border border-neutral/40 bg-black px-3 py-1 text-sm text-neutral focus:outline-none"
+        class="appearance-none rounded-lg border border-[#1e2d3d] bg-[#0d1620] px-3 py-1.5 text-xs text-neutral focus:outline-none focus:ring-1 focus:ring-primary/50"
         onchange="window.location.href = this.value"
         aria-label="Language selector"
       >
-        <option value="fr" selected={lang === "fr"}>🇫🇷 FR</option>
-        <option value="en" selected={lang === "en"}>🇬🇧 EN</option>
+        <option value="/" selected={lang === "fr"}>🇫🇷 FR</option>
+        <option value="/en" selected={lang === "en"}>🇬🇧 EN</option>
       </select>
     </div>
   </nav>
@@ -101,45 +101,26 @@ const { siteLogo, lang } = Astro.props;
   };
 
   button?.addEventListener("click", toggleMenu);
-  navItems.forEach((item) => {
-    item?.addEventListener("click", toggleMenu);
-  });
+  navItems.forEach((item) => item?.addEventListener("click", toggleMenu));
 
   const observer = new IntersectionObserver(
     (entries) => {
       entries.forEach((entry) => {
         if (entry.isIntersecting) {
           navItems.forEach((item) => {
-            if (item.getAttribute("href") === `#${entry.target.id}`) {
-              item.classList.add("text-white", "md:after:opacity-100");
-            } else {
-              item.classList.remove("text-white", "md:after:opacity-100");
-            }
+            const isActive = item.getAttribute("href") === `#${entry.target.id}`;
+            item.classList.toggle("text-white", isActive);
+            item.classList.toggle("text-neutral", !isActive);
           });
         }
       });
     },
-    { threshold: 0.5 }
+    { threshold: 0.4 }
   );
 
-  document.querySelectorAll("section").forEach((section) => {
-    observer.observe(section);
-  });
-
-  document.onvisibilitychange = () => {
-    if (document.visibilityState === "hidden") {
-      observer.disconnect();
-    } else {
-      document.querySelectorAll("section").forEach((section) => {
-        observer.observe(section);
-      });
-    }
-  };
+  document.querySelectorAll("section[id]").forEach((s) => observer.observe(s));
 </script>
 
 <style>
-  header {
-    animation-timeline: scroll();
-    animation-range: 0 650px;
-  }
+  header { animation-timeline: scroll(); animation-range: 0 650px; }
 </style>

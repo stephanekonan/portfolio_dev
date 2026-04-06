@@ -12,62 +12,106 @@ interface Props {
   lang: "fr" | "en";
 }
 
-const { name, summary, image, linkSource, linkPreview, index, lang } =
-  Astro.props;
-const top = 98 + index * 40;
-const labels = t(lang).projects; // { title, source, preview, items }
+const { name, summary, image, linkSource, linkPreview, index, lang } = Astro.props;
+const top = 96 + index * 36;
+const labels = t(lang).projects;
 ---
 
 <div
   style={`top: ${top}px;`}
-  class="sticky mb-12 rounded-2xl border border-neutral/20 bg-black"
+  class="sticky mb-10 animate-on-scroll"
 >
   <div
-    class="bg-difu relative z-[1] grid h-[580px] w-full grid-rows-2 rounded-2xl bg-[#1c232d]/85 before:absolute before:inset-0 before:z-[-1] before:rounded-2xl before:bg-[url(/raja.png)] before:bg-[length:128px] before:bg-repeat before:opacity-[5%] before:content-[''] sm:grid-cols-2 sm:grid-rows-1 md:h-96"
+    class="relative overflow-hidden rounded-2xl border border-[#1e2d3d] bg-[#0d1620] transition-all duration-500 hover:border-primary/30"
   >
-    <div class="px-6 pt-12">
-      <h3 class="mb-5 font-serif text-3xl font-medium text-primary">
-        {name}
-      </h3>
-      <p class="text-base text-neutral">{summary}</p>
-      <div class="flex gap-5 pt-10 text-white">
-        {
-          linkSource && linkSource !== "/" ? (
-            <a
-              href={linkSource}
-              target="_blank"
-              class="after:relative after:bottom-[-5px] after:content-[url(/external.svg)] hover:underline"
-            >
-              {labels.source}
-            </a>
-          ) : (
-            <span class="cursor-not-allowed opacity-50">{labels.source}</span>
-          )
-        }
+    <!-- Top accent bar -->
+    <div class="h-px w-full bg-gradient-to-r from-primary via-primary/30 to-transparent"></div>
 
-        {
-          linkPreview && linkPreview !== "/" ? (
-            <a
-              href={linkPreview}
-              target="_blank"
-              class="after:relative after:bottom-[-5px] after:content-[url(/external.svg)] hover:underline"
-            >
-              {labels.preview}
-            </a>
-          ) : (
-            <span class="cursor-not-allowed opacity-50">{labels.preview}</span>
-          )
-        }
+    <div class="grid h-auto grid-rows-[auto_1fr] md:h-96 md:grid-cols-2 md:grid-rows-1">
+      <!-- Content -->
+      <div class="flex flex-col justify-between p-8">
+        <div>
+          <!-- Index number -->
+          <span class="mb-4 block font-mono text-xs text-primary/60">
+            {String(index + 1).padStart(2, "0")}
+          </span>
+          <h3 class="mb-4 font-serif text-2xl font-semibold leading-tight text-white">
+            {name}
+          </h3>
+          <p class="text-sm leading-relaxed text-neutral">{summary}</p>
+        </div>
+
+        <!-- Links -->
+        <div class="mt-8 flex gap-5">
+          {
+            linkSource && linkSource !== "/" ? (
+              <a
+                href={linkSource}
+                target="_blank"
+                class="group inline-flex items-center gap-1.5 text-sm text-neutral transition-colors hover:text-white"
+              >
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/>
+                </svg>
+                {labels.source}
+              </a>
+            ) : (
+              <span class="inline-flex items-center gap-1.5 text-sm text-neutral/40 cursor-not-allowed">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/>
+                </svg>
+                {labels.source}
+              </span>
+            )
+          }
+
+          {
+            linkPreview && linkPreview !== "/" ? (
+              <a
+                href={linkPreview}
+                target="_blank"
+                class="group inline-flex items-center gap-1.5 text-sm text-primary transition-all hover:text-white"
+              >
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>
+                  <polyline points="15 3 21 3 21 9"/>
+                  <line x1="10" y1="14" x2="21" y2="3"/>
+                </svg>
+                {labels.preview}
+              </a>
+            ) : (
+              <span class="inline-flex items-center gap-1.5 text-sm text-neutral/40 cursor-not-allowed">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>
+                  <polyline points="15 3 21 3 21 9"/>
+                  <line x1="10" y1="14" x2="21" y2="3"/>
+                </svg>
+                {labels.preview}
+              </span>
+            )
+          }
+        </div>
       </div>
-    </div>
-    <div class="flex items-end justify-end overflow-hidden">
-      <Image
-        class="h-full w-[95%] rounded-ss-xl rounded-ee-2xl object-none object-left-top sm:h-[85%] sm:w-full"
-        src={image}
-        alt={name}
-        width="736"
-        height="483"
-      />
+
+      <!-- Image -->
+      <div class="relative overflow-hidden">
+        <div class="absolute inset-0 bg-gradient-to-l from-transparent to-[#0d1620]/20 z-10"></div>
+        <Image
+          class="h-56 w-full object-cover object-left-top transition-transform duration-700 hover:scale-105 md:h-full"
+          src={image}
+          alt={name}
+          width="736"
+          height="483"
+        />
+      </div>
     </div>
   </div>
 </div>
+
+<script>
+  const observer = new IntersectionObserver(
+    (entries) => entries.forEach(e => e.isIntersecting && e.target.classList.add("visible")),
+    { threshold: 0.08 }
+  );
+  document.querySelectorAll(".animate-on-scroll").forEach(el => observer.observe(el));
+</script>

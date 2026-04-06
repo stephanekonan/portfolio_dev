@@ -3,11 +3,15 @@
 @theme {
   --font-sans: "Be Vietnam Pro", system-ui, sans-serif;
   --font-serif: "Gabarito Variable", ui-serif, serif;
+  --font-mono: "JetBrains Mono", "Fira Code", monospace;
 
-  --color-primary: #ee730b;
-  --color-neutral: #94a3b8;
+  --color-primary: #f07621;
+  --color-primary-dim: #c45e12;
+  --color-neutral: #7a8fa6;
   --color-white: #e2e8f0;
-  --color-black: #0e141b;
+  --color-black: #08101a;
+  --color-surface: #0d1620;
+  --color-border: #1e2d3d;
 
   --text-xs: 0.875rem;
   --text-xs--line-height: 1.125rem;
@@ -36,18 +40,68 @@
   --text-9xl: 6rem;
   --text-9xl--line-height: 6.625rem;
 
-  --tracking-tightest: -2px;
-  --tracking-tighter: -1px;
-  --tracking-tight: -0.25px;
+  --tracking-tightest: -3px;
+  --tracking-tighter: -1.5px;
+  --tracking-tight: -0.5px;
 
   --animate-slide-in: slide-in 600ms ease both;
 
   @keyframes slide-in {
-    10% {
-      transform: translateY(-100%);
-    }
-    100% {
-      transform: translateY(0);
-    }
+    0% { transform: translateY(-100%); opacity: 0; }
+    100% { transform: translateY(0); opacity: 1; }
   }
 }
+
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 80px;
+}
+
+::selection {
+  background: rgba(240, 118, 33, 0.25);
+  color: #f07621;
+}
+
+::-webkit-scrollbar { width: 5px; }
+::-webkit-scrollbar-track { background: #08101a; }
+::-webkit-scrollbar-thumb { background: #1e2d3d; border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: #f07621; }
+
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(240,118,33,0.022) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(240,118,33,0.022) 1px, transparent 1px);
+  background-size: 48px 48px;
+  pointer-events: none;
+  z-index: 0;
+}
+
+body::after {
+  content: '';
+  position: fixed;
+  top: -200px;
+  right: -200px;
+  width: 600px;
+  height: 600px;
+  background: radial-gradient(circle, rgba(240,118,33,0.055) 0%, transparent 70%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+main { position: relative; z-index: 1; }
+
+.animate-on-scroll {
+  opacity: 0;
+  transform: translateY(28px);
+  transition: opacity 0.65s ease, transform 0.65s ease;
+}
+.animate-on-scroll.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+.delay-1 { transition-delay: 0.1s; }
+.delay-2 { transition-delay: 0.2s; }
+.delay-3 { transition-delay: 0.3s; }

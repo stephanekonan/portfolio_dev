@@ -7,28 +7,90 @@ const { lang } = Astro.props;
 type Props = HeroProps;
 ---
 
-<section class="py-24 md:py-32" id="#hero">
+<section class="relative py-28 md:py-36" id="hero">
+
+  <!-- Availability badge -->
+  <div class="mb-10 flex items-center gap-3 animate-on-scroll">
+    <span class="relative flex h-2.5 w-2.5">
+      <span class="absolute inline-flex h-full w-full animate-ping rounded-full bg-primary opacity-60"></span>
+      <span class="relative inline-flex h-2.5 w-2.5 rounded-full bg-primary"></span>
+    </span>
+    <span class="font-mono text-xs tracking-widest text-neutral uppercase">
+      {lang === "fr" ? "Disponible pour des projets" : "Available for projects"}
+    </span>
+  </div>
+
+  <!-- Name -->
   <h1
-    class="mb-1.5 font-serif text-7xl font-bold tracking-tightest text-white sm:text-8xl md:mb-0 md:text-9xl"
+    class="mb-2 font-serif text-7xl font-bold tracking-tightest text-white sm:text-8xl md:text-9xl animate-on-scroll delay-1"
   >
     {t(lang).hero.name}
   </h1>
-  <p
-    class="mb-9 font-serif text-4xl leading-[46px] font-bold tracking-tighter text-primary sm:text-5xl md:text-6xl"
-  >
-    {t(lang).hero.specialty}
-  </p>
-  <p class="mb-16 text-base font-normal text-neutral md:text-lg">
+
+  <!-- Specialty with underline accent -->
+  <div class="relative mb-10 inline-block animate-on-scroll delay-2">
+    <p
+      class="font-serif text-4xl font-bold tracking-tighter text-primary sm:text-5xl md:text-6xl"
+    >
+      {t(lang).hero.specialty}
+    </p>
+    <span class="absolute -bottom-1 left-0 h-px w-full bg-gradient-to-r from-primary to-transparent"></span>
+  </div>
+
+  <!-- Summary -->
+  <p class="mb-14 max-w-xl text-base font-normal leading-relaxed text-neutral md:text-lg animate-on-scroll delay-3">
     {t(lang).hero.summary}
   </p>
 
-  <a
-    class="inline-flex items-center gap-2 rounded-full bg-primary px-8 py-5 text-sm leading-5 font-medium text-[#fff]"
-    href={`https://wa.me/2250769883730`}
-    target="_blank"
-    rel="noopener noreferrer"
-  >
-    <IoLogoWhatsapp size={20} />
-    WhatsApp
-  </a>
+  <!-- CTA -->
+  <div class="flex flex-wrap items-center gap-4 animate-on-scroll delay-3">
+    <a
+      class="group inline-flex items-center gap-2.5 rounded-full bg-primary px-8 py-4 text-sm font-semibold text-white transition-all duration-300 hover:bg-primary-dim hover:shadow-[0_0_32px_rgba(240,118,33,0.35)]"
+      href={`https://wa.me/2250769883730`}
+      target="_blank"
+      rel="noopener noreferrer"
+    >
+      <IoLogoWhatsapp size={18} />
+      WhatsApp
+    </a>
+    <a
+      href="#projects"
+      class="inline-flex items-center gap-2 text-sm text-neutral transition-colors duration-200 hover:text-white"
+    >
+      {lang === "fr" ? "Voir mes projets" : "View my projects"}
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M5 12h14M12 5l7 7-7 7"/>
+      </svg>
+    </a>
+  </div>
+
+  <!-- Stats row -->
+  <div class="mt-20 grid grid-cols-3 gap-px overflow-hidden rounded-2xl border border-[#1e2d3d] animate-on-scroll delay-3">
+    <div class="bg-[#0d1620] px-6 py-5">
+      <p class="font-serif text-2xl font-bold text-white">4+</p>
+      <p class="mt-0.5 text-xs text-neutral">{lang === "fr" ? "Années d'expérience" : "Years experience"}</p>
+    </div>
+    <div class="bg-[#0d1620] px-6 py-5">
+      <p class="font-serif text-2xl font-bold text-primary">8+</p>
+      <p class="mt-0.5 text-xs text-neutral">{lang === "fr" ? "Projets livrés" : "Projects delivered"}</p>
+    </div>
+    <div class="bg-[#0d1620] px-6 py-5">
+      <p class="font-serif text-2xl font-bold text-white">3</p>
+      <p class="mt-0.5 text-xs text-neutral">{lang === "fr" ? "Stacks maîtrisées" : "Stacks mastered"}</p>
+    </div>
+  </div>
 </section>
+
+<script>
+  const observer = new IntersectionObserver(
+    (entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          e.target.classList.add("visible");
+        }
+      });
+    },
+    { threshold: 0.15 }
+  );
+  document.querySelectorAll(".animate-on-scroll").forEach(el => observer.observe(el));
+</script>

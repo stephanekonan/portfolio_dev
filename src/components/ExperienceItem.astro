@@ -7,25 +7,44 @@ interface Props extends ExperienceProps {
 const { company, position, startDate, summary } = Astro.props;
 ---
 
-<div class="mb-10">
-  <h3 class="mb-1.5 font-serif text-2xl font-semibold text-white">
-    {company}
-  </h3>
-  <div class="flex flex-col items-start pb-5">
-    <h4 class="mb-0.5 font-serif text-2xl font-medium text-primary">
-      {position}
-    </h4>
-    <span class="pb-[2px] text-sm text-white/70">
-      {startDate}
-    </span>
+<div class="group relative mb-8 animate-on-scroll">
+  <!-- Left border accent -->
+  <div class="absolute -left-5 top-0 h-full w-px bg-[#1e2d3d] transition-colors duration-300 group-hover:bg-primary"></div>
+
+  <div class="rounded-xl border border-[#1e2d3d] bg-[#0d1620] p-6 transition-all duration-300 hover:border-primary/30 hover:shadow-[0_0_40px_rgba(240,118,33,0.05)]">
+    <!-- Header -->
+    <div class="mb-5 flex flex-col gap-1 sm:flex-row sm:items-start sm:justify-between">
+      <div>
+        <h3 class="font-serif text-xl font-semibold text-white">
+          {company}
+        </h3>
+        <h4 class="font-serif text-lg font-medium text-primary">
+          {position}
+        </h4>
+      </div>
+      <span class="mt-1 shrink-0 font-mono text-xs text-neutral sm:mt-0">
+        {startDate}
+      </span>
+    </div>
+
+    <!-- Summary -->
+    <ul class="space-y-2.5">
+      {
+        summary.map((log) => (
+          <li class="flex items-start gap-3 text-sm leading-relaxed text-neutral">
+            <span class="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-primary"></span>
+            {log}
+          </li>
+        ))
+      }
+    </ul>
   </div>
-  <ul class="list-none">
-    {
-      summary.map((log) => (
-        <li class="relative mb-3 pl-8 text-base text-neutral before:absolute before:top-1 before:left-0 before:content-[url(/check.svg)]">
-          {log}
-        </li>
-      ))
-    }
-  </ul>
 </div>
+
+<script>
+  const observer = new IntersectionObserver(
+    (entries) => entries.forEach(e => e.isIntersecting && e.target.classList.add("visible")),
+    { threshold: 0.1 }
+  );
+  document.querySelectorAll(".animate-on-scroll").forEach(el => observer.observe(el));
+</script>

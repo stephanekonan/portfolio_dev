@@ -1,5 +1,4 @@
 ---
-// Contact component
 import { t } from "../locales";
 
 interface Props {
@@ -10,137 +9,94 @@ const { lang } = Astro.props;
 const contact = t(lang).contact;
 ---
 
-<section class="py-16">
-  <div class="mx-auto max-w-xl px-4">
-    <div class="mb-12 text-center">
-      <h2 class="mb-4 text-4xl font-bold text-white">{contact.title}</h2>
-      <p class="text-lg text-white">
-        {contact.subtitle}
-      </p>
+<section class="relative border-t border-[#1e2d3d] py-24">
+  <div class="mx-auto max-w-xl px-5">
+
+    <!-- Header -->
+    <div class="mb-12 animate-on-scroll">
+      <div class="mb-4 flex items-center gap-4">
+        <span class="h-px w-8 bg-primary"></span>
+        <h2 class="font-serif text-4xl font-bold tracking-tighter text-white md:text-5xl">
+          {contact.title}
+        </h2>
+      </div>
+      <p class="mt-2 text-sm leading-relaxed text-neutral">{contact.subtitle}</p>
     </div>
 
-    <form id="contact-form" class="space-y-6" action="/api/contact" method="POST">
-      <div class="grid grid-cols-1 gap-6 md:grid-cols-2">
-        <div>
-          <label for="name" class="mb-2 block text-sm font-medium text-white"
-            >{contact.name}
-            <span class="text-red-500">{contact.required}</span></label
-          >
+    <form id="contact-form" class="space-y-5 animate-on-scroll delay-1" action="/api/contact" method="POST">
+      <div class="grid grid-cols-1 gap-5 md:grid-cols-2">
+        <div class="flex flex-col gap-2">
+          <label for="name" class="text-xs font-medium text-neutral">
+            {contact.name} <span class="text-primary">{contact.required}</span>
+          </label>
           <input
             type="text"
             id="name"
             name="name"
             required
-            class="w-full rounded-lg border border-gray-300 px-3 py-2 text-white focus:border-transparent focus:ring-2 focus:ring-orange-500"
+            class="rounded-xl border border-[#1e2d3d] bg-[#0d1620] px-4 py-3 text-sm text-white placeholder-neutral/40 transition-colors focus:border-primary/50 focus:outline-none"
           />
         </div>
-        <div>
-          <label for="email" class="mb-2 block text-sm font-medium text-white"
-            >{contact.email}
-            <span class="text-red-500">{contact.required}</span></label
-          >
+        <div class="flex flex-col gap-2">
+          <label for="email" class="text-xs font-medium text-neutral">
+            {contact.email} <span class="text-primary">{contact.required}</span>
+          </label>
           <input
             type="email"
             id="email"
             name="email"
             required
-            class="w-full rounded-lg border border-gray-300 px-3 py-2 text-white focus:border-transparent focus:ring-2 focus:ring-orange-500"
+            class="rounded-xl border border-[#1e2d3d] bg-[#0d1620] px-4 py-3 text-sm text-white placeholder-neutral/40 transition-colors focus:border-primary/50 focus:outline-none"
           />
         </div>
       </div>
 
-      <div>
-        <label for="subject" class="mb-2 block text-sm font-medium text-white"
-          >{contact.subject}
-          <span class="text-red-500">{contact.required}</span></label
-        >
+      <div class="flex flex-col gap-2">
+        <label for="subject" class="text-xs font-medium text-neutral">
+          {contact.subject} <span class="text-primary">{contact.required}</span>
+        </label>
         <input
           type="text"
           id="subject"
           name="subject"
           required
-          class="w-full rounded-lg border border-gray-300 px-3 py-2 text-white focus:border-transparent focus:ring-2 focus:ring-orange-500"
+          class="rounded-xl border border-[#1e2d3d] bg-[#0d1620] px-4 py-3 text-sm text-white placeholder-neutral/40 transition-colors focus:border-primary/50 focus:outline-none"
         />
       </div>
 
-      <div>
-        <label for="message" class="mb-2 block text-sm font-medium text-white"
-          >{contact.message}
-          <span class="text-red-500">{contact.required}</span></label
-        >
+      <div class="flex flex-col gap-2">
+        <label for="message" class="text-xs font-medium text-neutral">
+          {contact.message} <span class="text-primary">{contact.required}</span>
+        </label>
         <textarea
           id="message"
           name="message"
           rows="5"
           required
-          class="w-full resize-none rounded-lg border border-gray-300 px-3 py-2 text-white focus:border-transparent focus:ring-2 focus:ring-orange-500"
+          class="resize-none rounded-xl border border-[#1e2d3d] bg-[#0d1620] px-4 py-3 text-sm text-white placeholder-neutral/40 transition-colors focus:border-primary/50 focus:outline-none"
         ></textarea>
       </div>
 
-      <div class="text-center">
-        <button
-          type="submit"
-          id="submit-btn"
-          class="mx-auto flex cursor-pointer items-center justify-center rounded-lg bg-orange-600 px-8 py-3 font-semibold text-white transition-colors duration-200 hover:bg-orange-700"
-        >
-          <span id="btn-text">{contact.submit}</span>
-          <div id="loading-spinner" class="ml-2 hidden">
-            <div
-              class="h-5 w-5 animate-spin rounded-full border-b-2 border-white"
-            >
-            </div>
-          </div>
-        </button>
-      </div>
+      <button
+        type="submit"
+        id="submit-btn"
+        class="group flex w-full cursor-pointer items-center justify-center gap-2.5 rounded-xl bg-primary px-8 py-4 text-sm font-semibold text-white transition-all duration-300 hover:bg-primary-dim hover:shadow-[0_0_32px_rgba(240,118,33,0.3)] disabled:opacity-60"
+      >
+        <span id="btn-text">{contact.submit}</span>
+        <div id="loading-spinner" class="hidden">
+          <div class="h-4 w-4 animate-spin rounded-full border-2 border-white/30 border-t-white"></div>
+        </div>
+      </button>
     </form>
 
-    <div
-      id="success-message"
-      class="relative mt-6 hidden rounded-lg border border-green-400 bg-green-100 p-4 text-green-700"
-    >
-      <button
-        id="close-success"
-        class="absolute top-2 right-2 text-green-600 transition-colors duration-200 hover:text-green-800"
-        aria-label={contact.close}
-      >
-        <svg
-          class="h-5 w-5"
-          fill="none"
-          stroke="currentColor"
-          viewBox="0 0 24 24"
-        >
-          <path
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            stroke-width="2"
-            d="M6 18L18 6M6 6l12 12"></path>
-        </svg>
-      </button>
-      <p class="pr-8">{contact.success}</p>
+    <!-- Feedback messages -->
+    <div id="success-message" class="relative mt-5 hidden rounded-xl border border-green-500/20 bg-green-500/10 p-4 text-sm text-green-400">
+      <button id="close-success" class="absolute top-3 right-3 text-green-400/60 hover:text-green-400">✕</button>
+      <p class="pr-6">{contact.success}</p>
     </div>
-    <div
-      id="error-message"
-      class="relative mt-6 hidden rounded-lg border border-red-400 bg-red-100 p-4 text-red-700"
-    >
-      <button
-        id="close-error"
-        class="absolute top-2 right-2 text-red-600 transition-colors duration-200 hover:text-red-800"
-        aria-label={contact.close}
-      >
-        <svg
-          class="h-5 w-5"
-          fill="none"
-          stroke="currentColor"
-          viewBox="0 0 24 24"
-        >
-          <path
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            stroke-width="2"
-            d="M6 18L6 6M6 6l12 12"></path>
-        </svg>
-      </button>
-      <p class="pr-8">{contact.error}</p>
+    <div id="error-message" class="relative mt-5 hidden rounded-xl border border-red-500/20 bg-red-500/10 p-4 text-sm text-red-400">
+      <button id="close-error" class="absolute top-3 right-3 text-red-400/60 hover:text-red-400">✕</button>
+      <p class="pr-6">{contact.error}</p>
     </div>
   </div>
 </section>
@@ -156,67 +112,39 @@ const contact = t(lang).contact;
     const closeSuccessBtn = document.getElementById("close-success");
     const closeErrorBtn = document.getElementById("close-error");
 
-    if (
-      !form ||
-      !submitBtn ||
-      !btnText ||
-      !loadingSpinner ||
-      !successMessage ||
-      !errorMessage ||
-      !closeSuccessBtn ||
-      !closeErrorBtn
-    ) {
-      console.error("Some form elements not found");
-      return;
-    }
+    if (!form) return;
 
-    function hideMessages() {
-      successMessage.classList.add("hidden");
-      errorMessage.classList.add("hidden");
-    }
+    closeSuccessBtn?.addEventListener("click", () => successMessage?.classList.add("hidden"));
+    closeErrorBtn?.addEventListener("click", () => errorMessage?.classList.add("hidden"));
 
-    closeSuccessBtn.addEventListener("click", function () {
-      successMessage.classList.add("hidden");
-    });
-
-    closeErrorBtn.addEventListener("click", function () {
-      errorMessage.classList.add("hidden");
-    });
-
-    function autoHideMessage(messageElement) {
-      setTimeout(() => {
-        if (!messageElement.classList.contains("hidden")) {
-          messageElement.classList.add("hidden");
-        }
-      }, 8000);
-    }
-
-    form.addEventListener("submit", function (e) {
+    form.addEventListener("submit", (e) => {
       e.preventDefault();
-
-      submitBtn.disabled = true;
-      btnText.textContent = contact.sending;
-      loadingSpinner.classList.remove("hidden");
-
-      hideMessages();
+      if (submitBtn) submitBtn.disabled = true;
+      if (btnText) btnText.textContent = contact.sending;
+      loadingSpinner?.classList.remove("hidden");
+      successMessage?.classList.add("hidden");
+      errorMessage?.classList.add("hidden");
 
       setTimeout(() => {
-        successMessage.classList.remove("hidden");
-        autoHideMessage(successMessage);
-
+        successMessage?.classList.remove("hidden");
         form.reset();
-
-        submitBtn.disabled = false;
-        btnText.textContent = contact.submit;
-        loadingSpinner.classList.add("hidden");
+        if (submitBtn) submitBtn.disabled = false;
+        if (btnText) btnText.textContent = contact.submit;
+        loadingSpinner?.classList.add("hidden");
+        setTimeout(() => successMessage?.classList.add("hidden"), 8000);
       }, 1000);
     });
   }
 
-  // Initialize form when DOM is loaded
   if (document.readyState === "loading") {
     document.addEventListener("DOMContentLoaded", setupContactForm);
   } else {
     setupContactForm();
   }
+
+  const observer = new IntersectionObserver(
+    (entries) => entries.forEach(e => e.isIntersecting && e.target.classList.add("visible")),
+    { threshold: 0.1 }
+  );
+  document.querySelectorAll(".animate-on-scroll").forEach(el => observer.observe(el));
 </script>
