@@ -67,16 +67,16 @@ type Props = HeroProps;
   <!-- Stats row -->
   <div class="mt-20 grid grid-cols-3 gap-px overflow-hidden rounded-2xl border border-[#1e2d3d] animate-on-scroll delay-3">
     <div class="bg-[#0d1620] px-6 py-5">
-      <p class="font-serif text-2xl font-bold text-white">4+</p>
+      <p class="font-serif text-2xl font-bold text-primary">10+</p>
+      <p class="mt-0.5 text-xs text-neutral">{lang === "fr" ? "Technologies maîtrisées" : "Technologies mastered"}</p>
+    </div>
+    <div class="bg-[#0d1620] px-6 py-5">
+      <p class="font-serif text-2xl font-bold text-white">6+</p>
       <p class="mt-0.5 text-xs text-neutral">{lang === "fr" ? "Années d'expérience" : "Years experience"}</p>
     </div>
     <div class="bg-[#0d1620] px-6 py-5">
-      <p class="font-serif text-2xl font-bold text-primary">8+</p>
-      <p class="mt-0.5 text-xs text-neutral">{lang === "fr" ? "Projets livrés" : "Projects delivered"}</p>
-    </div>
-    <div class="bg-[#0d1620] px-6 py-5">
-      <p class="font-serif text-2xl font-bold text-white">3</p>
-      <p class="mt-0.5 text-xs text-neutral">{lang === "fr" ? "Stacks maîtrisées" : "Stacks mastered"}</p>
+      <p class="font-serif text-2xl font-bold text-white">Web · Mobile · Backend</p>
+      <p class="mt-0.5 text-xs text-neutral">{lang === "fr" ? "Domaines couverts" : "Domains covered"}</p>
     </div>
   </div>
 </section>
