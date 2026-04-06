@@ -11,7 +11,7 @@
   "hero": {
     "name": "Stéphane Konan",
     "specialty": "Développeur Logiciel",
-    "summary": "Développeur fullstack orienté architecture propre. Je conçois des applications performantes et scalables avec Laravel, Go et Flutter, en mettant l’accent sur des systèmes métiers réels (livraison, e-commerce, gestion,payments, multi-acteurs).",
+    "summary": "Développeur fullstack orienté architecture et scalabilité, spécialisé dans la conception de systèmes métiers complexes. J'accompagne la création et l'évolution d'applications performantes avec Laravel, Go et Flutter, en adressant des problématiques concrètes : livraison multi-acteurs, e-commerce, paiements et gestion de stock.",
     "email": "stephanekonan.dev@gmail.com"
   },
   "experience": {

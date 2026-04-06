@@ -11,7 +11,7 @@
   "hero": {
     "name": "Stéphane Konan",
     "specialty": "Software Developer",
-    "summary": "Fullstack developer focused on clean architecture. I build high-performance, scalable applications using Laravel, Go, and Flutter, with a strong emphasis on real-world business systems (delivery, e-commerce, management, payments, multi-actor platforms).",
+    "summary": "Fullstack developer focused on architecture and scalability, specialized in designing complex business systems. I support the development and evolution of high-performance applications using Laravel, Go, and Flutter, addressing real-world challenges such as multi-actor delivery, e-commerce, payments, and inventory management.",
     "email": "stephanekonan.dev@gmail.com"
   },
   "experience": {
