@@ -151,11 +151,21 @@ export const SITE_CONTENT: SiteContent = {
   ],
   projects: [
     {
+      name: "Valorie",
+      summary: "Maison française dédiée à la mode, à la beauté et au raffinement du quotidien",
+      linkPreview: "https://valorie.vercel.app/",
+      linkSource: "/",
+      image: "/valorie.png",
+      type: "web",
+      lang: "fr"
+    },
+    {
       name: "LPA - League of African Peoples",
       summary: "Website of a Christian organization/African evangelical mission, focused on faith, evangelism, and social transformation through Christian values",
       linkPreview: "https://www.lpa.ci/",
       linkSource: "/",
       image: "/lpa.png",
+      type: "web",
       lang: "fr"
     },
     {
@@ -164,6 +174,7 @@ export const SITE_CONTENT: SiteContent = {
       linkPreview: "https://www.wadibu.ci",
       linkSource: "/",
       image: "/wadibu.png",
+      type: "web",
       lang: "fr"
     },
     {
@@ -172,6 +183,7 @@ export const SITE_CONTENT: SiteContent = {
       linkPreview: "https://apkpure.com/fr/wadibu/com.wadibu.app",
       linkSource: "/",
       image: "/app_wadibu.png",
+      type: "mobile",
       lang: "fr"
     },
     {
@@ -180,6 +192,7 @@ export const SITE_CONTENT: SiteContent = {
       linkPreview: "https://apkpure.com/p/com.smart_spending",
       linkSource: "/",
       image: "/smart_spending.png",
+      type: "mobile",
       lang: "fr"
     },
     {
@@ -188,6 +201,7 @@ export const SITE_CONTENT: SiteContent = {
       linkPreview: "/",
       linkSource: "/",
       image: "/moto_track.png",
+      type: "mobile",
       lang: "fr"
     },
     {
@@ -196,6 +210,7 @@ export const SITE_CONTENT: SiteContent = {
       linkPreview: "https://apkpure.com/aboutik/com.example.ashop",
       linkSource: "/",
       image: "/aboutik.jpg",
+      type: "mobile",
       lang: "fr"
     },
     {
@@ -204,6 +219,7 @@ export const SITE_CONTENT: SiteContent = {
       linkPreview: "/",
       linkSource: "/",
       image: "/djaxa.png",
+      type: "mobile",
       lang: "fr"
     },
     {
@@ -212,6 +228,7 @@ export const SITE_CONTENT: SiteContent = {
       linkPreview: "https://weni.ci",
       linkSource: "/",
       image: "/weni.png",
+      type: "web",
       lang: "fr"
     },
   ],
