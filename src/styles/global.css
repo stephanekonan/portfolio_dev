@@ -1,107 +1,301 @@
 @import "tailwindcss";
 
+/*
+ * Un visualiseur de traces imprimé sur papier minéral. Le papier est vert
+ * gris (pas crème), l'encre est le même noir que le fond du thème sombre
+ * (#0f1012), et le safran ne sert qu'à signaler ce qui est vivant : réseau,
+ * span actif, file d'envoi. Chaque couche technique garde sa teinte partout.
+ */
+/* `inline` : les variables de police sont posées sur <html> par next/font,
+   Tailwind doit les référencer telles quelles au lieu de les figer. */
+@theme inline {
+  --font-sans: var(--font-schibsted), system-ui, sans-serif;
+  --font-display: var(--font-anybody), var(--font-schibsted), sans-serif;
+}
+
 @theme {
-  --font-sans: "Be Vietnam Pro", system-ui, sans-serif;
-  --font-serif: "Gabarito Variable", ui-serif, serif;
-  --font-mono: "JetBrains Mono", "Fira Code", monospace;
+  --font-mono: ui-monospace, "SF Mono", "Cascadia Code", Menlo, monospace;
 
-  --color-primary: #f07621;
-  --color-primary-dim: #c45e12;
-  --color-neutral: #7a8fa6;
-  --color-white: #e2e8f0;
-  --color-black: #08101a;
-  --color-surface: #0d1620;
-  --color-border: #1e2d3d;
+  --color-paper: var(--paper);
+  --color-raised: var(--raised);
+  --color-ink: var(--ink);
+  --color-ink-2: var(--ink-2);
+  --color-rule: var(--rule);
+  --color-signal: var(--signal);
+  --color-web: var(--layer-web);
+  --color-mobile: var(--layer-mobile);
+  --color-api: var(--layer-api);
+  --color-infra: var(--layer-infra);
+  --color-data: var(--layer-data);
+  --color-career: var(--layer-career);
 
-  --text-xs: 0.875rem;
-  --text-xs--line-height: 1.125rem;
-  --text-sm: 1rem;
-  --text-sm--line-height: 1.25rem;
-  --text-base: 1.125rem;
-  --text-base--line-height: 1.625rem;
-  --text-lg: 1.25rem;
-  --text-lg--line-height: 1.75rem;
+  /* Échelle classique de Bringhurst, en rem sur une base de 16 px. */
+  --text-xs: 0.8125rem;
+  --text-xs--line-height: 1.35;
+  --text-sm: 0.9375rem;
+  --text-sm--line-height: 1.5;
+  --text-base: 1.0625rem;
+  --text-base--line-height: 1.6;
+  --text-lg: 1.3125rem;
+  --text-lg--line-height: 1.45;
   --text-xl: 1.5rem;
-  --text-xl--line-height: 1.813rem;
-  --text-2xl: 1.75rem;
-  --text-2xl--line-height: 2.125rem;
-  --text-3xl: 2rem;
-  --text-3xl--line-height: 2.375rem;
-  --text-4xl: 2.25rem;
-  --text-4xl--line-height: 2.688rem;
-  --text-5xl: 2.5rem;
-  --text-5xl--line-height: 3rem;
-  --text-6xl: 3rem;
-  --text-6xl--line-height: 3.625rem;
-  --text-7xl: 3.75rem;
-  --text-7xl--line-height: 1;
-  --text-8xl: 4.5rem;
-  --text-8xl--line-height: 4.875rem;
-  --text-9xl: 6rem;
-  --text-9xl--line-height: 6.625rem;
+  --text-xl--line-height: 1.3;
+  --text-2xl: 2.25rem;
+  --text-2xl--line-height: 1.1;
+  --text-3xl: 3rem;
+  --text-3xl--line-height: 1.02;
 
-  --tracking-tightest: -3px;
-  --tracking-tighter: -1.5px;
-  --tracking-tight: -0.5px;
+  --ease-out-quint: cubic-bezier(0.22, 1, 0.36, 1);
+}
 
-  --animate-slide-in: slide-in 600ms ease both;
+:root {
+  color-scheme: light;
+  --paper: #eceee8;
+  --raised: #e2e6df;
+  --ink: #0f1012;
+  --ink-2: #4a5a53;
+  --rule: #c6cdc4;
+  --signal: #e0a019;
+  --layer-web: #2f6aa8;
+  --layer-mobile: #7550ad;
+  --layer-api: #1d7358;
+  --layer-infra: #a8691a;
+  --layer-data: #5b6b64;
+  --layer-career: #0f1012;
+}
 
-  @keyframes slide-in {
-    0% { transform: translateY(-100%); opacity: 0; }
-    100% { transform: translateY(0); opacity: 1; }
+/*
+ * Sombre : suit le système tant que le visiteur n'a rien choisi, ou
+ * s'impose quand il a choisi « sombre ». `data-theme` est posé sur <html>
+ * par le script de tête de RootDocument avant le premier rendu : aucun flash
+ * de la mauvaise teinte. Les deux blocs portent les mêmes valeurs.
+ */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    color-scheme: dark;
+    --paper: #0f1012;
+    --raised: #18191c;
+    --ink: #e6e7e9;
+    --ink-2: #9b9ea4;
+    --rule: #2a2c30;
+    --signal: #f0b43a;
+    --layer-web: #74a6dc;
+    --layer-mobile: #b195e0;
+    --layer-api: #5fbf9b;
+    --layer-infra: #e0a45a;
+    --layer-data: #93a39b;
+    --layer-career: #e6e7e9;
+  }
+}
+
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --paper: #0f1012;
+  --raised: #18191c;
+  --ink: #e6e7e9;
+  --ink-2: #9b9ea4;
+  --rule: #2a2c30;
+  --signal: #f0b43a;
+  --layer-web: #74a6dc;
+  --layer-mobile: #b195e0;
+  --layer-api: #5fbf9b;
+  --layer-infra: #e0a45a;
+  --layer-data: #93a39b;
+  --layer-career: #e6e7e9;
+}
+
+/* Le changement de thème passe par une View Transition : la nouvelle teinte
+   descend sur la page comme une feuille réimprimée, du haut vers le bas. */
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation: none;
+  mix-blend-mode: normal;
+}
+::view-transition-new(root) {
+  animation: reprint 560ms var(--ease-out-quint) both;
+}
+@keyframes reprint {
+  from {
+    clip-path: inset(0 0 100% 0);
+  }
+  to {
+    clip-path: inset(0 0 0 0);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-new(root) {
+    animation: none;
   }
 }
 
 html {
-  scroll-behavior: smooth;
-  scroll-padding-top: 80px;
+  background: var(--paper);
+  color: var(--ink);
+  scroll-padding-top: 5rem;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+body {
+  background: var(--paper);
+  font-family: var(--font-schibsted), system-ui, sans-serif;
+  font-size: var(--text-base);
+  line-height: 1.6;
+  font-variant-numeric: lining-nums;
 }
 
 ::selection {
-  background: rgba(240, 118, 33, 0.25);
-  color: #f07621;
+  background: var(--signal);
+  color: #0f1012;
 }
 
-::-webkit-scrollbar { width: 5px; }
-::-webkit-scrollbar-track { background: #08101a; }
-::-webkit-scrollbar-thumb { background: #1e2d3d; border-radius: 3px; }
-::-webkit-scrollbar-thumb:hover { background: #f07621; }
-
-body::before {
-  content: '';
-  position: fixed;
-  inset: 0;
-  background-image:
-    linear-gradient(rgba(240,118,33,0.022) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(240,118,33,0.022) 1px, transparent 1px);
-  background-size: 48px 48px;
-  pointer-events: none;
-  z-index: 0;
+:focus-visible {
+  outline: 2px solid var(--ink);
+  outline-offset: 3px;
 }
 
-body::after {
-  content: '';
-  position: fixed;
-  top: -200px;
-  right: -200px;
-  width: 600px;
-  height: 600px;
-  background: radial-gradient(circle, rgba(240,118,33,0.055) 0%, transparent 70%);
-  pointer-events: none;
-  z-index: 0;
+a {
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.2em;
 }
 
-main { position: relative; z-index: 1; }
+/* Le site quand le réseau tombe : le papier pâlit d'un cran, comme une
+   impression sur un fond moins encré, sans rien rendre illisible. */
+html[data-network="offline"] body {
+  filter: saturate(0.55);
+}
 
-.animate-on-scroll {
-  opacity: 0;
-  transform: translateY(28px);
-  transition: opacity 0.65s ease, transform 0.65s ease;
+/* Le nom se déplie à l'ouverture de la page : la largeur variable d'Anybody
+   passe de serrée à étendue. C'est le seul mouvement non sollicité du site. */
+@keyframes unfold {
+  from {
+    font-stretch: 50%;
+    letter-spacing: -0.02em;
+    opacity: 0.001;
+  }
+  30% {
+    opacity: 1;
+  }
+  to {
+    font-stretch: 150%;
+    letter-spacing: -0.035em;
+  }
 }
-.animate-on-scroll.visible {
-  opacity: 1;
-  transform: translateY(0);
+
+.name-unfold {
+  font-family: var(--font-anybody), sans-serif;
+  font-stretch: 150%;
+  letter-spacing: -0.035em;
+  animation: unfold 1.4s var(--ease-out-quint) both;
 }
-.delay-1 { transition-delay: 0.1s; }
-.delay-2 { transition-delay: 0.2s; }
-.delay-3 { transition-delay: 0.3s; }
+
+.name-unfold.second {
+  animation-delay: 120ms;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .name-unfold {
+    animation: none;
+  }
+  html[data-network="offline"] body {
+    filter: none;
+  }
+}
+
+/* Hachures du temps passé sans réseau, dans les traces. */
+.hatch {
+  background-image: repeating-linear-gradient(
+    -45deg,
+    color-mix(in oklab, var(--signal) 55%, transparent) 0 2px,
+    transparent 2px 7px
+  );
+}
+
+/* Typographie des articles du blog. */
+.prose-article {
+  overflow-wrap: break-word;
+  font-size: 1.125rem;
+  line-height: 1.7;
+  max-width: 68ch;
+}
+.prose-article > * + * {
+  margin-top: 1.1em;
+}
+.prose-article h2 {
+  font-family: var(--font-anybody), sans-serif;
+  font-stretch: 125%;
+  font-weight: 700;
+  font-size: var(--text-xl);
+  line-height: 1.25;
+  margin-top: 2.2em;
+}
+.prose-article h3 {
+  font-weight: 650;
+  font-size: var(--text-lg);
+  margin-top: 1.8em;
+}
+.prose-article a {
+  text-decoration: underline;
+}
+.prose-article ul,
+.prose-article ol {
+  padding-left: 1.25em;
+}
+.prose-article ul {
+  list-style: square;
+}
+.prose-article ol {
+  list-style: decimal;
+}
+.prose-article li + li {
+  margin-top: 0.4em;
+}
+.prose-article li::marker {
+  color: var(--ink-2);
+}
+.prose-article code {
+  font-family: var(--font-mono);
+  font-size: 0.86em;
+  background: var(--raised);
+  padding: 0.1em 0.35em;
+  border-radius: 3px;
+}
+.prose-article pre {
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  line-height: 1.6;
+  background: var(--raised);
+  border-left: 3px solid var(--layer-api);
+  padding: 1rem 1.25rem;
+  overflow-x: auto;
+  tab-size: 4;
+}
+.prose-article pre code {
+  background: none;
+  padding: 0;
+}
+.prose-article blockquote {
+  border-left: 3px solid var(--signal);
+  padding-left: 1rem;
+  color: var(--ink-2);
+}
+/* Sur un écran étroit, le tableau défile dans son propre cadre au lieu
+   d'élargir toute la page. */
+.prose-article table {
+  display: block;
+  overflow-x: auto;
+  max-width: 100%;
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.95rem;
+}
+.prose-article th,
+.prose-article td {
+  text-align: left;
+  border-bottom: 1px solid var(--rule);
+  padding: 0.5rem 0.75rem 0.5rem 0;
+  vertical-align: top;
+}
+.prose-article th {
+  font-weight: 650;
+}
