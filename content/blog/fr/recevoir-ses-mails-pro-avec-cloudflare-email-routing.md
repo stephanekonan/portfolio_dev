@@ -2,7 +2,6 @@
 title: "Des adresses e-mail pro sans payer de boîte mail : Cloudflare Email Routing"
 description: "Votre domaine est sur Cloudflare mais vous n'avez pas acheté d'e-mails ? Recevez les messages envoyés à contact@ ou support@ directement dans votre Gmail, gratuitement, en quinze minutes."
 date: 2026-10-04
-lang: fr
 tags: [Cloudflare, E-mail, DNS, Entrepreneuriat]
 ---
 

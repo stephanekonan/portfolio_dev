@@ -635,7 +635,7 @@ export const TRACES: ProductTrace[] = [
           en: "Checkout, barcode scanning, stock and low-stock alerts, seller targets, PDF and Excel reports, push notifications.",
         },
         stack: ["Flutter", "GetX", "Dio", "ML Kit", "Firebase"],
-        href: "https://apkpure.com/aboutik/com.example.ashop",
+        href: "https://play.google.com/store/apps/details?id=com.ablele.aboutik",
       },
       {
         layer: "api",
@@ -652,6 +652,6 @@ export const TRACES: ProductTrace[] = [
       alt: { fr: "Tableau de bord de l'application Aboutik", en: "Aboutik app dashboard" },
       portrait: true,
     },
-    href: "https://apkpure.com/aboutik/com.example.ashop",
+    href: "https://play.google.com/store/apps/details?id=com.ablele.aboutik",
   },
 ];

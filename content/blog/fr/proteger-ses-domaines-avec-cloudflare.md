@@ -2,7 +2,6 @@
 title: "Protéger ses domaines avec Cloudflare : les réglages qui comptent vraiment"
 description: "Proxy, garde d'origine, TLS strict, WAF, limites de débit, mode Under Attack et e-mail : une méthode pour protéger une API et ses fronts sans casser l'app mobile ni les webhooks."
 date: 2026-10-04
-lang: fr
 tags: [Cloudflare, Sécurité, DNS, Go]
 ---
 

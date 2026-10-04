@@ -1,4 +1,5 @@
 import type { MetadataRoute } from "next";
+import { base, type Lang } from "@/i18n/ui";
 import { getPosts } from "@/lib/blog";
 import { SITE_URL } from "@/lib/metadata";
 
@@ -7,9 +8,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: `${SITE_URL}${p || "/"}`, alternates: { languages: { en: `${SITE_URL}/en${p}` } } },
     { url: `${SITE_URL}/en${p}` },
   ]);
-  const posts = getPosts().flatMap((post) => [
-    { url: `${SITE_URL}/blog/${post.slug}`, lastModified: post.date },
-    { url: `${SITE_URL}/en/blog/${post.slug}`, lastModified: post.date },
-  ]);
+  // Seules les versions réellement écrites : une page servie en repli
+  // pointe son canonique vers l'original.
+  const posts = getPosts("fr").flatMap((post) => {
+    const url = (lang: Lang) => `${SITE_URL}${base(lang)}/blog/${post.slug}`;
+    const languages = Object.fromEntries(post.langs.map((l) => [l, url(l)]));
+    return post.langs.map((lang) => ({ url: url(lang), lastModified: post.date, alternates: { languages } }));
+  });
   return [...pages, ...posts];
 }
