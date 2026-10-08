@@ -1,0 +1,421 @@
+/*
+ * Espace privé (carnet), chargé par src/app/(carnet)/layout.tsx seulement :
+ * le site public n'en télécharge rien. Mêmes encres que le reste du site :
+ * le vert de l'API marque ce qui est fait, le safran ce qui se passe
+ * aujourd'hui. Les blocs `.c-*` sont produits par src/lib/carnet/markdown.ts.
+ */
+
+/* Barre de lecture : liée au défilement, sans JavaScript. Absente des
+   navigateurs qui ne savent pas encore le faire. */
+.c-progress {
+  display: none;
+}
+@supports (animation-timeline: scroll()) {
+  .c-progress {
+    display: block;
+    position: fixed;
+    inset: 3.5rem 0 auto 0;
+    z-index: 39;
+    height: 2px;
+    background: var(--signal);
+    transform-origin: 0 50%;
+    animation: c-read linear both;
+    animation-timeline: scroll(root);
+  }
+}
+@keyframes c-read {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
+}
+
+/* « Jour N » se déplie comme le nom de l'accueil, puis les jours passés se
+   remplissent un à un : le seul mouvement non sollicité du carnet. */
+.c-day {
+  animation: unfold 1.2s var(--ease-out-quint) both;
+}
+.c-cell {
+  position: relative;
+  border: 1px solid var(--rule);
+}
+[data-etat="passe"] > .c-cell,
+[data-etat="aujourdhui"] > .c-cell {
+  animation: c-fill 420ms var(--ease-out-quint) both;
+  animation-delay: calc(300ms + var(--i) * 28ms);
+}
+[data-etat="passe"] > .c-cell {
+  background: var(--ink);
+  border-color: var(--ink);
+}
+[data-etat="aujourdhui"] > .c-cell {
+  background: var(--signal);
+  border-color: var(--signal);
+}
+/* Un jour qui a son entrée porte une encoche verte, et s'ouvre au clic. */
+[data-entree] > .c-cell::after,
+.c-legend-entry {
+  background: linear-gradient(135deg, transparent 50%, var(--layer-api) 50%);
+}
+[data-entree] > .c-cell::after {
+  content: "";
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  width: 55%;
+  height: 40%;
+  max-width: 0.9rem;
+  max-height: 0.9rem;
+}
+.c-legend-entry {
+  border: 1px solid var(--rule);
+}
+a.c-cell:hover {
+  outline: 2px solid var(--ink);
+  outline-offset: 1px;
+}
+@keyframes c-fill {
+  from {
+    clip-path: inset(100% 0 0 0);
+  }
+  to {
+    clip-path: inset(0 0 0 0);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .c-day,
+  .c-cell {
+    animation: none !important;
+  }
+}
+
+/* Indicateurs du lancement. */
+.c-stats dl {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  border-top: 1px solid var(--rule);
+}
+@media (min-width: 48rem) {
+  .c-stats dl {
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+  }
+}
+.c-stats dl > div {
+  border-bottom: 1px solid var(--rule);
+  padding: 0.9rem 0.75rem 1rem 0;
+}
+.c-stats dt {
+  font-size: var(--text-xs);
+  color: var(--ink-2);
+}
+.c-stats dd {
+  margin: 0.35rem 0 0;
+  font-family: var(--font-anybody), sans-serif;
+  font-weight: 800;
+  font-stretch: 125%;
+  font-size: var(--text-2xl);
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+}
+.c-stats dd.c-stats-empty {
+  color: var(--ink-2);
+}
+.c-stats-hint {
+  display: block;
+  margin-top: 0.4rem;
+  font-family: var(--font-schibsted), sans-serif;
+  font-size: var(--text-xs);
+  font-weight: 400;
+  font-stretch: 100%;
+}
+.c-stats-note {
+  margin-top: 0.75rem;
+  font-size: var(--text-xs);
+  color: var(--ink-2);
+}
+/* Dans un article, la colonne de texte est trop étroite pour cinq cases. */
+@media (min-width: 40rem) {
+  .prose-article .c-stats dl {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+/* Chiffres d'une entrée de journal. */
+.c-figs {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(9rem, 1fr));
+  border-top: 1px solid var(--rule);
+}
+.c-figs > div {
+  border-bottom: 1px solid var(--rule);
+  padding: 0.75rem 0.75rem 0.75rem 0;
+}
+.c-figs dt {
+  font-size: var(--text-xs);
+  color: var(--ink-2);
+}
+.c-figs dd {
+  font-family: var(--font-anybody), sans-serif;
+  font-weight: 700;
+  font-stretch: 118%;
+  font-size: var(--text-xl);
+}
+
+/* Fil du journal : un rail vertical, un point par entrée, safran pour la
+   plus récente. */
+.c-feed > li {
+  position: relative;
+  display: grid;
+  gap: 0.75rem;
+  padding: 0 0 3.5rem 1.75rem;
+  border-left: 1.5px solid var(--rule);
+}
+.c-feed > li:last-child {
+  border-left-color: transparent;
+  padding-bottom: 0;
+}
+.c-feed > li::before {
+  content: "";
+  position: absolute;
+  left: -0.42rem;
+  top: 0.3rem;
+  width: 0.75rem;
+  height: 0.75rem;
+  border-radius: 50%;
+  background: var(--paper);
+  box-shadow: inset 0 0 0 2px var(--ink);
+}
+.c-feed > li:first-child::before {
+  background: var(--signal);
+  box-shadow: none;
+}
+.c-feed > li:target::before {
+  box-shadow: 0 0 0 4px color-mix(in oklab, var(--signal) 35%, transparent);
+}
+.c-feed-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.25rem 1rem;
+  font-size: var(--text-sm);
+  color: var(--ink-2);
+}
+@media (min-width: 64rem) {
+  .c-feed > li {
+    grid-template-columns: 10rem minmax(0, 1fr);
+    gap: 2rem;
+  }
+  .c-feed-meta {
+    position: sticky;
+    top: 5rem;
+    align-self: start;
+    flex-direction: column;
+  }
+}
+
+/* Frise : date, événement, ce que j'ai appris, prochaine étape. */
+.prose-article .c-prog {
+  list-style: none;
+  padding-left: 0;
+  margin-top: 1.6em;
+}
+.prose-article .c-prog > li {
+  position: relative;
+  margin: 0 0 0 0.35rem;
+  padding: 0 0 1.75rem 1.6rem;
+  border-left: 1.5px solid var(--layer-api);
+}
+.prose-article .c-prog > li[data-etat="a-venir"] {
+  border-left: 1.5px dashed var(--rule);
+}
+.prose-article .c-prog > li:last-child {
+  border-left-color: transparent;
+  padding-bottom: 0;
+}
+.c-prog > li::before {
+  content: "";
+  position: absolute;
+  left: -0.42rem;
+  top: 0.35rem;
+  width: 0.75rem;
+  height: 0.75rem;
+  border-radius: 50%;
+  background: var(--layer-api);
+}
+.c-prog > li[data-etat="en-cours"]::before {
+  background: var(--signal);
+}
+.c-prog > li[data-etat="a-venir"]::before {
+  background: var(--paper);
+  box-shadow: inset 0 0 0 1.5px var(--ink-2);
+}
+.c-prog-date,
+.c-prog-soon {
+  font-size: var(--text-sm);
+  color: var(--ink-2);
+}
+.c-prog-event {
+  font-weight: 650;
+}
+[data-etat="a-venir"] .c-prog-event {
+  color: var(--ink-2);
+}
+.c-prog dl {
+  display: grid;
+  gap: 0.4rem;
+  margin-top: 0.5rem;
+}
+.c-prog dt {
+  font-size: var(--text-xs);
+  color: var(--ink-2);
+}
+.c-prog dt::before {
+  content: "→ ";
+}
+.c-prog dd {
+  margin: 0;
+}
+
+/* Cercle : étapes numérotées, et un retour du bas vers le haut. */
+.prose-article .c-cycle {
+  max-width: 30rem;
+  margin-top: 1.6em;
+  padding-right: 2.5rem;
+}
+.prose-article .c-cycle ol {
+  position: relative;
+  list-style: none;
+  padding-left: 0;
+  counter-reset: cycle;
+}
+.prose-article .c-cycle li {
+  counter-increment: cycle;
+  position: relative;
+  display: flex;
+  gap: 0.75rem;
+  padding: 0.5rem 0.9rem;
+  background: var(--raised);
+  border: 1px solid var(--rule);
+}
+.prose-article .c-cycle li + li {
+  margin-top: 1.5rem;
+}
+.c-cycle li::before {
+  content: counter(cycle);
+  min-width: 1ch;
+  font-variant-numeric: tabular-nums;
+  color: var(--ink-2);
+}
+.c-cycle li + li::after {
+  content: "↓";
+  position: absolute;
+  left: 0.85rem;
+  top: -1.45rem;
+  line-height: 1.4rem;
+  color: var(--ink-2);
+}
+.prose-article .c-cycle li:last-child {
+  border-color: var(--signal);
+}
+.c-cycle ol::after {
+  content: "";
+  position: absolute;
+  right: -1.75rem;
+  top: 1.2rem;
+  bottom: 1.2rem;
+  width: 1.25rem;
+  border: 1.5px solid var(--signal);
+  border-left: none;
+}
+.c-cycle ol::before {
+  content: "";
+  position: absolute;
+  right: -0.55rem;
+  top: calc(1.2rem - 0.32rem);
+  border-top: 0.35rem solid transparent;
+  border-bottom: 0.35rem solid transparent;
+  border-right: 0.45rem solid var(--signal);
+}
+.c-cycle-loop {
+  margin-top: 0.6rem;
+  text-align: right;
+  font-size: var(--text-xs);
+  color: var(--ink-2);
+}
+.c-cycle figcaption {
+  margin-top: 0.75rem;
+  font-size: var(--text-sm);
+  color: var(--ink-2);
+}
+
+/* Deux colonnes. */
+.c-cols {
+  display: grid;
+  gap: 1.5rem;
+}
+@media (min-width: 40rem) {
+  .c-cols {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+.c-cols > section {
+  border-top: 2px solid var(--ink);
+  padding-top: 0.75rem;
+}
+.prose-article .c-cols h3 {
+  margin-top: 0;
+  font-family: var(--font-anybody), sans-serif;
+  font-stretch: 118%;
+  font-weight: 700;
+  font-size: var(--text-lg);
+}
+.c-cols-sub {
+  font-size: var(--text-sm);
+  color: var(--ink-2);
+}
+.prose-article .c-cols ul {
+  margin-top: 0.6rem;
+}
+
+/* « Ce que j'en retiens ». */
+.prose-article .c-retiens {
+  margin-top: 3rem;
+  padding: 1.25rem 1.5rem 1.5rem;
+  background: var(--raised);
+  border-top: 2px solid var(--ink);
+}
+.prose-article .c-retiens h2 {
+  margin-top: 0;
+  font-size: var(--text-lg);
+}
+.prose-article .c-retiens ul {
+  margin-top: 0.75rem;
+}
+
+/* Information à compléter, repérable d'un coup d'œil. */
+.c-todo {
+  color: inherit;
+  background: color-mix(in oklab, var(--signal) 22%, transparent);
+  border-bottom: 1.5px dashed var(--signal);
+  padding: 0.05em 0.3em;
+  -webkit-box-decoration-break: clone;
+  box-decoration-break: clone;
+}
+.c-todo-label {
+  margin-right: 0.2em;
+  font-size: 0.75em;
+  font-weight: 700;
+}
+
+/* Listes de tâches du plan (`- [ ]` et `- [x]`). */
+.prose-article li:has(> input[type="checkbox"]),
+.prose-article li:has(> p > input[type="checkbox"]) {
+  list-style: none;
+  margin-left: -1.25em;
+}
+.prose-article input[type="checkbox"] {
+  margin-right: 0.55em;
+  accent-color: var(--layer-api);
+  transform: translateY(0.1em);
+}

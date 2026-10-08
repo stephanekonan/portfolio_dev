@@ -6,7 +6,9 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "carnet:seal": "node --env-file-if-exists=.env.local scripts/carnet.mjs seal",
+    "carnet:open": "node --env-file-if-exists=.env.local scripts/carnet.mjs open"
   },
   "dependencies": {
     "@vercel/analytics": "^1.5.0",
