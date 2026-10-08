@@ -7,10 +7,13 @@
  *   leur nom change à chaque build, elles ne périment donc jamais.
  * - /api/* n'est jamais mis en cache : le formulaire gère lui-même sa file
  *   d'envoi hors ligne.
+ * - Une réponse marquée `Cache-Control: no-store` n'est jamais gardée : c'est
+ *   le cas des pages rendues à la demande, dont l'espace privé, qui ne doit
+ *   pas rester lisible hors ligne sur l'appareil.
  *
  * Changer VERSION purge les anciens caches à l'activation.
  */
-const VERSION = "v1";
+const VERSION = "v2";
 const PAGES = `pages-${VERSION}`;
 const ASSETS = `assets-${VERSION}`;
 const PRECACHE = ["/", "/en", "/blog", "/en/blog"];
@@ -63,7 +66,7 @@ self.addEventListener("fetch", (event) => {
   event.respondWith(
     fetch(request)
       .then((res) => {
-        if (res.ok) {
+        if (res.ok && !/no-store/i.test(res.headers.get("Cache-Control") ?? "")) {
           const copy = res.clone();
           caches.open(PAGES).then((cache) => cache.put(request, copy));
         }

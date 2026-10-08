@@ -3,12 +3,14 @@ import fs from "node:fs";
 import path from "node:path";
 import matter from "gray-matter";
 import { marked } from "marked";
-import type { Lang } from "@/i18n/ui";
+import { LANGS, type Lang } from "@/i18n/ui";
 
 /**
- * Un article = un fichier Markdown dans `content/blog/`. Le nom du fichier
- * donne l'URL (`mon-article.md` → `/blog/mon-article`) ; l'en-tête YAML porte
- * le reste. Un article en `draft: true` n'est pas publié.
+ * Un article = un fichier Markdown par langue dans `content/blog/<langue>/`.
+ * Le nom du fichier donne l'URL (`fr/mon-article.md` → `/blog/mon-article`) ;
+ * sa traduction porte le même nom dans `en/` et sert `/en/blog/mon-article`.
+ * L'en-tête YAML porte le reste. Un article en `draft: true` n'est pas publié.
+ * Sans traduction, la version disponible est servie dans les deux langues.
  */
 const DIR = path.join(process.cwd(), "content", "blog");
 
@@ -18,7 +20,10 @@ export interface PostMeta {
   description: string;
   /** Date de publication, `AAAA-MM-JJ`. */
   date: string;
+  /** Langue du texte servi, qui peut différer de celle de la page. */
   lang: Lang;
+  /** Langues dans lesquelles l'article existe. */
+  langs: Lang[];
   tags: string[];
   minutes: number;
 }
@@ -27,8 +32,10 @@ export interface Post extends PostMeta {
   html: string;
 }
 
-function read(file: string): Post | null {
-  const raw = fs.readFileSync(path.join(DIR, file), "utf8");
+type Raw = Omit<Post, "langs">;
+
+function read(lang: Lang, file: string): Raw | null {
+  const raw = fs.readFileSync(path.join(DIR, lang, file), "utf8");
   const { data, content } = matter(raw);
   if (data.draft) return null;
   const words = content.split(/\s+/).filter(Boolean).length;
@@ -38,26 +45,44 @@ function read(file: string): Post | null {
     description: String(data.description ?? ""),
     // gray-matter lit une date YAML nue comme un objet Date.
     date: data.date instanceof Date ? data.date.toISOString().slice(0, 10) : String(data.date ?? ""),
-    lang: data.lang === "en" ? "en" : "fr",
+    lang,
     tags: Array.isArray(data.tags) ? data.tags.map(String) : [],
     minutes: Math.max(1, Math.round(words / 220)),
     html: marked.parse(content, { async: false }),
   };
 }
 
-export function getPosts(): Post[] {
-  if (!fs.existsSync(DIR)) return [];
-  return fs
-    .readdirSync(DIR)
-    .filter((f) => f.endsWith(".md"))
-    .map(read)
-    .filter((p): p is Post => p !== null)
-    .sort((a, b) => b.date.localeCompare(a.date));
+/** Toutes les versions publiées, rangées par slug puis par langue. */
+function versions(): Map<string, Partial<Record<Lang, Raw>>> {
+  const bySlug = new Map<string, Partial<Record<Lang, Raw>>>();
+  for (const lang of LANGS) {
+    const dir = path.join(DIR, lang);
+    if (!fs.existsSync(dir)) continue;
+    for (const file of fs.readdirSync(dir).filter((f) => f.endsWith(".md"))) {
+      const post = read(lang, file);
+      if (!post) continue;
+      bySlug.set(post.slug, { ...bySlug.get(post.slug), [lang]: post });
+    }
+  }
+  return bySlug;
 }
 
-export function getPost(slug: string): Post | undefined {
-  return getPosts().find((p) => p.slug === slug);
+/** La version dans `lang`, sinon la première disponible. */
+function pick(v: Partial<Record<Lang, Raw>>, lang: Lang): Post {
+  const langs = LANGS.filter((l) => v[l]);
+  return { ...(v[lang] ?? v[langs[0]])!, langs };
 }
+
+export function getPosts(lang: Lang): Post[] {
+  return [...versions().values()].map((v) => pick(v, lang)).sort((a, b) => b.date.localeCompare(a.date));
+}
+
+export function getPost(slug: string, lang: Lang): Post | undefined {
+  const v = versions().get(slug);
+  return v && pick(v, lang);
+}
+
+export const getSlugs = () => [...versions().keys()];
 
 export const formatDate = (date: string, lang: Lang) =>
   new Date(`${date}T12:00:00`).toLocaleDateString(lang === "fr" ? "fr-FR" : "en-GB", {

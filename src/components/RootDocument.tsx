@@ -8,7 +8,23 @@ import { ui, type Lang } from "@/i18n/ui";
 import { THEME_SCRIPT } from "@/lib/theme";
 import "@/styles/global.css";
 
-export default function RootDocument({ lang, children }: { lang: Lang; children: React.ReactNode }) {
+interface Props {
+  lang: Lang;
+  children: React.ReactNode;
+  /**
+   * En-tête, `<main>` et pied de page du site. Sans eux, la page pose sa
+   * propre structure : c'est le cas de l'espace privé.
+   */
+  chrome?: boolean;
+  /**
+   * Mesure d'audience (Vercel Analytics, Hotjar). Coupée sur l'espace privé :
+   * ses pages ne doivent finir ni dans un enregistrement de session, ni dans
+   * des statistiques qui révéleraient leur adresse.
+   */
+  tracking?: boolean;
+}
+
+export default function RootDocument({ lang, children, chrome = true, tracking = true }: Props) {
   const t = ui[lang];
   return (
     // `suppressHydrationWarning` : le script de tête pose `data-theme` sur
@@ -24,14 +40,22 @@ export default function RootDocument({ lang, children }: { lang: Lang; children:
         >
           {lang === "fr" ? "Aller au contenu" : "Skip to content"}
         </a>
-        <Header lang={lang} t={t} />
-        <main id="contenu">{children}</main>
-        <Footer t={t} />
+        {chrome ? (
+          <>
+            <Header lang={lang} t={t} />
+            <main id="contenu">{children}</main>
+            <Footer t={t} />
+          </>
+        ) : (
+          children
+        )}
         <ServiceWorker />
-        <Analytics />
-        <Script id="hotjar" strategy="afterInteractive">
-          {`(function(h,o,t,j){h.hj=h.hj||function(){(h.hj.q=h.hj.q||[]).push(arguments)};h._hjSettings={hjid:6485478,hjsv:6};var a=o.getElementsByTagName('head')[0];var r=o.createElement('script');r.async=1;r.src=t+h._hjSettings.hjid+j+h._hjSettings.hjsv;a.appendChild(r);})(window,document,'https://static.hotjar.com/c/hotjar-','.js?sv=');`}
-        </Script>
+        {tracking && <Analytics />}
+        {tracking && (
+          <Script id="hotjar" strategy="afterInteractive">
+            {`(function(h,o,t,j){h.hj=h.hj||function(){(h.hj.q=h.hj.q||[]).push(arguments)};h._hjSettings={hjid:6485478,hjsv:6};var a=o.getElementsByTagName('head')[0];var r=o.createElement('script');r.async=1;r.src=t+h._hjSettings.hjid+j+h._hjSettings.hjsv;a.appendChild(r);})(window,document,'https://static.hotjar.com/c/hotjar-','.js?sv=');`}
+          </Script>
+        )}
       </body>
     </html>
   );

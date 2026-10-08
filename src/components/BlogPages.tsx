@@ -1,17 +1,28 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import type { Metadata } from "next";
+
+import {
+  base,
+  type Lang,
+  ui,
+} from "@/i18n/ui";
+import {
+  formatDate,
+  getPost,
+  getPosts,
+  getSlugs,
+} from "@/lib/blog";
+
 import PostList from "./PostList";
-import { formatDate, getPost, getPosts } from "@/lib/blog";
-import { base, ui, type Lang } from "@/i18n/ui";
 
 export function BlogIndex({ lang }: { lang: Lang }) {
   const t = ui[lang].blog;
   return (
-    <div className="mx-auto max-w-[76rem] px-4 pb-28 pt-14 sm:px-8">
-      <h1 className="font-display text-3xl font-extrabold [font-stretch:140%]">{t.title}</h1>
+    <div className="mx-auto max-w-304 px-4 pb-28 pt-14 sm:px-8">
+      <h1 className="font-display text-3xl font-extrabold font-stretch-140%">{t.title}</h1>
       <p className="mb-12 mt-4 max-w-[56ch] text-lg text-ink-2">{t.lead}</p>
-      <PostList posts={getPosts()} lang={lang} />
+      <PostList posts={getPosts(lang)} lang={lang} />
     </div>
   );
 }
@@ -26,11 +37,11 @@ export function blogIndexMetadata(lang: Lang): Metadata {
 }
 
 export function BlogArticle({ lang, slug }: { lang: Lang; slug: string }) {
-  const post = getPost(slug);
+  const post = getPost(slug, lang);
   if (!post) notFound();
   const t = ui[lang].blog;
   return (
-    <article lang={post.lang} className="mx-auto max-w-[76rem] px-4 pb-28 pt-12 sm:px-8">
+    <article lang={post.lang} className="mx-auto max-w-304 px-4 pb-28 pt-12 sm:px-8">
       <Link href={`${base(lang)}/blog`} className="text-sm font-semibold hover:underline">
         {t.back}
       </Link>
@@ -38,7 +49,7 @@ export function BlogArticle({ lang, slug }: { lang: Lang; slug: string }) {
         <p className="text-sm text-ink-2">
           <time dateTime={post.date}>{formatDate(post.date, post.lang)}</time>, {post.minutes} {ui[post.lang].blog.minutes}
         </p>
-        <h1 className="mt-4 font-display text-[clamp(2rem,4.6vw,3rem)] font-extrabold leading-[1.05] [font-stretch:125%]">
+        <h1 className="mt-4 font-display text-[clamp(2rem,4.6vw,3rem)] font-extrabold leading-[1.05] font-stretch-125%">
           {post.title}
         </h1>
         <p className="mt-5 text-lg text-ink-2">{post.description}</p>
@@ -54,14 +65,20 @@ export function BlogArticle({ lang, slug }: { lang: Lang; slug: string }) {
 }
 
 export function blogArticleMetadata(lang: Lang, slug: string): Metadata {
-  const post = getPost(slug);
+  const post = getPost(slug, lang);
   if (!post) return {};
+  // Sans traduction, la page sert le texte d'origine : le canonique pointe
+  // vers sa vraie langue pour ne pas publier deux fois le même contenu.
+  const url = (l: Lang) => `${base(l)}/blog/${slug}`;
   return {
     title: post.title,
     description: post.description,
-    alternates: { canonical: `${base(lang)}/blog/${slug}` },
+    alternates: {
+      canonical: url(post.lang),
+      languages: Object.fromEntries(post.langs.map((l) => [l, url(l)])),
+    },
     openGraph: { type: "article", title: post.title, description: post.description, publishedTime: post.date },
   };
 }
 
-export const blogStaticParams = () => getPosts().map((p) => ({ slug: p.slug }));
+export const blogStaticParams = () => getSlugs().map((slug) => ({ slug }));

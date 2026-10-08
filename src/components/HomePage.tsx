@@ -29,7 +29,7 @@ const NOW = new Date().toISOString().slice(0, 7);
 
 export default function HomePage({ lang }: { lang: Lang }) {
   const t = ui[lang];
-  const posts = getPosts().slice(0, 3);
+  const posts = getPosts(lang).slice(0, 3);
 
   return (
     <>
@@ -109,9 +109,13 @@ export default function HomePage({ lang }: { lang: Lang }) {
                   <li key={s.name}>
                     {/* Hauteur fixe, même sans logo : les noms restent alignés
                         d'une colonne à l'autre. */}
-                    <p className="mb-2.5 flex h-[18px] items-center gap-2.5 text-ink-2">
+                    <p className="mb-2.5 flex h-4.5 items-center gap-2.5 text-ink-2">
                       {s.icons?.map((slug) => (
-                        <BrandIcon key={slug} slug={slug} className="size-[18px]" />
+                        <BrandIcon
+                          key={slug}
+                          slug={slug}
+                          className="size-4.5"
+                        />
                       ))}
                     </p>
                     <p className="font-semibold">{s.name}</p>
