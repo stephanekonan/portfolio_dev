@@ -39,8 +39,9 @@ export const SCRAMBLE_CHARS = "abcdef0123456789";
  *
  * ScrollTrigger (défilement), SplitText (titres), ScrambleText (liens,
  * numéros), Flip (onglets des traces), ScrollTo (ancres), DrawSVG (signe
- * « défiler »), Draggable et Inertia (la pile 3D se fait tourner à la main),
- * CustomEase (la courbe du site).
+ * « défiler », chemin de « Comment ça marche »), MotionPath (le point qui
+ * suit ce chemin), Draggable et Inertia (la pile 3D se fait tourner à la
+ * main), CustomEase (la courbe du site).
  */
 export async function loadGsap() {
   const [
@@ -54,6 +55,7 @@ export async function loadGsap() {
     { Draggable },
     { InertiaPlugin },
     { CustomEase },
+    { MotionPathPlugin },
   ] = await Promise.all([
     import("gsap"),
     import("gsap/ScrollTrigger"),
@@ -65,6 +67,7 @@ export async function loadGsap() {
     import("gsap/Draggable"),
     import("gsap/InertiaPlugin"),
     import("gsap/CustomEase"),
+    import("gsap/MotionPathPlugin"),
   ]);
   gsap.registerPlugin(
     ScrollTrigger,
@@ -76,6 +79,7 @@ export async function loadGsap() {
     Draggable,
     InertiaPlugin,
     CustomEase,
+    MotionPathPlugin,
   );
   if (!CustomEase.get(EASE.out)) CustomEase.create(EASE.out, "0.22, 1, 0.36, 1");
   return { gsap, ScrollTrigger, SplitText, Flip, Draggable };

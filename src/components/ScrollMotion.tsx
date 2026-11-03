@@ -238,7 +238,12 @@ export default function ScrollMotion() {
       let timer = 0;
       const sizes = new ResizeObserver(() => {
         clearTimeout(timer);
-        timer = window.setTimeout(() => ScrollTrigger.refresh(), 200);
+        // Remis dans l'ordre de la page : un épinglage créé après les
+        // déclencheurs qu'il précède doit quand même les décaler.
+        timer = window.setTimeout(() => {
+          ScrollTrigger.sort();
+          ScrollTrigger.refresh();
+        }, 200);
       });
       sizes.observe(document.body);
 
@@ -262,7 +267,7 @@ export default function ScrollMotion() {
     <div
       ref={bar}
       aria-hidden
-      className="fixed inset-x-0 top-14 z-40 h-0.5 origin-left scale-x-0 bg-signal"
+      className="fixed inset-x-0 top-0 z-50 h-1 origin-left scale-x-0 bg-signal"
     />
   );
 }

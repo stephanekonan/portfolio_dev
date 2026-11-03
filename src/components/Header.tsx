@@ -36,8 +36,8 @@ export default function Header({ lang, t }: Props) {
     onHome ? `#${id}` : `${home === "/" ? "" : home}/#${id}`;
 
   const links = [
-    { href: anchor("traces"), label: t.nav.traces },
-    { href: anchor("projets"), label: t.nav.work },
+    { href: anchor("comment"), label: t.nav.how },
+    { href: anchor("realisations"), label: t.nav.work },
     { href: anchor("competences"), label: t.nav.skills },
     { href: `${base(lang)}/blog`, label: t.nav.blog },
     { href: anchor("contact"), label: t.nav.contact },
@@ -85,13 +85,15 @@ export default function Header({ lang, t }: Props) {
   );
 
   return (
-    <header className="sticky top-0 z-40 border-b border-rule bg-paper/90 backdrop-blur-md">
-      <div className="mx-auto flex h-14 max-w-304 items-center justify-between gap-4 px-4 sm:px-8">
+    // Un îlot flottant : l'en-tête se détache du contenu qui défile dessous.
+    <header className="sticky top-0 z-40 px-3 pt-3 sm:px-6">
+      <div className="mx-auto flex h-14 max-w-304 items-center justify-between gap-4 rounded-full border-2 border-ink bg-raised/90 pr-3 pl-5 shadow-[3px_3px_0_var(--ink)] backdrop-blur-md sm:pr-4 sm:pl-6">
         <Link
           href={home}
           onClick={() => close()}
-          className="font-display text-base font-bold whitespace-nowrap font-stretch-120% sm:font-stretch-135%"
+          className="flex items-center gap-2 font-display text-lg font-extrabold tracking-tight whitespace-nowrap"
         >
+          <span className="size-2.5 rounded-full bg-signal" aria-hidden />
           Stéphane Konan
         </Link>
 
@@ -150,13 +152,13 @@ export default function Header({ lang, t }: Props) {
             id="menu-mobile"
             ref={panelRef}
             initial={{ height: 0, opacity: 0 }}
-            animate={{ height: "calc(100dvh - 3.5rem)", opacity: 1 }}
+            animate={{ height: "calc(100dvh - 5.5rem)", opacity: 1 }}
             exit={{ height: 0, opacity: 0 }}
             transition={{
               duration: reduce ? 0 : 0.32,
               ease: [0.22, 1, 0.36, 1],
             }}
-            className="overflow-y-auto border-t border-rule bg-paper lg:hidden"
+            className="mx-auto mt-2 max-w-304 overflow-y-auto rounded-[1.75rem] border-2 border-ink bg-raised lg:hidden"
           >
             <nav
               aria-label={t.nav.label}

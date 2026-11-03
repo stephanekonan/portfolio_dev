@@ -152,7 +152,7 @@ export default function ContactForm({ lang, t }: Props) {
     status === "error" || status === "invalid" ? "var(--layer-infra)" : status === "queued" ? "var(--signal)" : "var(--layer-api)";
 
   const field =
-    "mt-1.5 block w-full border-0 border-b border-ink bg-transparent px-0 py-2 text-base outline-none transition-colors placeholder:text-ink-2/60 focus:border-b-2 focus-visible:outline-none";
+    "mt-2 block w-full rounded-2xl border-2 border-ink bg-paper px-4 py-3 text-base outline-none transition-shadow placeholder:text-ink-2/60 focus:shadow-[3px_3px_0_var(--signal)] focus-visible:outline-none";
 
   return (
     <form onSubmit={onSubmit} noValidate className="grid gap-7">
@@ -183,7 +183,7 @@ export default function ContactForm({ lang, t }: Props) {
           data-magnetic
           type="submit"
           disabled={status === "sending"}
-          className="inline-flex items-center gap-2 bg-ink px-6 py-3 font-semibold text-paper transition-opacity disabled:opacity-50"
+          className="btn btn-primary"
         >
           <Send className="size-4" aria-hidden />
           {status === "sending" ? t.sending : t.send}

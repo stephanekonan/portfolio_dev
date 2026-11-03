@@ -2,10 +2,10 @@ import Script from "next/script";
 import { Analytics } from "@vercel/analytics/next";
 import Header from "./Header";
 import Footer from "./Footer";
-import PaperField from "./PaperField";
+import Ambient from "./Ambient";
 import ScrollMotion from "./ScrollMotion";
 import ServiceWorker from "./ServiceWorker";
-import { anybody, schibsted } from "@/lib/fonts";
+import { display, text } from "@/lib/fonts";
 import { ui, type Lang } from "@/i18n/ui";
 import { THEME_SCRIPT } from "@/lib/theme";
 import "@/styles/global.css";
@@ -31,7 +31,7 @@ export default function RootDocument({ lang, children, chrome = true, tracking =
   return (
     // `suppressHydrationWarning` : le script de tête pose `data-theme` sur
     // <html> avant React, l'écart avec le rendu serveur est voulu.
-    <html lang={lang} className={`${anybody.variable} ${schibsted.variable}`} suppressHydrationWarning>
+    <html lang={lang} className={`${display.variable} ${text.variable}`} suppressHydrationWarning>
       <head>
         <script dangerouslySetInnerHTML={{ __html: THEME_SCRIPT }} />
       </head>
@@ -44,9 +44,9 @@ export default function RootDocument({ lang, children, chrome = true, tracking =
         </a>
         {chrome ? (
           <>
-            {/* Trame WebGL du papier et mouvements au défilement, sur toutes
+            {/* Fond vivant en WebGL et mouvements au défilement, sur toutes
                 les pages du site public. */}
-            <PaperField />
+            <Ambient />
             <ScrollMotion />
             <Header lang={lang} t={t} />
             <main id="contenu">{children}</main>

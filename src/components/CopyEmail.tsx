@@ -31,7 +31,7 @@ export default function CopyEmail({ email, copy, copied }: Props) {
       <button
         data-magnetic
         onClick={onCopy}
-        className="inline-flex items-center gap-1.5 border border-rule px-2.5 py-1 text-xs font-semibold hover:border-ink"
+        className="chip cursor-pointer text-ink"
       >
         <AnimatePresence mode="wait" initial={false}>
           <motion.span
@@ -42,7 +42,7 @@ export default function CopyEmail({ email, copy, copied }: Props) {
             transition={{ duration: 0.15 }}
             className="inline-flex items-center gap-1.5"
           >
-            {done ? <Check className="size-3.5 text-api" aria-hidden /> : <Copy className="size-3.5" aria-hidden />}
+            {done ? <Check className="size-3.5 text-go" aria-hidden /> : <Copy className="size-3.5" aria-hidden />}
             {done ? copied : copy}
           </motion.span>
         </AnimatePresence>

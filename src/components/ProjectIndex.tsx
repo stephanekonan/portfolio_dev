@@ -330,7 +330,7 @@ export default function ProjectIndex({ projects, lang, t }: Props) {
                             href={p.href}
                             target="_blank"
                             rel="noopener"
-                            className="mt-5 inline-flex items-center gap-2 border border-ink px-4 py-2 text-sm font-semibold hover:bg-ink hover:text-paper"
+                            className="btn btn-sm mt-5"
                           >
                             {t.open}
                             <ExternalLink className="size-3.5" aria-hidden />
