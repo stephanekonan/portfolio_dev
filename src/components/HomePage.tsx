@@ -13,13 +13,18 @@ import { getPosts } from "@/lib/blog";
 // une nouvelle photo change d'adresse, ni le service worker ni l'optimiseur
 // d'images ne peuvent resservir l'ancienne.
 import me from "../../public/me-small.png";
+// Les écrans du téléphone : de vraies captures de mes applications.
+import shotAboutik from "../../public/aboutik.jpg";
+import shotDjaxa from "../../public/djaxa.png";
+import shotResi from "../../public/phone/resi.jpg";
+import shotWadibu from "../../public/phone/wadibu.jpg";
 
 import BrandIcon from "./BrandIcon";
 import CareerTrace from "./CareerTrace";
 import ContactForm from "./ContactForm";
 import CopyEmail from "./CopyEmail";
 import HowItWorks from "./HowItWorks";
-import PhoneScene from "./PhoneScene";
+import PhoneScene, { type PhoneApp } from "./PhoneScene";
 import PostList from "./PostList";
 import ProjectIndex from "./ProjectIndex";
 import SectionHead from "./SectionHead";
@@ -38,6 +43,14 @@ const NOW = new Date().toISOString().slice(0, 7);
 export default function HomePage({ lang }: { lang: Lang }) {
   const t = ui[lang];
   const posts = getPosts(lang).slice(0, 3);
+  // Wadibu : la PWA de commande ; Resi : son site au format téléphone ;
+  // Aboutik : l'écran de sa maquette, recadré ; djaxa .r : une capture.
+  const apps: PhoneApp[] = [
+    { id: "wadibu", name: "Wadibu", caption: t.hero.apps.wadibu, src: shotWadibu.src },
+    { id: "resi", name: "Resi", caption: t.hero.apps.resi, src: shotResi.src },
+    { id: "aboutik", name: "Aboutik", caption: t.hero.apps.aboutik, src: shotAboutik.src, crop: [86, 92, 434, 783] },
+    { id: "djaxa", name: "djaxa .r", caption: t.hero.apps.djaxa, src: shotDjaxa.src },
+  ];
 
   return (
     <>
@@ -90,7 +103,7 @@ export default function HomePage({ lang }: { lang: Lang }) {
         </div>
 
         <div className="h-[26rem] sm:h-[30rem] lg:h-[min(42rem,85%)]">
-          <PhoneScene t={t.hero.phone} />
+          <PhoneScene apps={apps} hint={t.hero.apps.hint} />
         </div>
 
         {/* Signe « défiler » : son trait se dessine en boucle (DrawSVG). */}

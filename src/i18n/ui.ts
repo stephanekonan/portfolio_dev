@@ -53,23 +53,13 @@ const fr = {
     /** Étiquettes courtes de la pile 3D de l'ouverture. */
     layers: { web: "L'écran", mobile: "Le téléphone", infra: "Le trajet", api: "Le cerveau", data: "La mémoire" },
     scroll: "Défiler",
-    /** Écran du téléphone 3D : une commande racontée au défilement. Plats et prix pour l'exemple. */
-    phone: {
-      cart: "Votre panier",
-      items: [
-        ["Garba", "1 500 F"],
-        ["Alloco poulet", "2 000 F"],
-        ["Livraison", "500 F"],
-      ],
-      total: "Total",
-      totalPrice: "4 000 F",
-      order: "Commander",
-      paying: "Paiement par Wave…",
-      paid: "Paiement reçu",
-      onTheWay: "Votre livreur arrive",
-      eta: "Environ 12 min",
-      delivered: "Commande livrée",
-      thanks: "Bon appétit !",
+    /** Le téléphone 3D montre mes vraies applications, une par étape du défilement. */
+    apps: {
+      hint: "Mes applications, en vrai",
+      wadibu: "Commander un repas ou envoyer un colis",
+      resi: "Gérer ses résidences meublées",
+      aboutik: "Tenir ses boutiques et sa caisse",
+      djaxa: "Suivre un atelier de réparation",
     },
   },
   how: {
@@ -243,22 +233,12 @@ const en: Ui = {
     copied: "Address copied",
     layers: { web: "The screen", mobile: "The phone", infra: "The journey", api: "The brain", data: "The memory" },
     scroll: "Scroll",
-    phone: {
-      cart: "Your cart",
-      items: [
-        ["Garba", "1,500 F"],
-        ["Chicken alloco", "2,000 F"],
-        ["Delivery", "500 F"],
-      ],
-      total: "Total",
-      totalPrice: "4,000 F",
-      order: "Order",
-      paying: "Paying with Wave…",
-      paid: "Payment received",
-      onTheWay: "Your courier is on the way",
-      eta: "About 12 min",
-      delivered: "Order delivered",
-      thanks: "Enjoy your meal!",
+    apps: {
+      hint: "My apps, for real",
+      wadibu: "Order a meal or send a parcel",
+      resi: "Run furnished residences",
+      aboutik: "Run shops and the till",
+      djaxa: "Track a repair workshop",
     },
   },
   how: {
