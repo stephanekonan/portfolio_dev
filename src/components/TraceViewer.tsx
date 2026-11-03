@@ -2,6 +2,7 @@
 import {
   useCallback,
   useEffect,
+  useLayoutEffect,
   useRef,
   useState,
 } from "react";
@@ -20,6 +21,7 @@ import {
   useReducedMotion,
 } from "motion/react";
 
+import { EASE, loadGsap } from "@/lib/motion";
 import type { T } from "@/data/career";
 import type {
   ProductTrace,
@@ -58,6 +60,20 @@ export default function TraceViewer({ traces, lang, t }: Props) {
   const reduce = useReducedMotion();
   const [active, setActive] = useState(0);
   const trace = traces[active];
+
+  // L'indicateur d'onglet glisse vers l'onglet choisi (GSAP Flip) : son
+  // état est relevé avant le changement, rejoué après le rendu.
+  const flip = useRef<Awaited<ReturnType<typeof loadGsap>>["Flip"] | null>(null);
+  const flipState = useRef<ReturnType<NonNullable<typeof flip.current>["getState"]> | null>(null);
+  useEffect(() => {
+    loadGsap().then(({ Flip }) => (flip.current = Flip));
+  }, []);
+  useLayoutEffect(() => {
+    const state = flipState.current;
+    flipState.current = null;
+    if (!state || !flip.current || reduce) return;
+    flip.current.from(state, { targets: "[data-flip-id='trace-tab']", duration: 0.5, ease: EASE.out });
+  }, [active, reduce]);
   const spans = trace.spans;
   const gap = trace.gap;
   const end = Math.max(...spans.map((s) => s.start + s.duration));
@@ -91,6 +107,7 @@ export default function TraceViewer({ traces, lang, t }: Props) {
 
   const switchTrace = (index: number) => {
     if (index === active) return;
+    if (flip.current) flipState.current = flip.current.getState("[data-flip-id='trace-tab']");
     setActive(index);
     setGapOn(false);
     setSelected(traces[index].spans[0].id);
@@ -202,11 +219,7 @@ export default function TraceViewer({ traces, lang, t }: Props) {
             className="relative flex-1 whitespace-nowrap px-5 py-2 text-sm font-semibold sm:flex-none"
           >
             {i === active && (
-              <motion.span
-                layoutId="trace-tab"
-                className="absolute inset-0 bg-ink"
-                transition={reduce ? { duration: 0 } : { type: "spring", stiffness: 500, damping: 40 }}
-              />
+              <span data-flip-id="trace-tab" className="absolute inset-0 bg-ink" />
             )}
             <span className={`relative ${i === active ? "text-paper" : "text-ink-2"}`}>{tr.product}</span>
           </button>

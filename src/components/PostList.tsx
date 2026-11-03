@@ -15,7 +15,7 @@ export default function PostList({ posts, lang, href, kicker }: Props) {
   const t = ui[lang].blog;
   if (posts.length === 0) return <p className="text-ink-2">{t.empty}</p>;
   return (
-    <ul className="border-t border-rule">
+    <ul data-reveal-group className="border-t border-rule">
       {posts.map((p) => (
         <li key={p.slug} className="border-b border-rule">
           <Link

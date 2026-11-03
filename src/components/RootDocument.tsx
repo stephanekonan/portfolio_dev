@@ -2,6 +2,8 @@ import Script from "next/script";
 import { Analytics } from "@vercel/analytics/next";
 import Header from "./Header";
 import Footer from "./Footer";
+import PaperField from "./PaperField";
+import ScrollMotion from "./ScrollMotion";
 import ServiceWorker from "./ServiceWorker";
 import { anybody, schibsted } from "@/lib/fonts";
 import { ui, type Lang } from "@/i18n/ui";
@@ -42,6 +44,10 @@ export default function RootDocument({ lang, children, chrome = true, tracking =
         </a>
         {chrome ? (
           <>
+            {/* Trame WebGL du papier et mouvements au défilement, sur toutes
+                les pages du site public. */}
+            <PaperField />
+            <ScrollMotion />
             <Header lang={lang} t={t} />
             <main id="contenu">{children}</main>
             <Footer t={t} />

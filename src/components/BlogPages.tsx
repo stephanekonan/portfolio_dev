@@ -20,8 +20,8 @@ export function BlogIndex({ lang }: { lang: Lang }) {
   const t = ui[lang].blog;
   return (
     <div className="mx-auto max-w-304 px-4 pb-28 pt-14 sm:px-8">
-      <h1 className="font-display text-3xl font-extrabold font-stretch-140%">{t.title}</h1>
-      <p className="mb-12 mt-4 max-w-[56ch] text-lg text-ink-2">{t.lead}</p>
+      <h1 data-split className="font-display text-3xl font-extrabold font-stretch-140%">{t.title}</h1>
+      <p data-reveal className="mb-12 mt-4 max-w-[56ch] text-lg text-ink-2">{t.lead}</p>
       <PostList posts={getPosts(lang)} lang={lang} />
     </div>
   );
@@ -49,13 +49,14 @@ export function BlogArticle({ lang, slug }: { lang: Lang; slug: string }) {
         <p className="text-sm text-ink-2">
           <time dateTime={post.date}>{formatDate(post.date, post.lang)}</time>, {post.minutes} {ui[post.lang].blog.minutes}
         </p>
-        <h1 className="mt-4 font-display text-[clamp(2rem,4.6vw,3rem)] font-extrabold leading-[1.05] font-stretch-125%">
+        <h1 data-split className="mt-4 font-display text-[clamp(2rem,4.6vw,3rem)] font-extrabold leading-[1.05] font-stretch-125%">
           {post.title}
         </h1>
-        <p className="mt-5 text-lg text-ink-2">{post.description}</p>
+        <p data-reveal className="mt-5 text-lg text-ink-2">{post.description}</p>
         {post.tags.length > 0 && <p className="mt-5 text-sm text-ink-2">{post.tags.join(", ")}</p>}
       </header>
-      <div className="mt-10 border-t border-ink pt-10">
+      <div className="relative mt-10 pt-10">
+        <span data-rule aria-hidden className="absolute inset-x-0 top-0 h-px origin-left bg-ink" />
         {/* HTML rendu au build depuis les fichiers Markdown du dépôt : seul
             l'auteur écrit ce contenu, aucune saisie de visiteur n'y passe. */}
         <div className="prose-article" dangerouslySetInnerHTML={{ __html: post.html }} />

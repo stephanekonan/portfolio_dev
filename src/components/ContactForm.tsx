@@ -180,6 +180,7 @@ export default function ContactForm({ lang, t }: Props) {
 
       <div className="flex flex-wrap items-center gap-5">
         <button
+          data-magnetic
           type="submit"
           disabled={status === "sending"}
           className="inline-flex items-center gap-2 bg-ink px-6 py-3 font-semibold text-paper transition-opacity disabled:opacity-50"

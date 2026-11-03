@@ -137,7 +137,8 @@ html {
 }
 
 body {
-  background: var(--paper);
+  /* Transparent : le papier est sur `html`, la trame WebGL passe entre les deux. */
+  background: transparent;
   font-family: var(--font-schibsted), system-ui, sans-serif;
   font-size: var(--text-base);
   line-height: 1.6;
@@ -203,25 +204,23 @@ html[data-network="offline"] body {
 }
 
 /*
- * Profondeur de l'accueil, de bas en haut : le contenu, la pile 3D (toile
- * fixe et transparente, z-30, sans pointeur : elle ne se pose que dans les
- * ancres `data-scene` laissées vides pour elle), puis l'en-tête (z-40).
+ * Profondeur, de bas en haut : le papier (`html`), sa trame de points en
+ * WebGL (PaperField, toile fixe derrière tout), le contenu, les aperçus qui
+ * suivent le curseur (z-30), puis l'en-tête (z-40). `body` reste
+ * transparent : sinon son fond recouvrirait la trame.
  *
  * Mouvement : `--ease-out-quint` côté CSS, `src/lib/motion.ts` côté GSAP
- * (mêmes courbes). Tout ce qui défile s'anime par attributs `data-*`.
+ * (mêmes courbes). Ce qui défile s'anime par attributs `data-*`
+ * (ScrollMotion, sur toutes les pages).
  */
 
-/* Compétences, grand écran : la rangée lue reste pleine, les autres
-   pâlissent, comme les couches de la pile à côté. `data-scrolly` n'est posé
-   qu'une fois la pile prête : sans elle, rien ne pâlit. */
-@media (min-width: 64rem) {
-  [data-scrolly] > [data-layer-row] {
-    opacity: 0.38;
-    transition: opacity 500ms var(--ease-out-quint);
-  }
-  [data-scrolly] > [data-layer-row][data-active] {
-    opacity: 1;
-  }
+/* La trame du papier (PaperField) apparaît une fois sa première image prête. */
+.paper-field > canvas {
+  opacity: 0;
+  transition: opacity 1200ms var(--ease-out-quint);
+}
+.paper-field[data-ready] > canvas {
+  opacity: 1;
 }
 
 /* La pile 3D (StackScene) : rien ne s'affiche avant la première image,

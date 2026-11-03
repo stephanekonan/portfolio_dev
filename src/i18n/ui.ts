@@ -49,6 +49,7 @@ const fr = {
     copied: "Adresse copiée",
     /** Étiquettes courtes de la pile 3D de l'ouverture. */
     layers: { web: "Web", mobile: "Mobile", infra: "Réseau", api: "API", data: "Données" },
+    scroll: "Défiler",
   },
   career: {
     title: "Parcours",
@@ -156,6 +157,7 @@ const en: Ui = {
     copy: "Copy address",
     copied: "Address copied",
     layers: { web: "Web", mobile: "Mobile", infra: "Network", api: "API", data: "Data" },
+    scroll: "Scroll",
   },
   career: {
     title: "Career",

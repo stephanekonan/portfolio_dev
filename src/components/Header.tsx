@@ -100,7 +100,8 @@ export default function Header({ lang, t }: Props) {
             {links.map((l) => (
               <li key={l.label}>
                 <Link href={l.href} className="hover:underline">
-                  {l.label}
+                  {/* Brouillé puis recomposé au survol (ScrollMotion). */}
+                  <span data-scramble>{l.label}</span>
                 </Link>
               </li>
             ))}

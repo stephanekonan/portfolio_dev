@@ -29,6 +29,7 @@ export default function CopyEmail({ email, copy, copied }: Props) {
         {email}
       </a>
       <button
+        data-magnetic
         onClick={onCopy}
         className="inline-flex items-center gap-1.5 border border-rule px-2.5 py-1 text-xs font-semibold hover:border-ink"
       >

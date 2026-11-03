@@ -13,7 +13,6 @@ import ContactForm from "./ContactForm";
 import CopyEmail from "./CopyEmail";
 import PostList from "./PostList";
 import ProjectIndex from "./ProjectIndex";
-import ScrollMotion from "./ScrollMotion";
 import SectionHead from "./SectionHead";
 import StackScene from "./StackScene";
 import TraceViewer from "./TraceViewer";
@@ -35,19 +34,9 @@ export default function HomePage({ lang }: { lang: Lang }) {
 
   return (
     <>
-      <ScrollMotion />
-      {/* Une seule pile 3D pour la page : elle se loge dans les ancres
-          `data-scene` des sections et vole de l'une à l'autre. */}
-      <StackScene
-        layers={SKILLS.map((g) => ({
-          layer: g.layer,
-          label: t.hero.layers[g.layer],
-        }))}
-      />
-
       {/* L'ouverture tient dans l'écran, sous l'en-tête de 3,5 rem. Sur grand
-          écran, elle est épinglée le temps que la pile glisse de son ancre
-          vers tout l'écran (`hero-full`) en se dépliant. */}
+          écran, la pile 3D en couvre tout le fond et l'ouverture est épinglée
+          le temps de sa chorégraphie (StackScene). */}
       <section className="relative mx-auto flex max-w-304 flex-col px-4 pt-12 pb-16 sm:px-8 md:pt-16 lg:h-[calc(100svh-3.5rem)] lg:min-h-[38rem]">
         <h1
           data-hero-name
@@ -79,17 +68,34 @@ export default function HomePage({ lang }: { lang: Lang }) {
               </div>
             </div>
           </div>
-          <div
-            data-scene="hero"
-            aria-hidden
-            className="-order-1 h-[20rem] sm:h-[26rem] lg:order-none lg:h-full lg:min-h-[24rem]"
-          />
+          <div className="-order-1 h-[20rem] sm:h-[26rem] lg:absolute lg:inset-0 lg:order-none lg:h-auto">
+            <StackScene
+              layers={SKILLS.map((g) => ({
+                layer: g.layer,
+                label: t.hero.layers[g.layer],
+              }))}
+            />
+          </div>
         </div>
+
+        {/* Signe « défiler » : son trait se dessine en boucle (DrawSVG). */}
         <div
-          data-scene="hero-full"
+          data-scroll-cue
           aria-hidden
-          className="pointer-events-none absolute inset-0 hidden lg:block"
-        />
+          className="absolute bottom-5 left-1/2 z-10 hidden -translate-x-1/2 flex-col items-center gap-2 text-ink-2 lg:flex"
+        >
+          <span className="font-mono text-xs">{t.hero.scroll}</span>
+          <svg
+            viewBox="0 0 10 48"
+            className="h-12 w-2.5"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="1"
+          >
+            <path d="M5 0v46" />
+            <path d="M1 41l4 5 4-5" />
+          </svg>
+        </div>
       </section>
 
       <section className="mx-auto max-w-304 px-4 pb-28 sm:px-8">
@@ -122,57 +128,54 @@ export default function HomePage({ lang }: { lang: Lang }) {
         className="mx-auto max-w-304 px-4 pb-28 sm:px-8"
       >
         <SectionHead index="04" title={t.skills.title} lead={t.skills.lead} />
-        {/* Grand écran : la pile se loge à droite, collante, et la couche de
-            la rangée lue se soulève (StackScene, `data-layer-row`). */}
-        <div className="lg:grid lg:grid-cols-[minmax(0,1fr)_minmax(0,0.7fr)] lg:gap-12">
-          <div>
-            {SKILLS.map((g) => (
-              <div
-                key={g.layer}
-                data-layer-row
-                className="grid gap-4 border-b border-rule py-7 md:grid-cols-[13rem_1fr] lg:grid-cols-1"
-              >
-                <h3
-                  data-reveal
-                  className="flex items-center gap-2.5 self-start font-semibold"
-                >
-                  <span
-                    className="size-2.5"
-                    style={{ background: LAYER_VAR[g.layer] }}
-                    aria-hidden
-                  />
-                  {g.title[lang]}
-                </h3>
-                <ul data-reveal-group className="grid gap-6 sm:grid-cols-3">
-                  {g.items.map((s) => (
-                    <li key={s.name}>
-                      {/* Hauteur fixe, même sans logo : les noms restent alignés
-                        d'une colonne à l'autre. */}
-                      <p className="mb-2.5 flex h-4.5 items-center gap-2.5 text-ink-2">
-                        {s.icons?.map((slug) => (
-                          <BrandIcon
-                            key={slug}
-                            slug={slug}
-                            className="size-4.5"
-                          />
-                        ))}
-                      </p>
-                      <p className="font-semibold">{s.name}</p>
-                      <p className="mt-1 text-sm text-ink-2">
-                        {s.detail[lang]}
-                      </p>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            ))}
-          </div>
-          <div aria-hidden className="hidden lg:block">
+        <div>
+          {SKILLS.map((g) => (
             <div
-              data-scene="skills"
-              className="sticky top-[calc(50svh-11rem)] h-[26rem]"
-            />
-          </div>
+              key={g.layer}
+              className="relative grid gap-4 py-7 md:grid-cols-[13rem_1fr]"
+            >
+              {/* Le filet de chaque couche est tracé dans sa teinte (ScrollMotion). */}
+              <span
+                data-rule
+                aria-hidden
+                className="absolute inset-x-0 bottom-0 h-px origin-left"
+                style={{ background: LAYER_VAR[g.layer] }}
+              />
+              <h3
+                data-reveal
+                className="flex items-center gap-2.5 self-start font-semibold"
+              >
+                <span
+                  className="size-2.5"
+                  style={{ background: LAYER_VAR[g.layer] }}
+                  aria-hidden
+                />
+                {g.title[lang]}
+              </h3>
+              <ul data-reveal-group className="grid gap-6 sm:grid-cols-3">
+                {g.items.map((s) => (
+                  <li key={s.name}>
+                    {/* Hauteur fixe, même sans logo : les noms restent alignés
+                        d'une colonne à l'autre. */}
+                    <p
+                      data-pop
+                      className="mb-2.5 flex h-4.5 items-center gap-2.5 text-ink-2"
+                    >
+                      {s.icons?.map((slug) => (
+                        <BrandIcon
+                          key={slug}
+                          slug={slug}
+                          className="size-4.5"
+                        />
+                      ))}
+                    </p>
+                    <p className="font-semibold">{s.name}</p>
+                    <p className="mt-1 text-sm text-ink-2">{s.detail[lang]}</p>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))}
         </div>
       </section>
 
@@ -186,9 +189,7 @@ export default function HomePage({ lang }: { lang: Lang }) {
               {t.blog.all}
             </Link>
           </SectionHead>
-          <div data-reveal>
-            <PostList posts={posts} lang={lang} />
-          </div>
+          <PostList posts={posts} lang={lang} />
         </section>
       )}
 
@@ -222,12 +223,6 @@ export default function HomePage({ lang }: { lang: Lang }) {
                 </a>
               </p>
             </div>
-            {/* La pile s'y replie en une seule plaque. */}
-            <div
-              data-scene="contact"
-              aria-hidden
-              className="mt-12 hidden h-56 lg:block"
-            />
           </div>
           <div data-reveal>
             <ContactForm lang={lang} t={t.contact} />

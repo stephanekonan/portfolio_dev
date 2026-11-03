@@ -16,7 +16,7 @@ export default function SectionHead({
       <span data-rule aria-hidden className="absolute inset-x-0 top-0 h-px origin-left bg-ink" />
       <div>
         {index && (
-          <p data-reveal aria-hidden className="mb-3 font-mono text-xs text-ink-2">
+          <p data-scramble-in aria-hidden className="mb-3 font-mono text-xs text-ink-2">
             {index}
           </p>
         )}
