@@ -37,18 +37,20 @@ export default function HomePage({ lang }: { lang: Lang }) {
     <>
       <ScrollMotion />
 
-      {/* L'ouverture tient dans l'écran, sous l'en-tête de 3,5 rem. */}
-      <section className="mx-auto flex max-w-304 flex-col px-4 pt-12 pb-16 sm:px-8 md:pt-16 lg:min-h-[calc(100svh-3.5rem)]">
+      {/* L'ouverture tient dans l'écran, sous l'en-tête de 3,5 rem. Sur grand
+          écran, la pile 3D en couvre tout le fond et l'ouverture est épinglée
+          le temps de sa chorégraphie (StackScene). */}
+      <section className="relative mx-auto flex max-w-304 flex-col px-4 pt-12 pb-16 sm:px-8 md:pt-16 lg:h-[calc(100svh-3.5rem)] lg:min-h-[38rem]">
         <h1
           data-hero-name
-          className="text-[min(calc((100vw-4rem)/8.4),8.6rem)] leading-[0.84] font-extrabold uppercase"
+          className="relative z-10 text-[min(calc((100vw-4rem)/8.4),8.6rem)] leading-[0.84] font-extrabold uppercase"
         >
           <span className="name-unfold block">Stéphane</span>
           <span className="name-unfold second block">Konan</span>
         </h1>
 
         <div className="mt-10 grid flex-1 grid-cols-1 items-end gap-6 lg:mt-6 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.1fr)]">
-          <div className="space-y-8 lg:pb-6">
+          <div data-hero-text className="relative z-10 space-y-8 lg:pb-6">
             <div>
               <p className="text-xl font-semibold">{t.hero.role}</p>
               <p className="mt-3 max-w-[46ch] text-lg text-ink-2">
@@ -69,7 +71,7 @@ export default function HomePage({ lang }: { lang: Lang }) {
               </div>
             </div>
           </div>
-          <div className="-order-1 h-[20rem] sm:h-[26rem] lg:order-none lg:h-full lg:min-h-[26rem]">
+          <div className="-order-1 h-[20rem] sm:h-[26rem] lg:absolute lg:inset-0 lg:order-none lg:h-auto">
             <StackScene
               layers={SKILLS.map((g) => ({ layer: g.layer, label: t.hero.layers[g.layer] }))}
             />
@@ -99,9 +101,7 @@ export default function HomePage({ lang }: { lang: Lang }) {
 
       <section id="projets" className="mx-auto max-w-304 px-4 pb-28 sm:px-8">
         <SectionHead title={t.work.title} lead={t.work.lead} />
-        <div data-reveal>
-          <ProjectIndex projects={PROJECTS} lang={lang} t={t.work} />
-        </div>
+        <ProjectIndex projects={PROJECTS} lang={lang} t={t.work} />
       </section>
 
       <section

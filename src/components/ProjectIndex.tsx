@@ -23,7 +23,7 @@ export default function ProjectIndex({ projects, lang, t }: Props) {
         <span>{t.columns.stack}</span>
         <span />
       </div>
-      <ul>
+      <ul data-reveal-group>
         {projects.map((p) => {
           const isOpen = open === p.name;
           const id = `project-${p.name.replace(/\W+/g, "-").toLowerCase()}`;

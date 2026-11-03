@@ -59,8 +59,8 @@ export default function CareerTrace({ spans, axis, now, lang, t }: Props) {
       </div>
 
       <div className="relative">
-        <ol>
-          {spans.map((s, i) => {
+        <ol data-grow-list>
+          {spans.map((s) => {
             const start = months(s.start);
             const end = s.end ? months(s.end) : months(now);
             const left = x(start);
@@ -81,12 +81,11 @@ export default function CareerTrace({ spans, axis, now, lang, t }: Props) {
                     <span className="text-xs text-ink-2">{t.kinds[s.kind]}</span>
                   </span>
                   <span className="relative block h-4">
-                    <motion.span
+                    {/* Pousse à son arrivée à l'écran (ScrollMotion). */}
+                    <span
+                      data-grow
                       className="absolute inset-y-0 origin-left"
                       style={{ left: `${left}%`, width: `${width}%`, ...KIND_STYLE[s.kind] }}
-                      initial={reduce ? false : { scaleX: 0 }}
-                      animate={{ scaleX: 1 }}
-                      transition={{ delay: 0.9 + i * 0.09, duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
                       aria-hidden
                     />
                     {ongoing && (
