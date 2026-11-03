@@ -78,7 +78,7 @@ export default function Header({ lang, t }: Props) {
     <Link
       href={counterpart(pathname, lang)}
       hrefLang={lang === "fr" ? "en" : "fr"}
-      className="text-sm font-semibold hover:underline"
+      className="chip hover:bg-paper"
     >
       {t.nav.switchTo}
     </Link>
@@ -124,7 +124,7 @@ export default function Header({ lang, t }: Props) {
             aria-expanded={open}
             aria-controls="menu-mobile"
             aria-label={open ? t.nav.close : t.nav.open}
-            className="-mr-2 grid size-10 place-items-center"
+            className="-mr-1 grid size-10 place-items-center rounded-full border-2 border-ink"
           >
             <AnimatePresence mode="wait" initial={false}>
               <motion.span

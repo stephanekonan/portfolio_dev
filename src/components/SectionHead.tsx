@@ -15,7 +15,7 @@ export default function SectionHead({
       <div>
         {index && (
           <p className="mb-5">
-            <span data-scramble-in aria-hidden className="chip chip-signal font-mono">
+            <span data-scramble-in aria-hidden className="chip font-mono">
               {index}
             </span>
           </p>

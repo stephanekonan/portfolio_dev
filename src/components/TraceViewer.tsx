@@ -7,30 +7,13 @@ import {
   useState,
 } from "react";
 
-import {
-  Lock,
-  LockOpen,
-  Play,
-  RotateCcw,
-  Wifi,
-  WifiOff,
-} from "lucide-react";
-import {
-  AnimatePresence,
-  motion,
-  useReducedMotion,
-} from "motion/react";
+import { Lock, LockOpen, Play, RotateCcw, Wifi, WifiOff } from "lucide-react";
+import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 
 import { EASE, loadGsap } from "@/lib/motion";
 import type { T } from "@/data/career";
-import type {
-  ProductTrace,
-  Span,
-} from "@/data/traces";
-import type {
-  Lang,
-  Ui,
-} from "@/i18n/ui";
+import type { ProductTrace, Span } from "@/data/traces";
+import type { Lang, Ui } from "@/i18n/ui";
 
 type Phase = "idle" | "running" | "waiting" | "done";
 
@@ -40,7 +23,8 @@ const GAP = 120;
 const RATE = 0.14;
 
 /** Lien unique, ou un lien par langue pour un site cible bilingue. */
-const link = (href: string | T, lang: Lang) => (typeof href === "string" ? href : href[lang]);
+const link = (href: string | T, lang: Lang) =>
+  typeof href === "string" ? href : href[lang];
 
 const LAYER_VAR: Record<Span["layer"], string> = {
   web: "var(--layer-web)",
@@ -63,8 +47,12 @@ export default function TraceViewer({ traces, lang, t }: Props) {
 
   // L'indicateur d'onglet glisse vers l'onglet choisi (GSAP Flip) : son
   // état est relevé avant le changement, rejoué après le rendu.
-  const flip = useRef<Awaited<ReturnType<typeof loadGsap>>["Flip"] | null>(null);
-  const flipState = useRef<ReturnType<NonNullable<typeof flip.current>["getState"]> | null>(null);
+  const flip = useRef<Awaited<ReturnType<typeof loadGsap>>["Flip"] | null>(
+    null,
+  );
+  const flipState = useRef<ReturnType<
+    NonNullable<typeof flip.current>["getState"]
+  > | null>(null);
   useEffect(() => {
     loadGsap().then(({ Flip }) => (flip.current = Flip));
   }, []);
@@ -72,12 +60,19 @@ export default function TraceViewer({ traces, lang, t }: Props) {
     const state = flipState.current;
     flipState.current = null;
     if (!state || !flip.current || reduce) return;
-    flip.current.from(state, { targets: "[data-flip-id='trace-tab']", duration: 0.5, ease: EASE.out });
+    flip.current.from(state, {
+      targets: "[data-flip-id='trace-tab']",
+      duration: 0.5,
+      ease: EASE.out,
+    });
   }, [active, reduce]);
   const spans = trace.spans;
   const gap = trace.gap;
   const end = Math.max(...spans.map((s) => s.start + s.duration));
-  const gapAt = Math.min(...spans.filter((s) => s.afterGap).map((s) => s.start), end);
+  const gapAt = Math.min(
+    ...spans.filter((s) => s.afterGap).map((s) => s.start),
+    end,
+  );
 
   const [phase, setPhase] = useState<Phase>("idle");
   const [time, setTime] = useState(0);
@@ -107,7 +102,8 @@ export default function TraceViewer({ traces, lang, t }: Props) {
 
   const switchTrace = (index: number) => {
     if (index === active) return;
-    if (flip.current) flipState.current = flip.current.getState("[data-flip-id='trace-tab']");
+    if (flip.current)
+      flipState.current = flip.current.getState("[data-flip-id='trace-tab']");
     setActive(index);
     setGapOn(false);
     setSelected(traces[index].spans[0].id);
@@ -163,9 +159,14 @@ export default function TraceViewer({ traces, lang, t }: Props) {
 
   useEffect(() => {
     if (phase !== "waiting") return;
-    const id = setInterval(() => setWaited(performance.now() - waitStartRef.current), 100);
+    const id = setInterval(
+      () => setWaited(performance.now() - waitStartRef.current),
+      100,
+    );
     // Sans bouton pour lever l'attente (verrou), elle se lève d'elle-même.
-    const auto = gap?.autoResumeMs ? setTimeout(resume, reduce ? 600 : gap.autoResumeMs) : undefined;
+    const auto = gap?.autoResumeMs
+      ? setTimeout(resume, reduce ? 600 : gap.autoResumeMs)
+      : undefined;
     return () => {
       clearInterval(id);
       clearTimeout(auto);
@@ -177,12 +178,15 @@ export default function TraceViewer({ traces, lang, t }: Props) {
   const gapReserved = Boolean(gap) && (gapOn || gapUsed);
   const total = end + (gapReserved ? GAP : 0);
   const pct = (ms: number) => `${(ms / total) * 100}%`;
-  const crosses = (s: Span) => gapReserved && s.start < gapAt && s.start + s.duration > gapAt;
+  const crosses = (s: Span) =>
+    gapReserved && s.start < gapAt && s.start + s.duration > gapAt;
   const pos = (s: Span) => s.start + (s.afterGap && gapReserved ? GAP : 0);
   const width = (s: Span) => s.duration + (crosses(s) ? GAP : 0);
   const toVisual = (ms: number) => (gapReserved && ms > gapAt ? ms + GAP : ms);
   const fill = (s: Span) =>
-    phase === "idle" ? 0 : Math.min(1, Math.max(0, (toVisual(time) - pos(s)) / width(s)));
+    phase === "idle"
+      ? 0
+      : Math.min(1, Math.max(0, (toVisual(time) - pos(s)) / width(s)));
 
   const current = spans.find((s) => s.id === selected) ?? spans[0];
   const seconds = (waited / 1000).toLocaleString(lang, {
@@ -201,13 +205,28 @@ export default function TraceViewer({ traces, lang, t }: Props) {
           : trace.done[lang]
         : "";
 
-  const GapIcon = gap?.icon === "lock" ? (gapOn || phase === "waiting" ? Lock : LockOpen) : gapOn || phase === "waiting" ? WifiOff : Wifi;
+  const GapIcon =
+    gap?.icon === "lock"
+      ? gapOn || phase === "waiting"
+        ? Lock
+        : LockOpen
+      : gapOn || phase === "waiting"
+        ? WifiOff
+        : Wifi;
   const gapButtonLabel =
-    phase === "waiting" && gap?.release ? gap.release[lang] : gap?.release && gapOn ? gap.release[lang] : gap?.trigger[lang];
+    phase === "waiting" && gap?.release
+      ? gap.release[lang]
+      : gap?.release && gapOn
+        ? gap.release[lang]
+        : gap?.trigger[lang];
 
   return (
     <div>
-      <div role="tablist" aria-label={t.tabsLabel} className="flex max-w-full overflow-x-auto border border-rule bg-raised p-1 scrollbar-none sm:inline-flex">
+      <div
+        role="tablist"
+        aria-label={t.tabsLabel}
+        className="flex max-w-full scrollbar-none overflow-x-auto rounded-full border-2 border-ink bg-raised p-1 sm:inline-flex"
+      >
         {traces.map((tr, i) => (
           <button
             key={tr.id}
@@ -216,18 +235,30 @@ export default function TraceViewer({ traces, lang, t }: Props) {
             aria-selected={i === active}
             aria-controls={`panel-${tr.id}`}
             onClick={() => switchTrace(i)}
-            className="relative flex-1 whitespace-nowrap px-5 py-2 text-sm font-semibold sm:flex-none"
+            className="relative flex-1 rounded-full px-5 py-2 text-sm font-semibold whitespace-nowrap sm:flex-none"
           >
             {i === active && (
-              <span data-flip-id="trace-tab" className="absolute inset-0 bg-ink" />
+              <span
+                data-flip-id="trace-tab"
+                className="absolute inset-0 rounded-full bg-ink"
+              />
             )}
-            <span className={`relative ${i === active ? "text-paper" : "text-ink-2"}`}>{tr.product}</span>
+            <span
+              className={`relative ${i === active ? "text-paper" : "text-ink-2"}`}
+            >
+              {tr.product}
+            </span>
           </button>
         ))}
       </div>
 
-      <div role="tabpanel" id={`panel-${trace.id}`} aria-labelledby={`tab-${trace.id}`} className="mt-10">
-        <h3 className="font-display text-xl font-bold leading-tight font-stretch-108% sm:text-2xl sm:font-stretch-112%">
+      <div
+        role="tabpanel"
+        id={`panel-${trace.id}`}
+        aria-labelledby={`tab-${trace.id}`}
+        className="mt-10"
+      >
+        <h3 className="font-display text-xl leading-tight font-bold font-stretch-108% sm:text-2xl sm:font-stretch-112%">
           {trace.scenario[lang]}
         </h3>
         <p className="mt-4 max-w-[62ch] text-ink-2">{trace.pitch[lang]}</p>
@@ -237,11 +268,7 @@ export default function TraceViewer({ traces, lang, t }: Props) {
               onClick={toggleGap}
               aria-pressed={gapOn}
               disabled={phase === "waiting" && !gap.release}
-              className={`inline-flex items-center gap-2 border px-4 py-2.5 text-sm font-semibold transition-colors disabled:cursor-wait ${
-                gapOn || phase === "waiting"
-                  ? "border-signal bg-signal text-[#0f1012]"
-                  : "border-ink text-ink hover:bg-raised"
-              }`}
+              className={`btn btn-sm disabled:cursor-wait ${gapOn || phase === "waiting" ? "btn-primary" : ""}`}
             >
               <GapIcon className="size-4" aria-hidden />
               {gapButtonLabel}
@@ -250,9 +277,13 @@ export default function TraceViewer({ traces, lang, t }: Props) {
           <button
             onClick={() => restart("running")}
             disabled={phase === "running" || phase === "waiting"}
-            className="inline-flex items-center gap-2 bg-ink px-4 py-2.5 text-sm font-semibold text-paper transition-opacity disabled:opacity-40"
+            className="btn btn-sm bg-ink text-paper"
           >
-            {phase === "done" ? <RotateCcw className="size-4" aria-hidden /> : <Play className="size-4" aria-hidden />}
+            {phase === "done" ? (
+              <RotateCcw className="size-4" aria-hidden />
+            ) : (
+              <Play className="size-4" aria-hidden />
+            )}
             {phase === "done" ? t.replay : t.play}
           </button>
         </div>
@@ -264,8 +295,10 @@ export default function TraceViewer({ traces, lang, t }: Props) {
               {ticks.map((v) => (
                 <span
                   key={v}
-                  className="absolute top-1.5 -translate-x-1/2 whitespace-nowrap font-mono text-[11px] text-ink-2 first:translate-x-0 last:-translate-x-full"
-                  style={{ left: pct(v + (gapReserved && v >= gapAt ? GAP : 0)) }}
+                  className="absolute top-1.5 -translate-x-1/2 font-mono text-[11px] whitespace-nowrap text-ink-2 first:translate-x-0 last:-translate-x-full"
+                  style={{
+                    left: pct(v + (gapReserved && v >= gapAt ? GAP : 0)),
+                  }}
                 >
                   {v} ms
                 </span>
@@ -284,7 +317,7 @@ export default function TraceViewer({ traces, lang, t }: Props) {
                     <button
                       onClick={() => setSelected(s.id)}
                       aria-pressed={isSel}
-                      className={`grid w-full grid-cols-1 items-center gap-1 border-b border-rule py-2.5 text-left transition-colors md:grid-cols-[20rem_1fr] md:gap-0 ${
+                      className={`grid w-full grid-cols-1 items-center gap-1 rounded-xl py-2.5 text-left transition-colors md:grid-cols-[20rem_1fr] md:gap-0 ${
                         isSel ? "bg-raised" : "hover:bg-raised/60"
                       }`}
                     >
@@ -292,8 +325,17 @@ export default function TraceViewer({ traces, lang, t }: Props) {
                         className="flex min-w-0 items-center gap-2 pr-4"
                         style={{ paddingLeft: `${s.depth * 0.75 + 0.5}rem` }}
                       >
-                        <span className="size-2 shrink-0" style={{ background: LAYER_VAR[s.layer] }} aria-hidden />
-                        <span className="truncate font-mono text-[13px]" title={s.name}>{s.name}</span>
+                        <span
+                          className="size-2 shrink-0 rounded-full"
+                          style={{ background: LAYER_VAR[s.layer] }}
+                          aria-hidden
+                        />
+                        <span
+                          className="truncate font-mono text-[13px]"
+                          title={s.name}
+                        >
+                          {s.name}
+                        </span>
                       </span>
                       <span className="relative mx-2 block h-5 md:mx-0">
                         {/* Sur mobile, le nom occupe sa propre ligne : l'attente
@@ -301,18 +343,22 @@ export default function TraceViewer({ traces, lang, t }: Props) {
                             qui recouvrirait les noms. */}
                         {gapReserved && (
                           <span
-                            className={`absolute inset-y-0 border-x border-dashed border-signal md:hidden ${gapActive ? "hatch" : ""}`}
+                            className={`absolute inset-y-0 rounded-full border border-dashed border-signal md:hidden ${gapActive ? "hatch" : ""}`}
                             style={{ left: pct(gapAt), width: pct(GAP) }}
                             aria-hidden
                           />
                         )}
                         <span
-                          className="absolute inset-y-0 border border-dashed"
-                          style={{ left: pct(pos(s)), width: pct(width(s)), borderColor: "var(--rule)" }}
+                          className="absolute inset-y-0 rounded-full border border-dashed"
+                          style={{
+                            left: pct(pos(s)),
+                            width: pct(width(s)),
+                            borderColor: "var(--rule)",
+                          }}
                           aria-hidden
                         />
                         <span
-                          className="absolute inset-y-0 origin-left"
+                          className="absolute inset-y-0 origin-left rounded-full"
                           style={{
                             left: pct(pos(s)),
                             width: pct(width(s)),
@@ -324,7 +370,7 @@ export default function TraceViewer({ traces, lang, t }: Props) {
                         {/* Près du bord droit, la durée passe avant la barre
                             pour ne pas déborder du conteneur. */}
                         <span
-                          className={`absolute top-0.5 whitespace-nowrap font-mono text-[11px] text-ink-2 transition-opacity ${nearEnd ? "pr-2" : "pl-2"}`}
+                          className={`absolute top-0.5 font-mono text-[11px] whitespace-nowrap text-ink-2 transition-opacity ${nearEnd ? "pr-2" : "pl-2"}`}
                           style={{
                             ...(nearEnd
                               ? { right: `calc(100% - ${pct(pos(s))})` }
@@ -342,11 +388,11 @@ export default function TraceViewer({ traces, lang, t }: Props) {
             </ol>
 
             {gapReserved && gap && (
-              <div className="pointer-events-none absolute inset-y-0 left-0 right-0 hidden md:grid md:grid-cols-[20rem_1fr]">
+              <div className="pointer-events-none absolute inset-y-0 right-0 left-0 hidden md:grid md:grid-cols-[20rem_1fr]">
                 <div />
                 <div className="relative">
                   <div
-                    className="absolute inset-y-0 border-x border-dashed border-signal"
+                    className="absolute inset-y-0 overflow-hidden rounded-2xl border border-dashed border-signal"
                     style={{ left: pct(gapAt), width: pct(GAP) }}
                   >
                     {gapActive && (
@@ -354,10 +400,13 @@ export default function TraceViewer({ traces, lang, t }: Props) {
                         className="hatch absolute inset-0 origin-left"
                         initial={{ scaleX: reduce ? 1 : 0 }}
                         animate={{ scaleX: 1 }}
-                        transition={{ duration: reduce ? 0 : 1.2, ease: [0.22, 1, 0.36, 1] }}
+                        transition={{
+                          duration: reduce ? 0 : 1.2,
+                          ease: [0.22, 1, 0.36, 1],
+                        }}
                       />
                     )}
-                    <span className="absolute left-1/2 top-2 max-w-[95%] -translate-x-1/2 truncate bg-paper px-1.5 text-[11px] font-semibold">
+                    <span className="absolute top-2 left-1/2 max-w-[95%] -translate-x-1/2 truncate rounded-full bg-paper px-2 text-[11px] font-semibold">
                       {gap.label[lang]}
                       {gapActive && waited > 0 ? ` ${seconds} s` : ""}
                     </span>
@@ -380,7 +429,10 @@ export default function TraceViewer({ traces, lang, t }: Props) {
                 {/* Compteur visuel seulement : annoncé toutes les 100 ms, il
                     saturerait les lecteurs d'écran. */}
                 {phase === "waiting" && waited > 0 && (
-                  <span aria-hidden className="ml-2 font-normal text-ink-2 md:hidden">
+                  <span
+                    aria-hidden
+                    className="ml-2 font-normal text-ink-2 md:hidden"
+                  >
                     {seconds} s
                   </span>
                 )}
@@ -401,8 +453,13 @@ export default function TraceViewer({ traces, lang, t }: Props) {
               className="min-w-0"
             >
               <p className="flex flex-wrap items-center gap-x-3 gap-y-1">
-                <span className="break-all font-mono text-sm font-semibold">{current.name}</span>
-                <span className="text-xs font-semibold" style={{ color: LAYER_VAR[current.layer] }}>
+                <span className="font-mono text-sm font-semibold break-all">
+                  {current.name}
+                </span>
+                <span
+                  className="text-xs font-semibold"
+                  style={{ color: LAYER_VAR[current.layer] }}
+                >
                   {t.layers[current.layer]}
                 </span>
               </p>
@@ -410,14 +467,16 @@ export default function TraceViewer({ traces, lang, t }: Props) {
                 <p className="max-w-[60ch]">{current.what[lang]}</p>
                 <p className="max-w-[60ch] text-ink-2">{current.why[lang]}</p>
               </div>
-              <p className="mt-4 break-all font-mono text-xs text-ink-2">{current.where}</p>
+              <p className="mt-4 font-mono text-xs break-all text-ink-2">
+                {current.where}
+              </p>
             </motion.div>
           </AnimatePresence>
         </div>
 
         <div className="mt-16 grid gap-10 lg:grid-cols-[minmax(0,1.15fr)_minmax(0,1fr)]">
           <figure className="min-w-0">
-            <div className="overflow-hidden border border-rule bg-raised">
+            <div className="overflow-hidden rounded-[1.25rem] border-2 border-ink bg-raised">
               {/* eslint-disable-next-line @next/next/no-img-element -- captures statiques déjà dimensionnées */}
               <img
                 src={trace.image.src}
@@ -429,7 +488,12 @@ export default function TraceViewer({ traces, lang, t }: Props) {
             <figcaption className="mt-3 flex flex-wrap items-center justify-between gap-2 text-sm text-ink-2">
               <span>{trace.image.alt[lang]}</span>
               {trace.href ? (
-                <a href={link(trace.href, lang)} target="_blank" rel="noopener" className="font-semibold text-ink underline">
+                <a
+                  href={link(trace.href, lang)}
+                  target="_blank"
+                  rel="noopener"
+                  className="font-semibold text-ink underline"
+                >
                   {t.visit}
                 </a>
               ) : (
@@ -442,11 +506,18 @@ export default function TraceViewer({ traces, lang, t }: Props) {
             <p className="text-sm font-semibold text-ink-2">{t.figures}</p>
             <dl className="mt-3 grid grid-cols-2 border-t border-ink">
               {trace.figures.map((f) => (
-                <div key={f.label.fr} className="border-b border-rule py-3 pr-3">
+                <div
+                  key={f.label.fr}
+                  className="border-b border-rule py-3 pr-3"
+                >
                   <dt className="sr-only">{f.label[lang]}</dt>
                   <dd>
-                    <span className="font-display text-xl font-bold font-stretch-140%">{f.value}</span>
-                    <span className="mt-0.5 block text-sm text-ink-2">{f.label[lang]}</span>
+                    <span className="font-display text-xl font-bold font-stretch-140%">
+                      {f.value}
+                    </span>
+                    <span className="mt-0.5 block text-sm text-ink-2">
+                      {f.label[lang]}
+                    </span>
                   </dd>
                 </div>
               ))}
@@ -456,15 +527,29 @@ export default function TraceViewer({ traces, lang, t }: Props) {
 
         <div className="mt-12">
           <p className="text-sm font-semibold text-ink-2">{t.surfaces}</p>
-          <ul className={`mt-3 grid gap-8 ${trace.surfaces.length === 2 ? "md:grid-cols-2" : "md:grid-cols-3"}`}>
+          <ul
+            className={`mt-3 grid gap-8 ${trace.surfaces.length === 2 ? "md:grid-cols-2" : "md:grid-cols-3"}`}
+          >
             {trace.surfaces.map((s) => (
-              <li key={s.layer} className="border-t-2 pt-4" style={{ borderColor: LAYER_VAR[s.layer] }}>
-                <p className="text-xs font-semibold" style={{ color: LAYER_VAR[s.layer] }}>
+              <li
+                key={s.layer}
+                className="border-t-2 pt-4"
+                style={{ borderColor: LAYER_VAR[s.layer] }}
+              >
+                <p
+                  className="text-xs font-semibold"
+                  style={{ color: LAYER_VAR[s.layer] }}
+                >
                   {t.layers[s.layer]}
                 </p>
                 <h4 className="mt-1 text-lg font-semibold">
                   {s.href ? (
-                    <a href={link(s.href, lang)} target="_blank" rel="noopener" className="hover:underline">
+                    <a
+                      href={link(s.href, lang)}
+                      target="_blank"
+                      rel="noopener"
+                      className="hover:underline"
+                    >
                       {s.title[lang]}
                     </a>
                   ) : (

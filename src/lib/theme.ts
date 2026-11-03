@@ -39,7 +39,7 @@ export function subscribeTheme(callback: () => void) {
   };
 }
 
-const PAPER = { light: "#eceee8", dark: "#0f1012" };
+const PAPER = { light: "#f5efe6", dark: "#14110e" };
 
 function apply(theme: Theme) {
   const root = document.documentElement;

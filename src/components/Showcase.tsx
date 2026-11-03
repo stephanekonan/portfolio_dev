@@ -13,13 +13,6 @@ interface Props {
   t: Ui["showcase"];
 }
 
-/** Teinte de la pastille de chaque produit. */
-const TINT: Record<ProductTrace["id"], string> = {
-  resi: "var(--layer-web)",
-  wadibu: "var(--signal)",
-  aboutik: "var(--go)",
-};
-
 /**
  * Les trois produits phares en grandes cartes. Grand écran : la rangée
  * reste en place et les cartes défilent à l'horizontale au rythme du
@@ -111,14 +104,7 @@ export default function Showcase({ products, lang, t }: Props) {
               </div>
               <div className="flex flex-1 flex-col gap-3 p-6 sm:p-7">
                 <p className="flex flex-wrap items-center gap-2">
-                  <span className="chip">
-                    <span
-                      className="size-2 rounded-full"
-                      style={{ background: TINT[p.id] }}
-                      aria-hidden
-                    />
-                    0{i + 1}
-                  </span>
+                  <span className="chip">0{i + 1}</span>
                   <span className="chip">{t.kinds[p.id]}</span>
                 </p>
                 <h3 className="font-display text-2xl font-bold tracking-tight sm:text-3xl">

@@ -21,7 +21,7 @@ const months = (ym: string) => {
 
 const KIND_STYLE: Record<CareerSpan["kind"], React.CSSProperties> = {
   job: { background: "var(--layer-career)" },
-  project: { background: "var(--layer-api)" },
+  project: { background: "var(--signal)" },
   study: {
     background: "transparent",
     boxShadow: "inset 0 0 0 1.5px var(--layer-career)",
@@ -78,7 +78,7 @@ export default function CareerTrace({ spans, axis, now, lang, t }: Props) {
           <div className="relative">
             <span
               data-time-cursor
-              className="absolute inset-y-0 left-0 w-0.5 bg-signal opacity-0"
+              className="absolute inset-y-0 left-0 w-1 rounded-full bg-ink opacity-0"
             />
           </div>
         </div>
@@ -108,7 +108,7 @@ export default function CareerTrace({ spans, axis, now, lang, t }: Props) {
                   <span className="relative block h-4">
                     <span
                       data-grow
-                      className="absolute inset-y-0 origin-left"
+                      className="absolute inset-y-0 origin-left rounded-full"
                       style={{
                         left: `${left}%`,
                         width: `${width}%`,

@@ -267,7 +267,7 @@ export default function ScrollMotion() {
     <div
       ref={bar}
       aria-hidden
-      className="fixed inset-x-0 top-0 z-50 h-1 origin-left scale-x-0 bg-signal"
+      className="fixed inset-x-0 top-0 z-50 h-1 origin-left scale-x-0 rounded-r-full bg-signal"
     />
   );
 }

@@ -9,6 +9,10 @@ import { SKILLS } from "@/data/skills";
 import { TRACES } from "@/data/traces";
 import { base, CONTACT, type Lang, ui } from "@/i18n/ui";
 import { getPosts } from "@/lib/blog";
+// Importée, la photo est servie sous une adresse qui porte son empreinte :
+// une nouvelle photo change d'adresse, ni le service worker ni l'optimiseur
+// d'images ne peuvent resservir l'ancienne.
+import me from "../../public/me-small.png";
 
 import BrandIcon from "./BrandIcon";
 import CareerTrace from "./CareerTrace";
@@ -21,14 +25,6 @@ import ProjectIndex from "./ProjectIndex";
 import SectionHead from "./SectionHead";
 import Showcase from "./Showcase";
 import TraceViewer from "./TraceViewer";
-
-const LAYER_VAR = {
-  web: "var(--layer-web)",
-  mobile: "var(--layer-mobile)",
-  api: "var(--layer-api)",
-  infra: "var(--layer-infra)",
-  data: "var(--layer-data)",
-} as const;
 
 /** Mois courant au moment du build, partagé par le rendu serveur et l'hydratation. */
 const NOW = new Date().toISOString().slice(0, 7);
@@ -52,7 +48,7 @@ export default function HomePage({ lang }: { lang: Lang }) {
         <div data-hero-text className="relative z-10">
           <p className="flex items-center gap-3">
             <Image
-              src="/me-small.png"
+              src={me}
               alt=""
               width={48}
               height={48}
@@ -156,8 +152,7 @@ export default function HomePage({ lang }: { lang: Lang }) {
                 <div>
                   <h3 className="flex items-center gap-3 font-display text-xl font-bold">
                     <span
-                      className="size-3.5 rounded-full border-2 border-ink"
-                      style={{ background: LAYER_VAR[g.layer] }}
+                      className="size-3 rounded-full bg-signal"
                       aria-hidden
                     />
                     {t.hero.layers[g.layer]}
@@ -240,7 +235,7 @@ export default function HomePage({ lang }: { lang: Lang }) {
       )}
 
       <section id="contact" className="mx-auto max-w-304 px-4 pb-24 sm:px-8">
-        <div className="card grid gap-12 bg-signal p-6 text-[#17130f] sm:p-10 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.1fr)] lg:p-14">
+        <div className="card grid gap-12 bg-ink p-6 text-paper sm:p-10 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.1fr)] lg:p-14">
           <div>
             <h2
               data-split
@@ -272,7 +267,7 @@ export default function HomePage({ lang }: { lang: Lang }) {
           </div>
           <div
             data-reveal
-            className="rounded-[1.25rem] border-2 border-ink bg-raised p-6 text-ink sm:p-8"
+            className="rounded-[1.25rem] border-2 border-paper bg-raised p-6 text-ink sm:p-8"
           >
             <ContactForm lang={lang} t={t.contact} />
           </div>

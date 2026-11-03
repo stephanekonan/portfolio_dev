@@ -272,7 +272,7 @@ export default function ProjectIndex({ projects, lang, t }: Props) {
         ref={card}
         aria-hidden
         style={{ visibility: "hidden" }}
-        className="pointer-events-none fixed top-0 left-0 z-30 hidden aspect-[16/10] w-72 lg:block"
+        className="pointer-events-none fixed top-0 left-0 z-30 hidden aspect-[16/10] w-72 overflow-hidden rounded-2xl border-2 border-ink lg:block"
       />
       <ul ref={list} data-reveal-group>
         {projects.map((p) => {
@@ -340,7 +340,7 @@ export default function ProjectIndex({ projects, lang, t }: Props) {
                         )}
                       </div>
                       <div
-                        className={`overflow-hidden border border-rule bg-raised ${
+                        className={`overflow-hidden rounded-[1.25rem] border-2 border-ink bg-raised ${
                           p.portrait ? "flex h-80 justify-center" : ""
                         }`}
                       >

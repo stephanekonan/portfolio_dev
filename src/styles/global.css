@@ -171,6 +171,23 @@ h3 {
   text-wrap: balance;
 }
 
+/* Tout ce qui se touche le montre. Tailwind 4 a retiré le pointeur des
+   boutons : on le remet, dans la couche de base pour qu'un utilitaire
+   (`cursor-wait`…) passe devant. */
+@layer base {
+  button,
+  [role="button"],
+  [role="tab"],
+  summary,
+  select,
+  label:has(> input[type="checkbox"]) {
+    cursor: pointer;
+  }
+  button:disabled {
+    cursor: not-allowed;
+  }
+}
+
 ::selection {
   background: var(--signal);
   color: #17130f;
@@ -394,6 +411,10 @@ html[data-network="offline"] body {
   background: none;
   border: 0;
   padding: 0;
+}
+.prose-article img {
+  border-radius: 1rem;
+  border: 2px solid var(--ink);
 }
 .prose-article blockquote {
   border-left: 3px solid var(--signal);

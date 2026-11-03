@@ -294,7 +294,7 @@ function drawScreen(
  * à mesure qu'on défile : le panier et le bouton « Commander », le paiement
  * par Wave, le livreur en route, la commande livrée. Grand écran :
  * l'ouverture est épinglée le temps de l'histoire. Autour flottent un colis,
- * une bille orange et un anneau vert. On peut le faire tourner à la main
+ * une bille orange et un anneau d'encre. On peut le faire tourner à la main
  * (Draggable + Inertia). Mouvement réduit : le panier, immobile.
  */
 export default function PhoneScene({ t }: { t: Phone }) {
@@ -415,7 +415,7 @@ export default function PhoneScene({ t }: { t: Phone }) {
         // La police du texte du site, telle que next/font l'a nommée.
         colors.family = getComputedStyle(document.body).fontFamily;
         ballMat.color.set(colors.signal);
-        ringMat.color.set(colors.go);
+        ringMat.color.set(colors.ink);
         dirty = true;
       };
       let dirty = true;

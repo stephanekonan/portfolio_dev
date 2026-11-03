@@ -14,12 +14,12 @@ import { loadGsap } from "@/lib/motion";
 
 import SectionHead from "./SectionHead";
 
-/** Teinte et icône de chaque étape : les couches du site, puis le safran du reçu. */
+/** Icône de chaque étape ; toutes à l'encre, le reçu seul en orange. */
 const LOOK = [
-  { color: "var(--layer-web)", Icon: MousePointerClick },
-  { color: "var(--layer-infra)", Icon: Route },
-  { color: "var(--layer-api)", Icon: BrainCircuit },
-  { color: "var(--layer-data)", Icon: NotebookPen },
+  { color: "var(--ink)", Icon: MousePointerClick },
+  { color: "var(--ink)", Icon: Route },
+  { color: "var(--ink)", Icon: BrainCircuit },
+  { color: "var(--ink)", Icon: NotebookPen },
   { color: "var(--signal)", Icon: ReceiptText },
 ];
 
