@@ -1,6 +1,8 @@
 "use client";
 import { useEffect, useRef } from "react";
 
+import { DUR, EASE, STAGGER, loadGsap } from "@/lib/motion";
+
 /**
  * Mouvements liés au défilement de l'accueil, posés par attributs :
  *
@@ -11,7 +13,7 @@ import { useEffect, useRef } from "react";
  * - `data-grow-list` : ses barres `data-grow` poussent depuis leur gauche,
  *   l'une après l'autre (frise du parcours).
  *
- * L'ouverture a sa propre chorégraphie, dans StackScene. Une barre safran
+ * La pile 3D et l'ouverture ont leur propre chorégraphie, dans StackScene. Une barre safran
  * sous l'en-tête suit la lecture de la page.
  *
  * Sans JavaScript, ou avant son chargement, tout est déjà en place : les états
@@ -26,17 +28,11 @@ export default function ScrollMotion() {
     let cleanup = () => {};
 
     (async () => {
-      const [{ gsap }, { ScrollTrigger }, { SplitText }] = await Promise.all([
-        import("gsap"),
-        import("gsap/ScrollTrigger"),
-        import("gsap/SplitText"),
-      ]);
+      const { gsap, ScrollTrigger, SplitText } = await loadGsap();
       if (disposed) return;
-      gsap.registerPlugin(ScrollTrigger, SplitText);
       ScrollTrigger.config({ ignoreMobileResize: true });
 
-      // `power4.out` est l'ease-out quint du site (`--ease-out-quint`).
-      const ease = "power4.out";
+      const ease = EASE.out;
       const enter = (el: Element) => ({ trigger: el, start: "top 85%", once: true });
       const all = (sel: string) => gsap.utils.toArray<HTMLElement>(sel);
       const mm = gsap.matchMedia();
@@ -49,7 +45,7 @@ export default function ScrollMotion() {
 
       mm.add("(prefers-reduced-motion: no-preference)", () => {
         all("[data-rule]").forEach((el) =>
-          gsap.from(el, { scaleX: 0, duration: 1.4, ease: "expo.out", scrollTrigger: enter(el) }),
+          gsap.from(el, { scaleX: 0, duration: DUR.draw, ease: EASE.draw, scrollTrigger: enter(el) }),
         );
 
         const splits = all("[data-split]").map((el) =>
@@ -61,8 +57,8 @@ export default function ScrollMotion() {
               gsap.from(self.chars, {
                 yPercent: 120,
                 rotate: 6,
-                duration: 1.1,
-                stagger: 0.022,
+                duration: DUR.reveal,
+                stagger: STAGGER.chars,
                 ease,
                 scrollTrigger: enter(el),
               }),
@@ -70,20 +66,20 @@ export default function ScrollMotion() {
         );
 
         all("[data-reveal]").forEach((el) =>
-          gsap.from(el, { y: 80, opacity: 0, duration: 1.2, ease, scrollTrigger: enter(el) }),
+          gsap.from(el, { y: 80, opacity: 0, duration: DUR.reveal, ease, scrollTrigger: enter(el) }),
         );
 
         all("[data-reveal-group]").forEach((el) =>
-          gsap.from(el.children, { y: 60, opacity: 0, duration: 1.1, stagger: 0.09, ease, scrollTrigger: enter(el) }),
+          gsap.from(el.children, { y: 60, opacity: 0, duration: DUR.reveal, stagger: STAGGER.items, ease, scrollTrigger: enter(el) }),
         );
 
         all("[data-grow-list]").forEach((el) =>
           gsap.from(el.querySelectorAll("[data-grow]"), {
             scaleX: 0,
-            duration: 1.2,
+            duration: DUR.draw,
             delay: 0.15,
-            stagger: 0.1,
-            ease: "expo.out",
+            stagger: STAGGER.items,
+            ease: EASE.draw,
             scrollTrigger: enter(el),
           }),
         );
