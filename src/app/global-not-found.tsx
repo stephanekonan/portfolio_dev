@@ -4,8 +4,8 @@ import type { Metadata } from "next";
 
 import NotFoundBody from "@/components/NotFoundBody";
 import {
-  anybody,
-  schibsted,
+  display,
+  text,
 } from "@/lib/fonts";
 import { THEME_SCRIPT } from "@/lib/theme";
 
@@ -15,7 +15,7 @@ export const metadata: Metadata = {
 
 export default function GlobalNotFound() {
   return (
-    <html lang="fr" className={`${anybody.variable} ${schibsted.variable}`} suppressHydrationWarning>
+    <html lang="fr" className={`${display.variable} ${text.variable}`} suppressHydrationWarning>
       <head>
         <script dangerouslySetInnerHTML={{ __html: THEME_SCRIPT }} />
       </head>

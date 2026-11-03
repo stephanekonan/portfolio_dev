@@ -112,7 +112,7 @@ a.c-cell:hover {
 }
 .c-stats dd {
   margin: 0.35rem 0 0;
-  font-family: var(--font-anybody), sans-serif;
+  font-family: var(--font-display-face), sans-serif;
   font-weight: 800;
   font-stretch: 125%;
   font-size: var(--text-2xl);
@@ -125,7 +125,7 @@ a.c-cell:hover {
 .c-stats-hint {
   display: block;
   margin-top: 0.4rem;
-  font-family: var(--font-schibsted), sans-serif;
+  font-family: var(--font-text-face), sans-serif;
   font-size: var(--text-xs);
   font-weight: 400;
   font-stretch: 100%;
@@ -157,7 +157,7 @@ a.c-cell:hover {
   color: var(--ink-2);
 }
 .c-figs dd {
-  font-family: var(--font-anybody), sans-serif;
+  font-family: var(--font-display-face), sans-serif;
   font-weight: 700;
   font-stretch: 118%;
   font-size: var(--text-xl);
@@ -365,7 +365,7 @@ a.c-cell:hover {
 }
 .prose-article .c-cols h3 {
   margin-top: 0;
-  font-family: var(--font-anybody), sans-serif;
+  font-family: var(--font-display-face), sans-serif;
   font-stretch: 118%;
   font-weight: 700;
   font-size: var(--text-lg);

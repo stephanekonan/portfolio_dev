@@ -21,8 +21,11 @@ const months = (ym: string) => {
 
 const KIND_STYLE: Record<CareerSpan["kind"], React.CSSProperties> = {
   job: { background: "var(--layer-career)" },
-  project: { background: "var(--layer-api)" },
-  study: { background: "transparent", boxShadow: "inset 0 0 0 1.5px var(--layer-career)" },
+  project: { background: "var(--signal)" },
+  study: {
+    background: "transparent",
+    boxShadow: "inset 0 0 0 1.5px var(--layer-career)",
+  },
 };
 
 export default function CareerTrace({ spans, axis, now, lang, t }: Props) {
@@ -33,10 +36,16 @@ export default function CareerTrace({ spans, axis, now, lang, t }: Props) {
   const range = (axis.to - axis.from) * 12;
   const x = (m: number) => ((m - origin) / range) * 100;
   const nowX = x(months(now));
-  const years = Array.from({ length: axis.to - axis.from + 1 }, (_, i) => axis.from + i);
+  const years = Array.from(
+    { length: axis.to - axis.from + 1 },
+    (_, i) => axis.from + i,
+  );
 
   const fmt = (ym: string) =>
-    new Date(`${ym}-01T12:00:00`).toLocaleDateString(lang, { month: "short", year: "numeric" });
+    new Date(`${ym}-01T12:00:00`).toLocaleDateString(lang, {
+      month: "short",
+      year: "numeric",
+    });
 
   return (
     <div>
@@ -58,9 +67,23 @@ export default function CareerTrace({ spans, axis, now, lang, t }: Props) {
         </div>
       </div>
 
-      <div className="relative">
+      {/* Au défilement, un curseur de temps safran balaie la frise et chaque
+          barre se remplit à son passage (ScrollMotion, `data-timeline`). */}
+      <div data-timeline className="relative">
+        <div
+          aria-hidden
+          className="pointer-events-none absolute inset-0 z-10 grid grid-cols-1 md:grid-cols-[15rem_1fr]"
+        >
+          <div className="hidden md:block" />
+          <div className="relative">
+            <span
+              data-time-cursor
+              className="absolute inset-y-0 left-0 w-1 rounded-full bg-ink opacity-0"
+            />
+          </div>
+        </div>
         <ol>
-          {spans.map((s, i) => {
+          {spans.map((s) => {
             const start = months(s.start);
             const end = s.end ? months(s.end) : months(now);
             const left = x(start);
@@ -78,15 +101,19 @@ export default function CareerTrace({ spans, axis, now, lang, t }: Props) {
                 >
                   <span className="flex items-baseline justify-between gap-3 pr-4">
                     <span className="font-semibold">{s.name}</span>
-                    <span className="text-xs text-ink-2">{t.kinds[s.kind]}</span>
+                    <span className="text-xs text-ink-2">
+                      {t.kinds[s.kind]}
+                    </span>
                   </span>
                   <span className="relative block h-4">
-                    <motion.span
-                      className="absolute inset-y-0 origin-left"
-                      style={{ left: `${left}%`, width: `${width}%`, ...KIND_STYLE[s.kind] }}
-                      initial={reduce ? false : { scaleX: 0 }}
-                      animate={{ scaleX: 1 }}
-                      transition={{ delay: 0.9 + i * 0.09, duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+                    <span
+                      data-grow
+                      className="absolute inset-y-0 origin-left rounded-full"
+                      style={{
+                        left: `${left}%`,
+                        width: `${width}%`,
+                        ...KIND_STYLE[s.kind],
+                      }}
                       aria-hidden
                     />
                     {ongoing && (
@@ -109,7 +136,10 @@ export default function CareerTrace({ spans, axis, now, lang, t }: Props) {
                       initial={{ height: 0, opacity: 0 }}
                       animate={{ height: "auto", opacity: 1 }}
                       exit={{ height: 0, opacity: 0 }}
-                      transition={{ duration: reduce ? 0 : 0.28, ease: [0.22, 1, 0.36, 1] }}
+                      transition={{
+                        duration: reduce ? 0 : 0.28,
+                        ease: [0.22, 1, 0.36, 1],
+                      }}
                       className="overflow-hidden"
                     >
                       <div className="grid gap-4 pb-5 md:grid-cols-[15rem_1fr]">
@@ -122,7 +152,9 @@ export default function CareerTrace({ spans, axis, now, lang, t }: Props) {
                             {s.attributes.map((a) => (
                               <div key={a.key.fr} className="contents">
                                 <dt className="text-ink-2">{a.key[lang]}</dt>
-                                <dd className="max-w-[62ch]">{a.value[lang]}</dd>
+                                <dd className="max-w-[62ch]">
+                                  {a.value[lang]}
+                                </dd>
                               </div>
                             ))}
                           </dl>
@@ -136,7 +168,7 @@ export default function CareerTrace({ spans, axis, now, lang, t }: Props) {
           })}
         </ol>
 
-        <div className="pointer-events-none absolute inset-y-0 left-0 right-0 hidden md:grid md:grid-cols-[15rem_1fr]">
+        <div className="pointer-events-none absolute inset-y-0 right-0 left-0 hidden md:grid md:grid-cols-[15rem_1fr]">
           <div />
           <div className="relative">
             <span

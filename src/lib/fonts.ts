@@ -1,18 +1,21 @@
-import { Anybody, Schibsted_Grotesk } from "next/font/google";
+import { Bricolage_Grotesque, Instrument_Sans } from "next/font/google";
 
 /**
- * Anybody porte l'identité : son axe de largeur (50 à 150 %) est animé à
- * l'ouverture de la page, il faut donc le charger en plus du poids.
+ * Bricolage Grotesque porte les titres : expressive et chaleureuse, avec un
+ * axe de taille optique (`opsz`) qui resserre le dessin en très grand et
+ * une largeur (`wdth`) que les titres font varier.
  */
-export const anybody = Anybody({
+export const display = Bricolage_Grotesque({
   subsets: ["latin", "latin-ext"],
-  axes: ["wdth"],
-  variable: "--font-anybody",
+  axes: ["opsz", "wdth"],
+  variable: "--font-display-face",
   display: "swap",
 });
 
-export const schibsted = Schibsted_Grotesk({
+/** Instrument Sans porte le texte : lisible, nette, un peu de caractère. */
+export const text = Instrument_Sans({
   subsets: ["latin", "latin-ext"],
-  variable: "--font-schibsted",
+  axes: ["wdth"],
+  variable: "--font-text-face",
   display: "swap",
 });

@@ -20,7 +20,7 @@ export default function ThemeToggle({ t }: { t: Ui["theme"] }) {
   const theme = useSyncExternalStore(subscribeTheme, readTheme, () => "system" as Theme);
 
   return (
-    <div role="group" aria-label={t.label} className="flex border border-rule p-0.5">
+    <div role="group" aria-label={t.label} className="flex rounded-full border-[1.5px] border-ink p-0.5">
       {OPTIONS.map(({ value, Icon }) => {
         const active = theme === value;
         return (
@@ -30,12 +30,12 @@ export default function ThemeToggle({ t }: { t: Ui["theme"] }) {
             aria-label={t[value]}
             title={t[value]}
             onClick={() => !active && setTheme(value)}
-            className="relative grid size-7 place-items-center"
+            className="relative grid size-7 place-items-center rounded-full"
           >
             {active && (
               <motion.span
                 layoutId={`theme-${indicator}`}
-                className="absolute inset-0 bg-ink"
+                className="absolute inset-0 rounded-full bg-ink"
                 transition={reduce ? { duration: 0 } : { type: "spring", stiffness: 550, damping: 38 }}
               />
             )}

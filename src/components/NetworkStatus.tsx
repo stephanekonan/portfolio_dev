@@ -32,7 +32,7 @@ export default function NetworkStatus({ t }: Props) {
     <span className="inline-flex items-center gap-2 text-xs font-semibold" role="status">
       <span className="relative flex size-2" aria-hidden>
         {!online && <span className="absolute inset-0 animate-ping rounded-full bg-signal opacity-60" />}
-        <span className={`relative size-2 rounded-full ${online ? "bg-api" : "bg-signal"}`} />
+        <span className={`relative size-2 rounded-full ${online ? "bg-go" : "bg-signal"}`} />
       </span>
       <span className={online ? "sr-only lg:not-sr-only" : ""}>{online ? t.online : t.offline}</span>
     </span>
