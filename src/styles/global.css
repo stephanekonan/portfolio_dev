@@ -202,6 +202,19 @@ html[data-network="offline"] body {
   }
 }
 
+/* La pile 3D de l'ouverture (StackScene) : rien ne s'affiche avant la
+   première image, puis toile et étiquettes apparaissent ensemble. */
+.stack-scene > * {
+  opacity: 0;
+  transition: opacity 900ms var(--ease-out-quint);
+}
+.stack-scene[data-ready] > * {
+  opacity: 1;
+}
+.stack-scene > canvas {
+  transition-delay: 300ms;
+}
+
 /* Hachures du temps passé sans réseau, dans les traces. */
 .hatch {
   background-image: repeating-linear-gradient(

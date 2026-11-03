@@ -47,6 +47,8 @@ const fr = {
     available: "Ouvert aux missions et aux postes",
     copy: "Copier l'adresse",
     copied: "Adresse copiée",
+    /** Étiquettes courtes de la pile 3D de l'ouverture. */
+    layers: { web: "Web", mobile: "Mobile", infra: "Réseau", api: "API", data: "Données" },
   },
   career: {
     title: "Parcours",
@@ -153,6 +155,7 @@ const en: Ui = {
     available: "Open to contracts and full-time roles",
     copy: "Copy address",
     copied: "Address copied",
+    layers: { web: "Web", mobile: "Mobile", infra: "Network", api: "API", data: "Data" },
   },
   career: {
     title: "Career",

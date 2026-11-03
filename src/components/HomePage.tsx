@@ -13,7 +13,9 @@ import ContactForm from "./ContactForm";
 import CopyEmail from "./CopyEmail";
 import PostList from "./PostList";
 import ProjectIndex from "./ProjectIndex";
+import ScrollMotion from "./ScrollMotion";
 import SectionHead from "./SectionHead";
+import StackScene from "./StackScene";
 import TraceViewer from "./TraceViewer";
 
 const LAYER_VAR = {
@@ -33,38 +35,51 @@ export default function HomePage({ lang }: { lang: Lang }) {
 
   return (
     <>
-      <section className="mx-auto max-w-304 px-4 pt-12 pb-24 sm:px-8 md:pt-16">
-        <h1 className="text-[min(calc((100vw-4rem)/8.4),8.6rem)] leading-[0.84] font-extrabold uppercase">
+      <ScrollMotion />
+
+      {/* L'ouverture tient dans l'écran, sous l'en-tête de 3,5 rem. */}
+      <section className="mx-auto flex max-w-304 flex-col px-4 pt-12 pb-16 sm:px-8 md:pt-16 lg:min-h-[calc(100svh-3.5rem)]">
+        <h1
+          data-hero-name
+          className="text-[min(calc((100vw-4rem)/8.4),8.6rem)] leading-[0.84] font-extrabold uppercase"
+        >
           <span className="name-unfold block">Stéphane</span>
           <span className="name-unfold second block">Konan</span>
         </h1>
 
-        <div className="mt-10 grid items-end gap-8 lg:grid-cols-[minmax(0,1fr)_auto]">
-          <div>
-            <p className="text-xl font-semibold">{t.hero.role}</p>
-            <p className="mt-3 max-w-[54ch] text-lg text-ink-2">
-              {t.hero.lead}
-            </p>
-          </div>
-          <div className="space-y-3 text-sm lg:text-right">
-            <p className="inline-flex items-center gap-2 font-semibold">
-              <span className="size-2 rounded-full bg-signal" aria-hidden />
-              {t.hero.available}
-            </p>
+        <div className="mt-10 grid flex-1 grid-cols-1 items-end gap-6 lg:mt-6 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.1fr)]">
+          <div className="space-y-8 lg:pb-6">
             <div>
-              <CopyEmail
-                email={CONTACT.email}
-                copy={t.hero.copy}
-                copied={t.hero.copied}
-              />
+              <p className="text-xl font-semibold">{t.hero.role}</p>
+              <p className="mt-3 max-w-[46ch] text-lg text-ink-2">
+                {t.hero.lead}
+              </p>
+            </div>
+            <div className="space-y-3 text-sm">
+              <p className="inline-flex items-center gap-2 font-semibold">
+                <span className="size-2 rounded-full bg-signal" aria-hidden />
+                {t.hero.available}
+              </p>
+              <div>
+                <CopyEmail
+                  email={CONTACT.email}
+                  copy={t.hero.copy}
+                  copied={t.hero.copied}
+                />
+              </div>
             </div>
           </div>
+          <div className="-order-1 h-[20rem] sm:h-[26rem] lg:order-none lg:h-full lg:min-h-[26rem]">
+            <StackScene
+              layers={SKILLS.map((g) => ({ layer: g.layer, label: t.hero.layers[g.layer] }))}
+            />
+          </div>
         </div>
+      </section>
 
-        <div className="mt-16">
-          <h2 className="mb-4 text-sm font-semibold text-ink-2">
-            {t.career.title}
-          </h2>
+      <section className="mx-auto max-w-304 px-4 pb-28 sm:px-8">
+        <SectionHead title={t.career.title} />
+        <div data-reveal>
           <CareerTrace
             spans={CAREER}
             axis={AXIS}
@@ -77,12 +92,16 @@ export default function HomePage({ lang }: { lang: Lang }) {
 
       <section id="traces" className="mx-auto max-w-304 px-4 pb-28 sm:px-8">
         <SectionHead title={t.traces.title} lead={t.traces.lead} />
-        <TraceViewer traces={TRACES} lang={lang} t={t.traces} />
+        <div data-reveal>
+          <TraceViewer traces={TRACES} lang={lang} t={t.traces} />
+        </div>
       </section>
 
       <section id="projets" className="mx-auto max-w-304 px-4 pb-28 sm:px-8">
         <SectionHead title={t.work.title} lead={t.work.lead} />
-        <ProjectIndex projects={PROJECTS} lang={lang} t={t.work} />
+        <div data-reveal>
+          <ProjectIndex projects={PROJECTS} lang={lang} t={t.work} />
+        </div>
       </section>
 
       <section
@@ -90,7 +109,7 @@ export default function HomePage({ lang }: { lang: Lang }) {
         className="mx-auto max-w-304 px-4 pb-28 sm:px-8"
       >
         <SectionHead title={t.skills.title} lead={t.skills.lead} />
-        <div>
+        <div data-reveal-group>
           {SKILLS.map((g) => (
             <div
               key={g.layer}
@@ -138,17 +157,22 @@ export default function HomePage({ lang }: { lang: Lang }) {
               {t.blog.all}
             </Link>
           </SectionHead>
-          <PostList posts={posts} lang={lang} />
+          <div data-reveal>
+            <PostList posts={posts} lang={lang} />
+          </div>
         </section>
       )}
 
       <section id="contact" className="border-t border-ink bg-raised">
         <div className="mx-auto grid max-w-304 gap-14 px-4 py-24 sm:px-8 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.1fr)]">
           <div>
-            <h2 className="font-display text-3xl font-extrabold font-stretch-140%">
+            <h2
+              data-split
+              className="font-display text-3xl font-extrabold font-stretch-140%"
+            >
               {t.contact.title}
             </h2>
-            <p className="mt-5 max-w-[44ch] text-lg text-ink-2">
+            <p data-reveal className="mt-5 max-w-[44ch] text-lg text-ink-2">
               {t.contact.lead}
             </p>
             <div className="mt-10 space-y-3 text-sm">
@@ -170,7 +194,9 @@ export default function HomePage({ lang }: { lang: Lang }) {
               </p>
             </div>
           </div>
-          <ContactForm lang={lang} t={t.contact} />
+          <div data-reveal>
+            <ContactForm lang={lang} t={t.contact} />
+          </div>
         </div>
       </section>
     </>
