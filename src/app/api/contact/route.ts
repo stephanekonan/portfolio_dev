@@ -1,15 +1,20 @@
 import { NextResponse, type NextRequest } from "next/server";
+import { replyUrl } from "@/lib/contact-reply";
 
 /**
- * Formulaire de contact → API d'envoi Mailtrap.
+ * Formulaire de contact → e-mail (Mailtrap) et/ou message Telegram.
  *
- * Le jeton reste côté serveur : le navigateur poste ici, cette fonction
- * Vercel parle à Mailtrap. Variables (voir `.env.example`) :
- * - `MAILTRAP_API_TOKEN` (requis) : jeton d'un domaine d'envoi vérifié ;
- * - `MAILTRAP_FROM_EMAIL` (requis) : adresse de ce domaine, ex. portfolio@wadibu.ci ;
+ * Les jetons restent côté serveur : le navigateur poste ici, cette fonction
+ * Vercel parle à Mailtrap et à l'API Bot de Telegram. Chaque canal configuré
+ * reçoit le message ; l'envoi réussit si au moins un canal l'a accepté.
+ * Variables (voir `.env.example`) :
+ * - `MAILTRAP_API_TOKEN` + `MAILTRAP_FROM_EMAIL` : canal e-mail, jeton et
+ *   adresse d'un domaine d'envoi vérifié ;
  * - `MAILTRAP_SANDBOX_INBOX_ID` (facultatif) : bascule vers la boîte de test
  *   Mailtrap au lieu d'un envoi réel, pour le développement local ;
- * - `CONTACT_TO_EMAIL` (facultatif) : destinataire, par défaut l'adresse publique.
+ * - `CONTACT_TO_EMAIL` (facultatif) : destinataire, par défaut l'adresse publique ;
+ * - `TELEGRAM_BOT_TOKEN` + `TELEGRAM_CHAT_ID` : canal Telegram, jeton du bot
+ *   (@BotFather) et conversation qui reçoit les messages.
  */
 
 const SEND_URL = "https://send.api.mailtrap.io/api/send";
@@ -54,6 +59,27 @@ function allowedOrigin(req: NextRequest) {
 
 const clean = (v: unknown, max: number) => (typeof v === "string" ? v.trim().slice(0, max) : "");
 
+/** De 8 à 15 chiffres (norme E.164), espaces, points, tirets et « + » libres. */
+const phoneOk = (v: string) => /^\+?[\d\s.()-]+$/.test(v) && /^\d{8,15}$/.test(v.replace(/\D/g, ""));
+
+/**
+ * Numéro au format international, chiffres seuls (ce qu'attend wa.me). Un
+ * numéro ivoirien saisi sans indicatif (10 chiffres commençant par 0) reçoit
+ * le 225 ; « 00 » en tête vaut « + ».
+ */
+function intlPhone(v: string) {
+  let digits = v.replace(/\D/g, "");
+  if (digits.startsWith("00")) digits = digits.slice(2);
+  else if (!v.startsWith("+") && digits.length === 10 && digits.startsWith("0")) digits = `225${digits}`;
+  return digits;
+}
+
+/** « +225 07 69 88 37 30 » pour un numéro ivoirien, « +<chiffres> » sinon. */
+const showPhone = (digits: string) =>
+  digits.length === 13 && digits.startsWith("225")
+    ? `+225 ${digits.slice(3).replace(/(\d{2})(?=\d)/g, "$1 ")}`
+    : `+${digits}`;
+
 export async function POST(req: NextRequest) {
   if (!allowedOrigin(req)) {
     return NextResponse.json({ code: "forbidden_origin" }, { status: 403 });
@@ -80,19 +106,35 @@ export async function POST(req: NextRequest) {
 
   const name = clean(body.name, 100);
   const email = clean(body.email, 200);
+  const phone = clean(body.phone, 30);
   const message = clean(body.message, 5000);
   const id = clean(body.id, 80);
   const lang = body.lang === "en" ? "en" : "fr";
-  if (!name || !EMAIL_RE.test(email) || message.length < 10) {
+  if (!name || !phoneOk(phone) || !EMAIL_RE.test(email) || message.length < 10) {
     return NextResponse.json({ code: "invalid_fields" }, { status: 422 });
   }
 
-  const token = process.env.MAILTRAP_API_TOKEN;
-  const from = process.env.MAILTRAP_FROM_EMAIL;
-  if (!token || !from) {
-    console.error("contact: MAILTRAP_API_TOKEN ou MAILTRAP_FROM_EMAIL manquant");
+  const contact: Contact = { name, email, phone: intlPhone(phone), message, id, lang };
+  const results = await Promise.all([sendMail(contact), sendTelegram(contact)]);
+  const tried = results.filter((r) => r !== null);
+  if (tried.length === 0) {
+    console.error("contact: aucun canal configuré (Mailtrap ou Telegram)");
     return NextResponse.json({ code: "mail_not_configured" }, { status: 503 });
   }
+  if (!tried.includes(true)) {
+    return NextResponse.json({ code: "send_failed" }, { status: 502 });
+  }
+  return NextResponse.json({ ok: true });
+}
+
+/** `phone` : chiffres au format international, sans « + » (voir `intlPhone`). */
+type Contact = { name: string; email: string; phone: string; message: string; id: string; lang: "fr" | "en" };
+
+/** `null` : canal non configuré ; sinon, l'envoi a-t-il été accepté. */
+async function sendMail(c: Contact): Promise<boolean | null> {
+  const token = process.env.MAILTRAP_API_TOKEN;
+  const from = process.env.MAILTRAP_FROM_EMAIL;
+  if (!token || !from) return null;
 
   const sandbox = process.env.MAILTRAP_SANDBOX_INBOX_ID;
   const url = sandbox ? `${SANDBOX_URL}/${sandbox}` : SEND_URL;
@@ -105,13 +147,13 @@ export async function POST(req: NextRequest) {
       from: { email: from, name: "Portfolio Stéphane Konan" },
       to: [{ email: to }],
       // Répondre au message écrit directement au visiteur.
-      reply_to: { email, name },
-      subject: `Portfolio : message de ${name}`,
-      text: `${message}\n\n--\n${name} <${email}>\nLangue : ${lang}\nRéférence : ${id || "aucune"}`,
+      reply_to: { email: c.email, name: c.name },
+      subject: `Portfolio : message de ${c.name}`,
+      text: `${c.message}\n\n--\n${c.name} <${c.email}>\nWhatsApp : ${showPhone(c.phone)} (https://wa.me/${c.phone})\nLangue : ${c.lang}\nRéférence : ${c.id || "aucune"}`,
       category: "portfolio-contact",
       // La référence voyage avec le message : un envoi rejoué depuis la file
       // hors ligne se reconnaît dans la boîte de réception.
-      custom_variables: { client_request_id: id, lang },
+      custom_variables: { client_request_id: c.id, lang: c.lang },
     }),
     signal: AbortSignal.timeout(15_000),
   }).catch((err: unknown) => {
@@ -121,7 +163,76 @@ export async function POST(req: NextRequest) {
 
   if (!res?.ok) {
     if (res) console.error("contact: Mailtrap a refusé l'envoi", res.status, await res.text());
-    return NextResponse.json({ code: "send_failed" }, { status: 502 });
+    return false;
   }
-  return NextResponse.json({ ok: true });
+  return true;
+}
+
+/** Échappe le texte du visiteur pour le mode HTML de Telegram. */
+const html = (v: string) => v.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+
+/** Telegram limite un message à 4 096 caractères. */
+const TELEGRAM_MAX = 4096;
+
+async function sendTelegram(c: Contact): Promise<boolean | null> {
+  const token = process.env.TELEGRAM_BOT_TOKEN;
+  const chatId = process.env.TELEGRAM_CHAT_ID;
+  if (!token || !chatId) return null;
+
+  // Le lien ouvre WhatsApp avec une première phrase déjà écrite.
+  const hello =
+    c.lang === "en"
+      ? `Hello ${c.name}, thank you for your message on my portfolio.`
+      : `Bonjour ${c.name}, merci pour votre message sur mon portfolio.`;
+  const wa = `https://wa.me/${c.phone}?text=${encodeURIComponent(hello)}`;
+  const when = new Intl.DateTimeFormat("fr-FR", {
+    timeZone: "Africa/Abidjan",
+    dateStyle: "short",
+    timeStyle: "short",
+  }).format(new Date());
+
+  const head =
+    `🔔 <b>Nouveau message · Portfolio</b>\n\n` +
+    `👤 <b>Nom</b> : ${html(c.name)}\n` +
+    `📱 <b>WhatsApp</b> : <a href="${html(wa)}">${showPhone(c.phone)}</a>\n` +
+    `✉️ <b>E-mail</b> : ${html(c.email)}\n\n` +
+    `💬 <b>Message</b>\n<blockquote expandable>`;
+  const foot =
+    `</blockquote>\n\n` +
+    `🌐 ${c.lang.toUpperCase()} · 🕒 ${when} · Réf. <code>${html(c.id.slice(0, 8) || "aucune")}</code>`;
+  // Telegram n'accepte que des liens http(s) dans un bouton : la réponse par
+  // e-mail passe par une redirection signée vers un mailto: prérempli.
+  const mail = replyUrl({ email: c.email, name: c.name, lang: c.lang });
+  const buttons = [
+    [{ text: "💬 Répondre sur WhatsApp", url: wa }],
+    ...(mail ? [[{ text: "✉️ Répondre par e-mail", url: mail }]] : []),
+  ];
+
+  const room = TELEGRAM_MAX - head.length - foot.length;
+  let text = html(c.message);
+  // Couper au milieu d'une entité (&amp;…) laisserait un HTML invalide, refusé.
+  if (text.length > room) text = text.slice(0, room - 1).replace(/&[a-z]*$/, "") + "…";
+
+  const res = await fetch(`https://api.telegram.org/bot${token}/sendMessage`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      chat_id: chatId,
+      text: head + text + foot,
+      parse_mode: "HTML",
+      link_preview_options: { is_disabled: true },
+      reply_markup: { inline_keyboard: buttons },
+    }),
+    signal: AbortSignal.timeout(15_000),
+  }).catch((err: unknown) => {
+    // Le jeton est dans l'URL : ne journaliser que le message d'erreur.
+    console.error("contact: Telegram injoignable", err instanceof Error ? err.message : "");
+    return null;
+  });
+
+  if (!res?.ok) {
+    if (res) console.error("contact: Telegram a refusé l'envoi", res.status, await res.text());
+    return false;
+  }
+  return true;
 }
