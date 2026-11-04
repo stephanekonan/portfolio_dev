@@ -1,15 +1,19 @@
 import { NextResponse, type NextRequest } from "next/server";
 
 /**
- * Formulaire de contact → API d'envoi Mailtrap.
+ * Formulaire de contact → e-mail (Mailtrap) et/ou message Telegram.
  *
- * Le jeton reste côté serveur : le navigateur poste ici, cette fonction
- * Vercel parle à Mailtrap. Variables (voir `.env.example`) :
- * - `MAILTRAP_API_TOKEN` (requis) : jeton d'un domaine d'envoi vérifié ;
- * - `MAILTRAP_FROM_EMAIL` (requis) : adresse de ce domaine, ex. portfolio@wadibu.ci ;
+ * Les jetons restent côté serveur : le navigateur poste ici, cette fonction
+ * Vercel parle à Mailtrap et à l'API Bot de Telegram. Chaque canal configuré
+ * reçoit le message ; l'envoi réussit si au moins un canal l'a accepté.
+ * Variables (voir `.env.example`) :
+ * - `MAILTRAP_API_TOKEN` + `MAILTRAP_FROM_EMAIL` : canal e-mail, jeton et
+ *   adresse d'un domaine d'envoi vérifié ;
  * - `MAILTRAP_SANDBOX_INBOX_ID` (facultatif) : bascule vers la boîte de test
  *   Mailtrap au lieu d'un envoi réel, pour le développement local ;
- * - `CONTACT_TO_EMAIL` (facultatif) : destinataire, par défaut l'adresse publique.
+ * - `CONTACT_TO_EMAIL` (facultatif) : destinataire, par défaut l'adresse publique ;
+ * - `TELEGRAM_BOT_TOKEN` + `TELEGRAM_CHAT_ID` : canal Telegram, jeton du bot
+ *   (@BotFather) et conversation qui reçoit les messages.
  */
 
 const SEND_URL = "https://send.api.mailtrap.io/api/send";
@@ -87,12 +91,26 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ code: "invalid_fields" }, { status: 422 });
   }
 
-  const token = process.env.MAILTRAP_API_TOKEN;
-  const from = process.env.MAILTRAP_FROM_EMAIL;
-  if (!token || !from) {
-    console.error("contact: MAILTRAP_API_TOKEN ou MAILTRAP_FROM_EMAIL manquant");
+  const contact: Contact = { name, email, message, id, lang };
+  const results = await Promise.all([sendMail(contact), sendTelegram(contact)]);
+  const tried = results.filter((r) => r !== null);
+  if (tried.length === 0) {
+    console.error("contact: aucun canal configuré (Mailtrap ou Telegram)");
     return NextResponse.json({ code: "mail_not_configured" }, { status: 503 });
   }
+  if (!tried.includes(true)) {
+    return NextResponse.json({ code: "send_failed" }, { status: 502 });
+  }
+  return NextResponse.json({ ok: true });
+}
+
+type Contact = { name: string; email: string; message: string; id: string; lang: "fr" | "en" };
+
+/** `null` : canal non configuré ; sinon, l'envoi a-t-il été accepté. */
+async function sendMail(c: Contact): Promise<boolean | null> {
+  const token = process.env.MAILTRAP_API_TOKEN;
+  const from = process.env.MAILTRAP_FROM_EMAIL;
+  if (!token || !from) return null;
 
   const sandbox = process.env.MAILTRAP_SANDBOX_INBOX_ID;
   const url = sandbox ? `${SANDBOX_URL}/${sandbox}` : SEND_URL;
@@ -105,13 +123,13 @@ export async function POST(req: NextRequest) {
       from: { email: from, name: "Portfolio Stéphane Konan" },
       to: [{ email: to }],
       // Répondre au message écrit directement au visiteur.
-      reply_to: { email, name },
-      subject: `Portfolio : message de ${name}`,
-      text: `${message}\n\n--\n${name} <${email}>\nLangue : ${lang}\nRéférence : ${id || "aucune"}`,
+      reply_to: { email: c.email, name: c.name },
+      subject: `Portfolio : message de ${c.name}`,
+      text: `${c.message}\n\n--\n${c.name} <${c.email}>\nLangue : ${c.lang}\nRéférence : ${c.id || "aucune"}`,
       category: "portfolio-contact",
       // La référence voyage avec le message : un envoi rejoué depuis la file
       // hors ligne se reconnaît dans la boîte de réception.
-      custom_variables: { client_request_id: id, lang },
+      custom_variables: { client_request_id: c.id, lang: c.lang },
     }),
     signal: AbortSignal.timeout(15_000),
   }).catch((err: unknown) => {
@@ -121,7 +139,48 @@ export async function POST(req: NextRequest) {
 
   if (!res?.ok) {
     if (res) console.error("contact: Mailtrap a refusé l'envoi", res.status, await res.text());
-    return NextResponse.json({ code: "send_failed" }, { status: 502 });
+    return false;
   }
-  return NextResponse.json({ ok: true });
+  return true;
+}
+
+/** Échappe le texte du visiteur pour le mode HTML de Telegram. */
+const html = (v: string) => v.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+
+/** Telegram limite un message à 4 096 caractères. */
+const TELEGRAM_MAX = 4096;
+
+async function sendTelegram(c: Contact): Promise<boolean | null> {
+  const token = process.env.TELEGRAM_BOT_TOKEN;
+  const chatId = process.env.TELEGRAM_CHAT_ID;
+  if (!token || !chatId) return null;
+
+  const head = `<b>Portfolio : message de ${html(c.name)}</b>\n${html(c.email)}\n\n`;
+  const foot = `\n\nLangue : ${c.lang} · Référence : ${html(c.id || "aucune")}`;
+  const room = TELEGRAM_MAX - head.length - foot.length;
+  let text = html(c.message);
+  // Couper au milieu d'une entité (&amp;…) laisserait un HTML invalide, refusé.
+  if (text.length > room) text = text.slice(0, room - 1).replace(/&[a-z]*$/, "") + "…";
+
+  const res = await fetch(`https://api.telegram.org/bot${token}/sendMessage`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      chat_id: chatId,
+      text: head + text + foot,
+      parse_mode: "HTML",
+      link_preview_options: { is_disabled: true },
+    }),
+    signal: AbortSignal.timeout(15_000),
+  }).catch((err: unknown) => {
+    // Le jeton est dans l'URL : ne journaliser que le message d'erreur.
+    console.error("contact: Telegram injoignable", err instanceof Error ? err.message : "");
+    return null;
+  });
+
+  if (!res?.ok) {
+    if (res) console.error("contact: Telegram a refusé l'envoi", res.status, await res.text());
+    return false;
+  }
+  return true;
 }
