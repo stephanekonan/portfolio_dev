@@ -13,6 +13,7 @@ interface Pending {
   id: string;
   name: string;
   email: string;
+  phone: string;
   message: string;
   lang: Lang;
 }
@@ -64,6 +65,8 @@ async function deliver(item: Pending, elapsed: number, website: string): Promise
 }
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+/** Même règle que l'API : de 8 à 15 chiffres, espaces et « + » libres. */
+const phoneOk = (v: string) => /^\+?[\d\s.()-]+$/.test(v) && /^\d{8,15}$/.test(v.replace(/\D/g, ""));
 
 export default function ContactForm({ lang, t }: Props) {
   const reduce = useReducedMotion();
@@ -106,12 +109,13 @@ export default function ContactForm({ lang, t }: Props) {
       id: uuid(),
       name: String(data.get("name") ?? "").trim(),
       email: String(data.get("email") ?? "").trim(),
+      phone: String(data.get("phone") ?? "").trim(),
       message: String(data.get("message") ?? "").trim(),
       lang,
     };
     const website = String(data.get("website") ?? "");
 
-    if (!item.name || !EMAIL_RE.test(item.email) || item.message.length < 10) {
+    if (!item.name || !phoneOk(item.phone) || !EMAIL_RE.test(item.email) || item.message.length < 10) {
       setStatus("invalid");
       return;
     }
@@ -162,6 +166,18 @@ export default function ContactForm({ lang, t }: Props) {
           <input name="name" autoComplete="name" required className={field} />
         </label>
         <label className="block text-sm font-semibold">
+          {t.phone}
+          <input
+            name="phone"
+            type="tel"
+            inputMode="tel"
+            autoComplete="tel"
+            placeholder="+225 07 00 00 00 00"
+            required
+            className={field}
+          />
+        </label>
+        <label className="block text-sm font-semibold sm:col-span-2">
           {t.email}
           <input name="email" type="email" autoComplete="email" required className={field} />
         </label>

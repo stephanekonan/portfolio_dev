@@ -58,6 +58,27 @@ function allowedOrigin(req: NextRequest) {
 
 const clean = (v: unknown, max: number) => (typeof v === "string" ? v.trim().slice(0, max) : "");
 
+/** De 8 à 15 chiffres (norme E.164), espaces, points, tirets et « + » libres. */
+const phoneOk = (v: string) => /^\+?[\d\s.()-]+$/.test(v) && /^\d{8,15}$/.test(v.replace(/\D/g, ""));
+
+/**
+ * Numéro au format international, chiffres seuls (ce qu'attend wa.me). Un
+ * numéro ivoirien saisi sans indicatif (10 chiffres commençant par 0) reçoit
+ * le 225 ; « 00 » en tête vaut « + ».
+ */
+function intlPhone(v: string) {
+  let digits = v.replace(/\D/g, "");
+  if (digits.startsWith("00")) digits = digits.slice(2);
+  else if (!v.startsWith("+") && digits.length === 10 && digits.startsWith("0")) digits = `225${digits}`;
+  return digits;
+}
+
+/** « +225 07 69 88 37 30 » pour un numéro ivoirien, « +<chiffres> » sinon. */
+const showPhone = (digits: string) =>
+  digits.length === 13 && digits.startsWith("225")
+    ? `+225 ${digits.slice(3).replace(/(\d{2})(?=\d)/g, "$1 ")}`
+    : `+${digits}`;
+
 export async function POST(req: NextRequest) {
   if (!allowedOrigin(req)) {
     return NextResponse.json({ code: "forbidden_origin" }, { status: 403 });
@@ -84,14 +105,15 @@ export async function POST(req: NextRequest) {
 
   const name = clean(body.name, 100);
   const email = clean(body.email, 200);
+  const phone = clean(body.phone, 30);
   const message = clean(body.message, 5000);
   const id = clean(body.id, 80);
   const lang = body.lang === "en" ? "en" : "fr";
-  if (!name || !EMAIL_RE.test(email) || message.length < 10) {
+  if (!name || !phoneOk(phone) || !EMAIL_RE.test(email) || message.length < 10) {
     return NextResponse.json({ code: "invalid_fields" }, { status: 422 });
   }
 
-  const contact: Contact = { name, email, message, id, lang };
+  const contact: Contact = { name, email, phone: intlPhone(phone), message, id, lang };
   const results = await Promise.all([sendMail(contact), sendTelegram(contact)]);
   const tried = results.filter((r) => r !== null);
   if (tried.length === 0) {
@@ -104,7 +126,8 @@ export async function POST(req: NextRequest) {
   return NextResponse.json({ ok: true });
 }
 
-type Contact = { name: string; email: string; message: string; id: string; lang: "fr" | "en" };
+/** `phone` : chiffres au format international, sans « + » (voir `intlPhone`). */
+type Contact = { name: string; email: string; phone: string; message: string; id: string; lang: "fr" | "en" };
 
 /** `null` : canal non configuré ; sinon, l'envoi a-t-il été accepté. */
 async function sendMail(c: Contact): Promise<boolean | null> {
@@ -125,7 +148,7 @@ async function sendMail(c: Contact): Promise<boolean | null> {
       // Répondre au message écrit directement au visiteur.
       reply_to: { email: c.email, name: c.name },
       subject: `Portfolio : message de ${c.name}`,
-      text: `${c.message}\n\n--\n${c.name} <${c.email}>\nLangue : ${c.lang}\nRéférence : ${c.id || "aucune"}`,
+      text: `${c.message}\n\n--\n${c.name} <${c.email}>\nWhatsApp : ${showPhone(c.phone)} (https://wa.me/${c.phone})\nLangue : ${c.lang}\nRéférence : ${c.id || "aucune"}`,
       category: "portfolio-contact",
       // La référence voyage avec le message : un envoi rejoué depuis la file
       // hors ligne se reconnaît dans la boîte de réception.
@@ -155,8 +178,27 @@ async function sendTelegram(c: Contact): Promise<boolean | null> {
   const chatId = process.env.TELEGRAM_CHAT_ID;
   if (!token || !chatId) return null;
 
-  const head = `<b>Portfolio : message de ${html(c.name)}</b>\n${html(c.email)}\n\n`;
-  const foot = `\n\nLangue : ${c.lang} · Référence : ${html(c.id || "aucune")}`;
+  // Le lien ouvre WhatsApp avec une première phrase déjà écrite.
+  const hello =
+    c.lang === "en"
+      ? `Hello ${c.name}, thank you for your message on my portfolio.`
+      : `Bonjour ${c.name}, merci pour votre message sur mon portfolio.`;
+  const wa = `https://wa.me/${c.phone}?text=${encodeURIComponent(hello)}`;
+  const when = new Intl.DateTimeFormat("fr-FR", {
+    timeZone: "Africa/Abidjan",
+    dateStyle: "short",
+    timeStyle: "short",
+  }).format(new Date());
+
+  const head =
+    `🔔 <b>Nouveau message · Portfolio</b>\n\n` +
+    `👤 <b>Nom</b> : ${html(c.name)}\n` +
+    `📱 <b>WhatsApp</b> : <a href="${html(wa)}">${showPhone(c.phone)}</a>\n` +
+    `✉️ <b>E-mail</b> : ${html(c.email)}\n\n` +
+    `💬 <b>Message</b>\n<blockquote expandable>`;
+  const foot =
+    `</blockquote>\n\n` +
+    `🌐 ${c.lang.toUpperCase()} · 🕒 ${when} · Réf. <code>${html(c.id.slice(0, 8) || "aucune")}</code>`;
   const room = TELEGRAM_MAX - head.length - foot.length;
   let text = html(c.message);
   // Couper au milieu d'une entité (&amp;…) laisserait un HTML invalide, refusé.
@@ -170,6 +212,8 @@ async function sendTelegram(c: Contact): Promise<boolean | null> {
       text: head + text + foot,
       parse_mode: "HTML",
       link_preview_options: { is_disabled: true },
+      // Telegram n'accepte que des liens http(s) dans un bouton : pas de mailto.
+      reply_markup: { inline_keyboard: [[{ text: "💬 Répondre sur WhatsApp", url: wa }]] },
     }),
     signal: AbortSignal.timeout(15_000),
   }).catch((err: unknown) => {
