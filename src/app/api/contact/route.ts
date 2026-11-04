@@ -1,4 +1,5 @@
 import { NextResponse, type NextRequest } from "next/server";
+import { replyUrl } from "@/lib/contact-reply";
 
 /**
  * Formulaire de contact → e-mail (Mailtrap) et/ou message Telegram.
@@ -199,6 +200,14 @@ async function sendTelegram(c: Contact): Promise<boolean | null> {
   const foot =
     `</blockquote>\n\n` +
     `🌐 ${c.lang.toUpperCase()} · 🕒 ${when} · Réf. <code>${html(c.id.slice(0, 8) || "aucune")}</code>`;
+  // Telegram n'accepte que des liens http(s) dans un bouton : la réponse par
+  // e-mail passe par une redirection signée vers un mailto: prérempli.
+  const mail = replyUrl({ email: c.email, name: c.name, lang: c.lang });
+  const buttons = [
+    [{ text: "💬 Répondre sur WhatsApp", url: wa }],
+    ...(mail ? [[{ text: "✉️ Répondre par e-mail", url: mail }]] : []),
+  ];
+
   const room = TELEGRAM_MAX - head.length - foot.length;
   let text = html(c.message);
   // Couper au milieu d'une entité (&amp;…) laisserait un HTML invalide, refusé.
@@ -212,8 +221,7 @@ async function sendTelegram(c: Contact): Promise<boolean | null> {
       text: head + text + foot,
       parse_mode: "HTML",
       link_preview_options: { is_disabled: true },
-      // Telegram n'accepte que des liens http(s) dans un bouton : pas de mailto.
-      reply_markup: { inline_keyboard: [[{ text: "💬 Répondre sur WhatsApp", url: wa }]] },
+      reply_markup: { inline_keyboard: buttons },
     }),
     signal: AbortSignal.timeout(15_000),
   }).catch((err: unknown) => {
