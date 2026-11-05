@@ -30,28 +30,101 @@ Your phone rings: an alert with two buttons
         └─ Reply by email    → prefilled message in your mail app
 ```
 
-## Create the bot
+You need two values: the bot's **token**, which lets it send messages, and the **chat ID** (`chat_id`), which tells it who to send them to. Allow five minutes.
 
-1. In Telegram, open a chat with **@BotFather**, the official bot that makes bots.
-2. Send `/newbot`, pick a display name ("Site contact") and then a username ending in `bot`.
-3. BotFather gives you a **token**, shaped like `123456789:AAH…`. This token gives full control of the bot: treat it like a password.
+## Step 1: get the bot token
 
-## Find the chat ID
+Telegram bots are created… with a bot: **@BotFather**, Telegram's official bot.
 
-A bot cannot write to someone who has never talked to it. So:
+1. In Telegram, on your phone or in Telegram Desktop, tap the **magnifying glass** and search for `BotFather`. Pick the one with the **blue verified badge**: there are imitations.
+2. Tap **Start**. BotFather shows its list of commands.
+3. Send `/newbot`.
+4. BotFather asks for a **name**: this is what will show at the top of the chat, for example `Site contact`. Spaces and accents are fine.
+5. It then asks for a **username**: unique across Telegram, no spaces, and it must end in `bot`, for example `contact_mysite_bot`. If it is taken, BotFather says so: try another one.
+6. BotFather replies with the bot's link and its **token**.
 
-1. open your bot in Telegram, tap **Start**, then send it a message, any message;
-2. open `https://api.telegram.org/bot<TOKEN>/getUpdates` in your browser, replacing `<TOKEN>` with yours.
+The conversation looks like this:
 
-The response lists the messages the bot has received. Look for this block:
+```text
+You        /newbot
+BotFather  Alright, a new bot. How are we going to call it?
+           Please choose a name for your bot.
+You        Site contact
+BotFather  Good. Now let's choose a username for your bot.
+           It must end in `bot`.
+You        contact_mysite_bot
+BotFather  Done! Congratulations on your new bot. You will find it
+           at t.me/contact_mysite_bot. […]
+           Use this token to access the HTTP API:
+           123456789:AAF1x2Y3z4-ExampleTokenDoNotUse
+           Keep your token secure and store it safely […]
+```
+
+The token fits on one line: a number (the bot's ID), a colon, then a long key. Copy it **in full**, with no spaces around it. It gives full control of the bot: treat it like a password.
+
+Lost it? Send `/mybots` to BotFather, pick your bot, then **API Token**: it shows again. Leaked it by mistake? In the same place, **Revoke current token** generates a new one, and the old one stops working at once.
+
+## Step 2: get the chat ID
+
+A bot is not allowed to write first: it can only write to someone who has already talked to it. So you talk to it first, then ask it who did.
+
+1. Open the link BotFather gave you, `t.me/contact_mysite_bot`, and tap **Start**. Telegram sends `/start` to the bot. Send it a short message too, "test" for example.
+2. In your browser, open the following address, pasting your token into it:
+
+```text
+https://api.telegram.org/bot<TOKEN>/getUpdates
+```
+
+Watch out for the trap: the word `bot` is **glued** to the token, with no slash between them. With the example token, that gives `https://api.telegram.org/bot123456789:AAF1x2Y3z4-ExampleTokenDoNotUse/getUpdates`.
+
+The page shows JSON: the list of messages the bot has received. In Chrome, tick **Pretty-print** at the top of the page to make it readable; Firefox formats it on its own.
 
 ```json
-"message": {
-  "chat": { "id": 123456789, "first_name": "Awa", "type": "private" }
+{
+  "ok": true,
+  "result": [
+    {
+      "update_id": 815230001,
+      "message": {
+        "message_id": 1,
+        "from": { "id": 691234567, "is_bot": false, "first_name": "Awa", "language_code": "en" },
+        "chat": { "id": 691234567, "first_name": "Awa", "type": "private" },
+        "date": 1762333200,
+        "text": "/start"
+      }
+    }
+  ]
 }
 ```
 
-That number is the **chat ID** (`chat_id`). If the list is empty, the bot has not received anything yet: send it another message and reload the page.
+The value to keep is **`message` → `chat` → `id`**, here `691234567`. That is your `chat_id`. In a private chat, it is the same as your own Telegram ID (`from.id`).
+
+If you are comfortable with the terminal, the same thing in one line:
+
+```bash
+curl -s "https://api.telegram.org/bot$TELEGRAM_BOT_TOKEN/getUpdates" | grep -o '"chat":{"id":-\?[0-9]*'
+```
+
+### If it does not work
+
+| What you see | What it means | What to do |
+| --- | --- | --- |
+| `"result": []` | The bot received nothing, or your messages are older than 24 hours: Telegram does not keep them longer | Send the bot another message, then reload the page |
+| `401 Unauthorized` | The token is wrong | Copy it again, with no spaces, or show it again with `/mybots` |
+| `404 Not Found` | The address is malformed | Check that `bot` comes right before the token, with no `/` |
+| `Conflict: can't use getUpdates method while webhook is active` | A webhook is set on this bot | Open `…/bot<TOKEN>/deleteWebhook`, then try again |
+
+Would you rather get the alerts in a **group**, so the whole team sees them? Add the bot to the group, then post a message there that mentions it (`@contact_mysite_bot test`): by default, a bot does not see ordinary group messages. A group ID is **negative** (`-100…` for a supergroup): keep the minus sign.
+
+## Step 3: check both values
+
+Before writing a single line of code, check that the pair works. Replace the token and the ID in this address, then open it in your browser:
+
+```text
+https://api.telegram.org/bot<TOKEN>/sendMessage?chat_id=<CHAT_ID>&text=Test
+```
+
+Your phone should ring: "Test", sent by your bot. The page answers `"ok": true`. If so, both values are right.
 
 ## The token stays on the server
 
@@ -171,6 +244,7 @@ Telegram does not have to replace email. The route sends the message to **every 
 | Bot created, token copied | @BotFather | The bot that writes to you |
 | First message sent to the bot | Telegram | A bot only writes to people who talked to it |
 | `chat_id` read from `getUpdates` | Browser | Know where to send the alert |
+| "Test" message received via `sendMessage` | Browser | The token and the `chat_id` go together |
 | Token and `chat_id` in environment variables | `.env.local`, host | The token never leaves the server |
 | Visitor text escaped, 4,096 characters max | Server route | A malformed message is rejected |
 | Number normalised to international format | Server route | `wa.me` needs the country code |

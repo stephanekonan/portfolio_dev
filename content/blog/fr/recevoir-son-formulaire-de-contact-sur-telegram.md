@@ -30,28 +30,101 @@ Votre téléphone sonne : alerte avec deux boutons
         └─ Répondre par e-mail   → message prérempli dans votre appli mail
 ```
 
-## Créer le bot
+Il vous faut deux valeurs : le **jeton** du bot, qui lui permet d'envoyer des messages, et l'**identifiant de la conversation** (`chat_id`), qui lui dit à qui les envoyer. Comptez cinq minutes.
 
-1. Dans Telegram, ouvrez une conversation avec **@BotFather**, le bot officiel qui fabrique les bots.
-2. Envoyez `/newbot`, choisissez un nom affiché (« Contact du site ») puis un identifiant qui finit par `bot`.
-3. BotFather vous donne un **jeton**, de la forme `123456789:AAH…`. Ce jeton donne le contrôle total du bot : traitez-le comme un mot de passe.
+## Étape 1 : obtenir le jeton du bot
 
-## Trouver l'identifiant de la conversation
+Les bots Telegram se créent… avec un bot : **@BotFather**, le bot officiel de Telegram.
 
-Le bot ne peut pas écrire à quelqu'un qui ne lui a jamais parlé. Il faut donc :
+1. Dans Telegram, sur le téléphone ou sur Telegram Desktop, touchez la **loupe** et cherchez `BotFather`. Choisissez celui qui porte le **badge bleu** de vérification : il existe des imitations.
+2. Touchez **Démarrer** (*Start*). BotFather affiche la liste de ses commandes.
+3. Envoyez `/newbot`.
+4. BotFather demande un **nom** : c'est ce qui s'affichera en haut de la conversation, par exemple `Contact du site`. Espaces et accents sont permis.
+5. Il demande ensuite un **identifiant** (*username*) : unique sur tout Telegram, sans espace, et qui se termine obligatoirement par `bot`, par exemple `contact_monsite_bot`. S'il est déjà pris, BotFather le dit : essayez-en un autre.
+6. BotFather répond avec le lien du bot et son **jeton**.
 
-1. ouvrir votre bot dans Telegram, appuyer sur **Démarrer**, puis lui envoyer un message, n'importe lequel ;
-2. ouvrir dans le navigateur `https://api.telegram.org/bot<JETON>/getUpdates`, en remplaçant `<JETON>` par le vôtre.
+La conversation ressemble à ceci (BotFather parle anglais) :
 
-La réponse liste les messages reçus par le bot. Cherchez ce bloc :
+```text
+Vous       /newbot
+BotFather  Alright, a new bot. How are we going to call it?
+           Please choose a name for your bot.
+Vous       Contact du site
+BotFather  Good. Now let's choose a username for your bot.
+           It must end in `bot`.
+Vous       contact_monsite_bot
+BotFather  Done! Congratulations on your new bot. You will find it
+           at t.me/contact_monsite_bot. […]
+           Use this token to access the HTTP API:
+           123456789:AAF1x2Y3z4-ExempleDeJetonANePasUtiliser
+           Keep your token secure and store it safely […]
+```
+
+Le jeton tient en une ligne : un nombre (l'identifiant du bot), deux-points, puis une longue clé. Copiez-le **en entier**, sans espace autour. Il donne le contrôle total du bot : traitez-le comme un mot de passe.
+
+Vous l'avez perdu ? Envoyez `/mybots` à BotFather, choisissez votre bot, puis **API Token** : il s'affiche à nouveau. Vous l'avez divulgué par erreur ? Au même endroit, **Revoke current token** en génère un nouveau, et l'ancien cesse aussitôt de fonctionner.
+
+## Étape 2 : obtenir l'identifiant de la conversation
+
+Un bot n'a pas le droit d'écrire le premier : il ne peut écrire qu'à quelqu'un qui lui a déjà parlé. On commence donc par lui parler, puis on lui demande qui l'a fait.
+
+1. Ouvrez le lien donné par BotFather, `t.me/contact_monsite_bot`, et touchez **Démarrer**. Telegram envoie `/start` au bot. Envoyez-lui aussi un petit message, « test » par exemple.
+2. Dans le navigateur, ouvrez l'adresse suivante, en y collant votre jeton :
+
+```text
+https://api.telegram.org/bot<JETON>/getUpdates
+```
+
+Attention au piège : le mot `bot` est **collé** au jeton, sans barre oblique entre les deux. Avec le jeton d'exemple, cela donne `https://api.telegram.org/bot123456789:AAF1x2Y3z4-ExempleDeJetonANePasUtiliser/getUpdates`.
+
+La page affiche du JSON : la liste des messages que le bot a reçus. Dans Chrome, cochez **Impression élégante** en haut de la page pour la rendre lisible ; Firefox la met en forme tout seul.
 
 ```json
-"message": {
-  "chat": { "id": 123456789, "first_name": "Awa", "type": "private" }
+{
+  "ok": true,
+  "result": [
+    {
+      "update_id": 815230001,
+      "message": {
+        "message_id": 1,
+        "from": { "id": 691234567, "is_bot": false, "first_name": "Awa", "language_code": "fr" },
+        "chat": { "id": 691234567, "first_name": "Awa", "type": "private" },
+        "date": 1762333200,
+        "text": "/start"
+      }
+    }
+  ]
 }
 ```
 
-Ce nombre est l'**identifiant de la conversation** (`chat_id`). Si la liste est vide, c'est que le bot n'a encore rien reçu : renvoyez-lui un message et rechargez la page.
+La valeur à garder est celle de **`message` → `chat` → `id`**, ici `691234567`. C'est votre `chat_id`. Dans une conversation privée, elle est identique à votre propre identifiant Telegram (`from.id`).
+
+Si vous êtes à l'aise avec le terminal, la même chose en une ligne :
+
+```bash
+curl -s "https://api.telegram.org/bot$TELEGRAM_BOT_TOKEN/getUpdates" | grep -o '"chat":{"id":-\?[0-9]*'
+```
+
+### Si ça ne marche pas
+
+| Ce que vous voyez | Ce que ça veut dire | Que faire |
+| --- | --- | --- |
+| `"result": []` | Le bot n'a rien reçu, ou vos messages ont plus de 24 heures : Telegram ne les garde pas au-delà | Renvoyez un message au bot, puis rechargez la page |
+| `401 Unauthorized` | Le jeton est faux | Recopiez-le, sans espace, ou réaffichez-le avec `/mybots` |
+| `404 Not Found` | L'adresse est mal formée | Vérifiez que `bot` précède bien le jeton, sans `/` |
+| `Conflict: can't use getUpdates method while webhook is active` | Un webhook est réglé sur ce bot | Ouvrez `…/bot<JETON>/deleteWebhook`, puis réessayez |
+
+Vous préférez recevoir les alertes dans un **groupe**, pour que toute l'équipe les voie ? Ajoutez le bot au groupe, puis écrivez-y un message qui le mentionne (`@contact_monsite_bot test`) : par défaut, un bot ne voit pas les messages ordinaires d'un groupe. L'identifiant d'un groupe est **négatif** (`-100…` pour un supergroupe) : gardez bien le signe moins.
+
+## Étape 3 : vérifier les deux valeurs
+
+Avant d'écrire la moindre ligne de code, vérifiez que le couple fonctionne. Remplacez le jeton et l'identifiant dans cette adresse, puis ouvrez-la dans le navigateur :
+
+```text
+https://api.telegram.org/bot<JETON>/sendMessage?chat_id=<CHAT_ID>&text=Test
+```
+
+Votre téléphone doit sonner : « Test », envoyé par votre bot. La page répond `"ok": true`. Si c'est le cas, vos deux valeurs sont bonnes.
 
 ## Le jeton reste sur le serveur
 
@@ -171,6 +244,7 @@ Telegram n'a pas à remplacer l'e-mail. La route envoie le message à **chaque c
 | Bot créé, jeton récupéré | @BotFather | Le bot qui vous écrit |
 | Premier message envoyé au bot | Telegram | Un bot n'écrit qu'à qui lui a parlé |
 | `chat_id` lu dans `getUpdates` | Navigateur | Savoir à qui envoyer l'alerte |
+| Message « Test » reçu via `sendMessage` | Navigateur | Le jeton et le `chat_id` vont ensemble |
 | Jeton et `chat_id` en variables d'environnement | `.env.local`, hébergeur | Le jeton ne quitte jamais le serveur |
 | Texte du visiteur échappé, 4 096 caractères max | Route serveur | Un message mal formé est refusé |
 | Numéro normalisé au format international | Route serveur | `wa.me` exige l'indicatif |
