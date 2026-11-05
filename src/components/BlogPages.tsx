@@ -14,6 +14,7 @@ import {
   getSlugs,
 } from "@/lib/blog";
 
+import AudioReader from "./AudioReader";
 import PostList from "./PostList";
 
 export function BlogIndex({ lang }: { lang: Lang }) {
@@ -54,12 +55,13 @@ export function BlogArticle({ lang, slug }: { lang: Lang; slug: string }) {
         </h1>
         <p data-reveal className="mt-5 text-lg text-ink-2">{post.description}</p>
         {post.tags.length > 0 && <p className="mt-5 text-sm text-ink-2">{post.tags.join(", ")}</p>}
+        <AudioReader lang={post.lang} title={post.title} description={post.description} t={t} />
       </header>
       <div className="relative mt-10 pt-10">
         <span data-rule aria-hidden className="absolute inset-x-0 top-0 h-px origin-left bg-ink" />
         {/* HTML rendu au build depuis les fichiers Markdown du dépôt : seul
             l'auteur écrit ce contenu, aucune saisie de visiteur n'y passe. */}
-        <div className="prose-article" dangerouslySetInnerHTML={{ __html: post.html }} />
+        <div data-listen className="prose-article" dangerouslySetInnerHTML={{ __html: post.html }} />
       </div>
     </article>
   );
