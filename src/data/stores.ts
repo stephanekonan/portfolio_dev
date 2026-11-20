@@ -162,8 +162,8 @@ export const STORE_APPS: StoreApp[] = [
       en: "Courier app",
     },
     brief: {
-      fr: "L'appli des livreurs Wadibu : vos courses repas et colis, et vos gains du jour.",
-      en: "The Wadibu couriers' app: your meal and parcel runs, and today's earnings.",
+      fr: "L'appli des livreurs Wadibu : courses repas et colis, gains du jour et solde.",
+      en: "The Wadibu couriers' app: meal and parcel runs, today's earnings and balance.",
     },
     icon: "/stores/wadibu-livreur/icone.png",
     banner: "/stores/wadibu-livreur/presentation.jpg",
@@ -190,7 +190,14 @@ export const STORE_APPS: StoreApp[] = [
         },
       },
       {
-        src: "/stores/wadibu-livreur/telephone-04-encaissement.jpg",
+        src: "/stores/wadibu-livreur/telephone-04-portefeuille.jpg",
+        label: {
+          fr: "Portefeuille",
+          en: "Wallet",
+        },
+      },
+      {
+        src: "/stores/wadibu-livreur/telephone-05-encaissement.jpg",
         label: {
           fr: "Encaissement",
           en: "Cash collection",
@@ -234,6 +241,16 @@ export const STORE_APPS: StoreApp[] = [
         bullets: [
           "Pour chaque course, l'appli affiche le montant exact à encaisser en espèces, ou indique que le client a déjà payé en ligne par Wave.",
           "Votre part du jour s'affiche sur l'accueil, celle de chaque colis sur sa fiche.",
+        ],
+        text: "",
+      },
+      {
+        title: "Votre portefeuille",
+        bullets: [
+          "Votre solde toujours visible sur l'accueil, avec une alerte quand il devient bas.",
+          "Rechargez-le par Wave directement depuis l'appli.",
+          "Demandez un retrait : l'équipe Wadibu vous envoie la somme par Wave.",
+          "Chaque mouvement est expliqué : votre part d'une course payée par Wave, la commission d'une course payée en espèces, vos recharges et vos retraits.",
         ],
         text: "",
       },
