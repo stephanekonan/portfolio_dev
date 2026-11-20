@@ -31,6 +31,7 @@ export const PROJECTS: Project[] = [
       en: "Showcase site for an Ivorian firm spanning technology, finance, QHSE quality, solar energy and sound: services by division, expertise and contact request.",
     },
     image: "/brightidea.jpg",
+    href: "https://brightidea-africa.vercel.app/",
   },
   {
     name: "Valorie",
