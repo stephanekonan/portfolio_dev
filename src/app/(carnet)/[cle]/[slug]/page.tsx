@@ -46,10 +46,10 @@ function Neighbour({ cle, post, dir }: { cle: string; post?: CarnetArticle; dir:
     <Link
       href={`/${cle}/${post.slug}`}
       rel={dir}
-      className={`group block border-t-2 border-ink pt-4 ${dir === "next" ? "sm:text-right" : ""}`}
+      className={`group block border-t border-rule pt-4 ${dir === "next" ? "sm:text-right" : ""}`}
     >
       <span className="text-sm text-ink-2">{dir === "prev" ? "Article précédent" : "Article suivant"}</span>
-      <span className="mt-1 block font-display text-lg font-bold font-stretch-118% group-hover:underline">{post.title}</span>
+      <span className="mt-1 block font-display text-lg font-semibold group-hover:underline">{post.title}</span>
     </Link>
   );
 }
@@ -81,7 +81,7 @@ export default async function Page({ params }: Props) {
             Article {index + 1} sur {all.length}
             {post.categories.length > 0 && `, ${post.categories.map((c) => ARTICLE_CATEGORIES[c]).join(", ").toLowerCase()}`}
           </p>
-          <h1 className="mt-4 font-display text-[clamp(2rem,4.6vw,3rem)] leading-[1.05] font-extrabold font-stretch-125%">
+          <h1 className="mt-4 font-display text-[clamp(2rem,4.6vw,3rem)] leading-[1.05] font-semibold">
             {post.title}
           </h1>
           <p className="mt-5 text-lg text-ink-2">{post.description}</p>
@@ -94,7 +94,7 @@ export default async function Page({ params }: Props) {
             )}
           </p>
         </header>
-        <div className="mt-10 border-t border-ink pt-10 xl:grid xl:grid-cols-[minmax(0,68ch)_minmax(0,1fr)] xl:gap-12">
+        <div className="mt-10 border-t border-rule pt-10 xl:grid xl:grid-cols-[minmax(0,68ch)_minmax(0,1fr)] xl:gap-12">
           <div className="min-w-0">
             {toc && <TocMobile toc={toc} />}
             {/* HTML rendu sur le serveur depuis le Markdown de l'auteur, dans

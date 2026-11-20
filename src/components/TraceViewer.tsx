@@ -225,7 +225,7 @@ export default function TraceViewer({ traces, lang, t }: Props) {
       <div
         role="tablist"
         aria-label={t.tabsLabel}
-        className="flex max-w-full scrollbar-none overflow-x-auto rounded-full border-2 border-ink bg-raised p-1 sm:inline-flex"
+        className="segmented max-w-full scrollbar-none overflow-x-auto sm:inline-flex"
       >
         {traces.map((tr, i) => (
           <button
@@ -235,16 +235,16 @@ export default function TraceViewer({ traces, lang, t }: Props) {
             aria-selected={i === active}
             aria-controls={`panel-${tr.id}`}
             onClick={() => switchTrace(i)}
-            className="relative flex-1 rounded-full px-5 py-2 text-sm font-semibold whitespace-nowrap sm:flex-none"
+            className="relative flex-1 rounded-[0.6rem] px-5 py-2 text-sm font-medium whitespace-nowrap sm:flex-none"
           >
             {i === active && (
               <span
                 data-flip-id="trace-tab"
-                className="absolute inset-0 rounded-full bg-ink"
+                className="segmented-thumb"
               />
             )}
             <span
-              className={`relative ${i === active ? "text-paper" : "text-ink-2"}`}
+              className={`relative ${i === active ? "text-ink" : "text-ink-2"}`}
             >
               {tr.product}
             </span>
@@ -258,7 +258,7 @@ export default function TraceViewer({ traces, lang, t }: Props) {
         aria-labelledby={`tab-${trace.id}`}
         className="mt-10"
       >
-        <h3 className="font-display text-xl leading-tight font-bold font-stretch-108% sm:text-2xl sm:font-stretch-112%">
+        <h3 className="font-display text-xl leading-tight font-semibold sm:text-2xl">
           {trace.scenario[lang]}
         </h3>
         <p className="mt-4 max-w-[62ch] text-ink-2">{trace.pitch[lang]}</p>
@@ -277,7 +277,7 @@ export default function TraceViewer({ traces, lang, t }: Props) {
           <button
             onClick={() => restart("running")}
             disabled={phase === "running" || phase === "waiting"}
-            className="btn btn-sm bg-ink text-paper"
+            className="btn btn-sm btn-primary"
           >
             {phase === "done" ? (
               <RotateCcw className="size-4" aria-hidden />
@@ -288,7 +288,7 @@ export default function TraceViewer({ traces, lang, t }: Props) {
           </button>
         </div>
 
-        <div className="mt-8 border-t border-ink">
+        <div className="mt-8 border-t border-rule">
           <div className="relative grid grid-cols-1 md:grid-cols-[20rem_1fr]">
             <div className="hidden md:block" />
             <div className="relative mx-2 h-7 border-b border-rule md:mx-0">
@@ -476,7 +476,7 @@ export default function TraceViewer({ traces, lang, t }: Props) {
 
         <div className="mt-16 grid gap-10 lg:grid-cols-[minmax(0,1.15fr)_minmax(0,1fr)]">
           <figure className="min-w-0">
-            <div className="overflow-hidden rounded-[1.25rem] border-2 border-ink bg-raised">
+            <div className="overflow-hidden rounded-[1.25rem] border border-rule bg-raised">
               {/* eslint-disable-next-line @next/next/no-img-element -- captures statiques déjà dimensionnées */}
               <img
                 src={trace.image.src}
@@ -504,7 +504,7 @@ export default function TraceViewer({ traces, lang, t }: Props) {
 
           <div className="min-w-0">
             <p className="text-sm font-semibold text-ink-2">{t.figures}</p>
-            <dl className="mt-3 grid grid-cols-2 border-t border-ink">
+            <dl className="mt-3 grid grid-cols-2 border-t border-rule">
               {trace.figures.map((f) => (
                 <div
                   key={f.label.fr}
@@ -512,7 +512,7 @@ export default function TraceViewer({ traces, lang, t }: Props) {
                 >
                   <dt className="sr-only">{f.label[lang]}</dt>
                   <dd>
-                    <span className="font-display text-xl font-bold font-stretch-140%">
+                    <span className="font-display text-xl font-semibold">
                       {f.value}
                     </span>
                     <span className="mt-0.5 block text-sm text-ink-2">

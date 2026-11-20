@@ -156,16 +156,16 @@ export default function ContactForm({ lang, t }: Props) {
     status === "error" || status === "invalid" ? "var(--layer-infra)" : status === "queued" ? "var(--signal)" : "var(--layer-api)";
 
   const field =
-    "mt-2 block w-full rounded-2xl border-2 border-ink bg-paper px-4 py-3 text-base outline-none transition-shadow placeholder:text-ink-2/60 focus:shadow-[3px_3px_0_var(--signal)] focus-visible:outline-none";
+    "field mt-2 focus-visible:outline-none";
 
   return (
     <form onSubmit={onSubmit} noValidate className="grid gap-7">
       <div className="grid gap-7 sm:grid-cols-2">
-        <label className="block text-sm font-semibold">
+        <label className="block text-sm font-medium">
           {t.name}
           <input name="name" autoComplete="name" required className={field} />
         </label>
-        <label className="block text-sm font-semibold">
+        <label className="block text-sm font-medium">
           {t.phone}
           <input
             name="phone"
@@ -177,12 +177,12 @@ export default function ContactForm({ lang, t }: Props) {
             className={field}
           />
         </label>
-        <label className="block text-sm font-semibold sm:col-span-2">
+        <label className="block text-sm font-medium sm:col-span-2">
           {t.email}
           <input name="email" type="email" autoComplete="email" required className={field} />
         </label>
       </div>
-      <label className="block text-sm font-semibold">
+      <label className="block text-sm font-medium">
         {t.message}
         <textarea name="message" rows={5} required className={`${field} resize-y`} />
       </label>

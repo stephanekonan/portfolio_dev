@@ -8,6 +8,7 @@ import { usePathname } from "next/navigation";
 
 import { base, type Lang, type Ui } from "@/i18n/ui";
 
+import BrandMark from "./BrandMark";
 import NetworkStatus from "./NetworkStatus";
 import ThemeToggle from "./ThemeToggle";
 
@@ -40,8 +41,8 @@ export default function Header({ lang, t }: Props) {
     { href: anchor("realisations"), label: t.nav.work },
     { href: anchor("competences"), label: t.nav.skills },
     { href: `${base(lang)}/blog`, label: t.nav.blog },
-    { href: anchor("contact"), label: t.nav.contact },
   ];
+  const contact = { href: anchor("contact"), label: t.nav.contact };
 
   const close = (returnFocus = false) => {
     setOpen(false);
@@ -78,30 +79,31 @@ export default function Header({ lang, t }: Props) {
     <Link
       href={counterpart(pathname, lang)}
       hrefLang={lang === "fr" ? "en" : "fr"}
-      className="chip hover:bg-paper"
+      className="text-sm text-ink-2 transition-colors hover:text-ink"
     >
       {t.nav.switchTo}
     </Link>
   );
 
   return (
-    // Un îlot flottant : l'en-tête se détache du contenu qui défile dessous.
-    <header className="sticky top-0 z-40 px-3 pt-3 sm:px-6">
-      <div className="mx-auto flex h-14 max-w-304 items-center justify-between gap-4 rounded-full border-2 border-ink bg-raised/90 pr-3 pl-5 shadow-[3px_3px_0_var(--ink)] backdrop-blur-md sm:pr-4 sm:pl-6">
+    // Une barre légère, posée sur le plan de travail : la marque à gauche,
+    // les rubriques au centre, la langue et le contact à droite.
+    <header className="sticky top-0 z-40 border-b border-rule/70 bg-paper/80 backdrop-blur-md">
+      <div className="mx-auto flex h-16 max-w-304 items-center justify-between gap-4 px-4 sm:px-8">
         <Link
           href={home}
           onClick={() => close()}
-          className="flex items-center gap-2 font-display text-lg font-extrabold tracking-tight whitespace-nowrap"
+          className="flex items-center gap-2 font-display text-[1.05rem] font-semibold tracking-tight whitespace-nowrap"
         >
-          <span className="size-2.5 rounded-full bg-signal" aria-hidden />
+          <BrandMark className="size-6" />
           Stéphane Konan
         </Link>
 
         <nav aria-label={t.nav.label} className="hidden lg:block">
-          <ul className="flex items-center gap-7 text-sm">
+          <ul className="flex items-center gap-8 text-sm text-ink-2">
             {links.map((l) => (
               <li key={l.label}>
-                <Link href={l.href} className="hover:underline">
+                <Link href={l.href} className="transition-colors hover:text-ink">
                   {/* Brouillé puis recomposé au survol (ScrollMotion). */}
                   <span data-scramble>{l.label}</span>
                 </Link>
@@ -114,6 +116,9 @@ export default function Header({ lang, t }: Props) {
           <NetworkStatus t={t.network} />
           <ThemeToggle t={t.theme} />
           {langLink}
+          <Link href={contact.href} className="btn btn-sm">
+            {contact.label}
+          </Link>
         </div>
 
         <div className="flex items-center gap-4 lg:hidden">
@@ -124,7 +129,7 @@ export default function Header({ lang, t }: Props) {
             aria-expanded={open}
             aria-controls="menu-mobile"
             aria-label={open ? t.nav.close : t.nav.open}
-            className="-mr-1 grid size-10 place-items-center rounded-full border-2 border-ink"
+            className="-mr-1 grid size-10 place-items-center rounded-xl border border-rule bg-raised"
           >
             <AnimatePresence mode="wait" initial={false}>
               <motion.span
@@ -152,13 +157,13 @@ export default function Header({ lang, t }: Props) {
             id="menu-mobile"
             ref={panelRef}
             initial={{ height: 0, opacity: 0 }}
-            animate={{ height: "calc(100dvh - 5.5rem)", opacity: 1 }}
+            animate={{ height: "calc(100dvh - 5rem)", opacity: 1 }}
             exit={{ height: 0, opacity: 0 }}
             transition={{
               duration: reduce ? 0 : 0.32,
               ease: [0.22, 1, 0.36, 1],
             }}
-            className="mx-auto mt-2 max-w-304 overflow-y-auto rounded-[1.75rem] border-2 border-ink bg-raised lg:hidden"
+            className="mx-3 mb-3 max-w-304 overflow-y-auto rounded-2xl border border-rule bg-raised shadow-[var(--shadow-float)] sm:mx-6 lg:hidden"
           >
             <nav
               aria-label={t.nav.label}
@@ -179,13 +184,16 @@ export default function Header({ lang, t }: Props) {
                     <Link
                       href={l.href}
                       onClick={() => close()}
-                      className="block py-4 font-display text-xl font-bold font-stretch-120%"
+                      className="block py-4 font-display text-xl font-semibold tracking-tight"
                     >
                       {l.label}
                     </Link>
                   </motion.li>
                 ))}
               </ul>
+              <Link href={contact.href} onClick={() => close()} className="btn btn-primary mt-6">
+                {contact.label}
+              </Link>
               <div className="mt-auto flex items-center justify-between gap-4 pt-10">
                 <div className="flex items-center gap-3 text-sm text-ink-2">
                   {t.theme.label}

@@ -31,7 +31,7 @@ export default function PostList({ posts, lang, href, kicker }: Props) {
               {kicker?.(p) && <span className="block">{kicker(p)}</span>}
             </span>
             <span>
-              <span className="font-display text-lg font-bold [font-stretch:118%] group-hover:underline">
+              <span className="font-display text-lg font-semibold group-hover:underline">
                 {p.title}
               </span>
               <span className="mt-2 block max-w-[68ch] text-ink-2">{p.description}</span>

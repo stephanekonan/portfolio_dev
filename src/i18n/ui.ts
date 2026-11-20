@@ -43,23 +43,27 @@ const fr = {
   },
   hero: {
     role: "Ingénieur logiciel",
-    headline: "Je crée des applications et des sites qui marchent, même quand le réseau coupe.",
-    lead: "De l'idée jusqu'à l'application dans votre poche, je m'occupe de tout : l'écran, les paiements par Wave et tout ce qui tourne en coulisses.",
+    /** Le titre de l'accueil, en deux lignes : la seconde en gris. */
+    headline: "Je conçois, je code et je livre",
+    headline2: "vos applications, de A à Z",
+    lead: "De l'idée à l'application dans votre poche : l'écran, les paiements Wave et tout ce qui tourne en coulisses, même quand le réseau coupe.",
     ctaProject: "Parler de mon projet",
     ctaWork: "Voir mes réalisations",
     available: "Ouvert aux missions et aux postes",
     copy: "Copier l'adresse",
     copied: "Adresse copiée",
-    /** Étiquettes courtes de la pile 3D de l'ouverture. */
+    /** Noms courts des couches, repris par le savoir-faire. */
     layers: { web: "L'écran", mobile: "Le téléphone", infra: "Le trajet", api: "Le cerveau", data: "La mémoire" },
-    scroll: "Défiler",
-    /** Le téléphone 3D montre mes vraies applications, une par étape du défilement. */
-    apps: {
-      hint: "Mes applications, en vrai",
-      wadibu: "Commander un repas ou envoyer un colis",
-      resi: "Gérer ses résidences meublées",
-      aboutik: "Tenir ses boutiques et sa caisse",
-      djaxa: "Suivre un atelier de réparation",
+    /** Les fiches posées autour du titre de l'accueil. */
+    desk: {
+      note: "Une idée griffonnée, un croquis… et bientôt une appli dans votre poche.",
+      releases: "Livraisons",
+      releaseName: "Wadibu 2.5.4",
+      releaseDetail: "Play Store · correctifs Shorebird",
+      releaseTag: "En ligne",
+      projects: "Projets en cours",
+      rows: { wadibu: "Livraison colis et repas", resi: "Gestion locative", brightidea: "Site vitrine" },
+      stack: "Ma pile",
     },
   },
   how: {
@@ -231,21 +235,24 @@ const en: Ui = {
   },
   hero: {
     role: "Software Engineer",
-    headline: "I build apps and websites that keep working, even when the network drops.",
-    lead: "From the idea to the app in your pocket, I handle everything: the screen, Wave payments and all that runs behind the scenes.",
+    headline: "I design, code and ship",
+    headline2: "your apps, end to end",
+    lead: "From the idea to the app in your pocket: the screen, Wave payments and everything running behind the scenes, even when the network drops.",
     ctaProject: "Talk about my project",
     ctaWork: "See my work",
     available: "Open to contracts and full-time roles",
     copy: "Copy address",
     copied: "Address copied",
     layers: { web: "The screen", mobile: "The phone", infra: "The journey", api: "The brain", data: "The memory" },
-    scroll: "Scroll",
-    apps: {
-      hint: "My apps, for real",
-      wadibu: "Order a meal or send a parcel",
-      resi: "Run furnished residences",
-      aboutik: "Run shops and the till",
-      djaxa: "Track a repair workshop",
+    desk: {
+      note: "A scribbled idea, a sketch… and soon an app in your pocket.",
+      releases: "Releases",
+      releaseName: "Wadibu 2.5.4",
+      releaseDetail: "Play Store · Shorebird patches",
+      releaseTag: "Live",
+      projects: "Active projects",
+      rows: { wadibu: "Parcel and food delivery", resi: "Rental management", brightidea: "Showcase website" },
+      stack: "My stack",
     },
   },
   how: {

@@ -4,7 +4,7 @@ import { KeyRound } from "lucide-react";
 import { unlock } from "@/lib/carnet/actions";
 
 const field =
-  "mt-1.5 block w-full border-0 border-b border-ink bg-transparent px-0 py-2 text-base outline-none transition-colors focus:border-b-2 focus-visible:outline-none";
+  "mt-1.5 block w-full border-0 border-b border-rule bg-transparent px-0 py-2 text-base outline-none transition-colors focus:border-b-2 focus-visible:outline-none";
 
 /**
  * Formulaire de code, servi à la place de toute page de l'espace privé tant
@@ -16,7 +16,7 @@ export default function Unlock({ cle, next }: { cle: string; next: string }) {
   return (
     <div className="mx-auto max-w-304 px-4 pb-28 pt-14 sm:px-8">
       <p className="font-mono text-sm text-ink-2">GET {"→"} 401</p>
-      <h1 className="mt-4 font-display text-3xl font-extrabold font-stretch-140%">Espace privé</h1>
+      <h1 className="mt-4 font-display text-3xl font-semibold">Espace privé</h1>
       <p className="mt-4 max-w-[52ch] text-lg text-ink-2">
         Ces pages ne sont pas publiques. Entrez le code d&apos;accès pour les lire.
       </p>
@@ -40,7 +40,7 @@ export default function Unlock({ cle, next }: { cle: string; next: string }) {
           <button
             type="submit"
             disabled={pending}
-            className="inline-flex items-center gap-2 bg-ink px-6 py-3 font-semibold text-paper transition-opacity disabled:opacity-50"
+            className="btn btn-primary"
           >
             <KeyRound className="size-4" aria-hidden />
             {pending ? "Vérification" : "Ouvrir"}

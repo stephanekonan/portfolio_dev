@@ -4,7 +4,7 @@ export default function SectionHead({
   lead,
   children,
 }: {
-  /** Numéro de section, en pastille orange (« 01 »), recomposé à l'arrivée. */
+  /** Numéro de section, en pastille (« 01 »), recomposé à l'arrivée. */
   index?: string;
   title: string;
   lead?: string;
@@ -15,14 +15,14 @@ export default function SectionHead({
       <div>
         {index && (
           <p className="mb-5">
-            <span data-scramble-in aria-hidden className="chip font-mono">
+            <span data-scramble-in aria-hidden className="chip chip-signal font-mono">
               {index}
             </span>
           </p>
         )}
         <h2
           data-split
-          className="max-w-[22ch] font-display text-[clamp(2.1rem,4.4vw,3.6rem)] leading-[1] font-extrabold tracking-[-0.03em]"
+          className="max-w-[22ch] font-display text-[clamp(2rem,4vw,3.25rem)] leading-[1.05] font-semibold tracking-[-0.04em]"
         >
           {title}
         </h2>

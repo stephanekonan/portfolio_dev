@@ -3,10 +3,7 @@ import "@/styles/global.css";
 import type { Metadata } from "next";
 
 import NotFoundBody from "@/components/NotFoundBody";
-import {
-  display,
-  text,
-} from "@/lib/fonts";
+import { hand, text } from "@/lib/fonts";
 import { THEME_SCRIPT } from "@/lib/theme";
 
 export const metadata: Metadata = {
@@ -15,7 +12,7 @@ export const metadata: Metadata = {
 
 export default function GlobalNotFound() {
   return (
-    <html lang="fr" className={`${display.variable} ${text.variable}`} suppressHydrationWarning>
+    <html lang="fr" className={`${text.variable} ${hand.variable}`} suppressHydrationWarning>
       <head>
         <script dangerouslySetInnerHTML={{ __html: THEME_SCRIPT }} />
       </head>

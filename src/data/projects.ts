@@ -13,6 +13,16 @@ export interface Project {
 
 export const PROJECTS: Project[] = [
   {
+    name: "Bright Idea",
+    kind: "web",
+    stack: ["Next.js 16", "React 19", "Lenis"],
+    summary: {
+      fr: "Site vitrine d'un cabinet ivoirien qui couvre technologie, finance, qualité QHSE, énergie solaire et son : services par pôle, savoir-faire et demande de contact.",
+      en: "Showcase site for an Ivorian firm spanning technology, finance, QHSE quality, solar energy and sound: services by division, expertise and contact request.",
+    },
+    image: "/brightidea.jpg",
+  },
+  {
     name: "Valorie",
     kind: "web",
     stack: ["React 19", "Vite", "Tailwind 4"],

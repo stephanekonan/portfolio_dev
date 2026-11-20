@@ -21,7 +21,7 @@ export function BlogIndex({ lang }: { lang: Lang }) {
   const t = ui[lang].blog;
   return (
     <div className="mx-auto max-w-304 px-4 pb-28 pt-14 sm:px-8">
-      <h1 data-split className="font-display text-3xl font-extrabold font-stretch-140%">{t.title}</h1>
+      <h1 data-split className="font-display text-3xl font-semibold">{t.title}</h1>
       <p data-reveal className="mb-12 mt-4 max-w-[56ch] text-lg text-ink-2">{t.lead}</p>
       <PostList posts={getPosts(lang)} lang={lang} />
     </div>
@@ -50,7 +50,7 @@ export function BlogArticle({ lang, slug }: { lang: Lang; slug: string }) {
         <p className="text-sm text-ink-2">
           <time dateTime={post.date}>{formatDate(post.date, post.lang)}</time>, {post.minutes} {ui[post.lang].blog.minutes}
         </p>
-        <h1 data-split className="mt-4 font-display text-[clamp(2rem,4.6vw,3rem)] font-extrabold leading-[1.05] font-stretch-125%">
+        <h1 data-split className="mt-4 font-display text-[clamp(2rem,4.6vw,3rem)] font-semibold leading-[1.05]">
           {post.title}
         </h1>
         <p data-reveal className="mt-5 text-lg text-ink-2">{post.description}</p>

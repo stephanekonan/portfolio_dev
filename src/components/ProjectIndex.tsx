@@ -262,7 +262,7 @@ export default function ProjectIndex({ projects, lang, t }: Props) {
 
   return (
     <div>
-      <div className="hidden grid-cols-[1fr_7rem_14rem_2rem] border-b border-ink pb-2 text-xs text-ink-2 md:grid">
+      <div className="hidden grid-cols-[1fr_7rem_14rem_2rem] border-b border-rule pb-2 text-xs text-ink-2 md:grid">
         <span>{t.columns.name}</span>
         <span>{t.columns.kind}</span>
         <span>{t.columns.stack}</span>
@@ -272,7 +272,7 @@ export default function ProjectIndex({ projects, lang, t }: Props) {
         ref={card}
         aria-hidden
         style={{ visibility: "hidden" }}
-        className="pointer-events-none fixed top-0 left-0 z-30 hidden aspect-[16/10] w-72 overflow-hidden rounded-2xl border-2 border-ink lg:block"
+        className="pointer-events-none fixed top-0 left-0 z-30 hidden aspect-[16/10] w-72 overflow-hidden rounded-2xl border border-rule lg:block"
       />
       <ul ref={list} data-reveal-group>
         {projects.map((p) => {
@@ -291,7 +291,7 @@ export default function ProjectIndex({ projects, lang, t }: Props) {
                 aria-controls={id}
                 className="grid w-full grid-cols-[1fr_2rem] items-baseline gap-x-4 py-4 text-left md:grid-cols-[1fr_7rem_14rem_2rem] md:gap-x-0"
               >
-                <span className="font-display text-lg font-semibold [font-stretch:118%]">
+                <span className="font-display text-lg font-semibold">
                   {p.name}
                 </span>
                 <span className="hidden text-sm md:block">
@@ -340,7 +340,7 @@ export default function ProjectIndex({ projects, lang, t }: Props) {
                         )}
                       </div>
                       <div
-                        className={`overflow-hidden rounded-[1.25rem] border-2 border-ink bg-raised ${
+                        className={`overflow-hidden rounded-[1.25rem] border border-rule bg-raised ${
                           p.portrait ? "flex h-80 justify-center" : ""
                         }`}
                       >

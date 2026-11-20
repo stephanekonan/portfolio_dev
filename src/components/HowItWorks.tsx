@@ -14,13 +14,13 @@ import { loadGsap } from "@/lib/motion";
 
 import SectionHead from "./SectionHead";
 
-/** Icône de chaque étape ; toutes à l'encre, le reçu seul en orange. */
+/** Icône de chaque étape ; toutes en bleu, le reçu en vert. */
 const LOOK = [
-  { color: "var(--ink)", Icon: MousePointerClick },
-  { color: "var(--ink)", Icon: Route },
-  { color: "var(--ink)", Icon: BrainCircuit },
-  { color: "var(--ink)", Icon: NotebookPen },
-  { color: "var(--signal)", Icon: ReceiptText },
+  { color: "var(--signal)", Icon: MousePointerClick },
+  { color: "var(--signal)", Icon: Route },
+  { color: "var(--signal)", Icon: BrainCircuit },
+  { color: "var(--signal)", Icon: NotebookPen },
+  { color: "var(--go)", Icon: ReceiptText },
 ];
 
 /** Les cinq étapes sur le chemin, et le chemin qui les relie. */
@@ -179,14 +179,14 @@ export default function HowItWorks({
                   y="38"
                   width="132"
                   height="36"
-                  rx="18"
-                  fill="var(--ink)"
+                  rx="10"
+                  fill="var(--signal)"
                 />
                 <text
                   x="154"
                   y="61"
                   textAnchor="middle"
-                  fill="var(--paper)"
+                  fill="#fff"
                   fontSize="14"
                   fontWeight="600"
                 >
@@ -210,7 +210,7 @@ export default function HowItWorks({
                       cx={st.x}
                       cy={st.y}
                       r="24"
-                      fill="var(--paper)"
+                      fill="var(--raised)"
                       stroke={color}
                       strokeWidth="1.5"
                     />
@@ -267,7 +267,7 @@ export default function HowItWorks({
               >
                 <p className="flex items-center gap-3 text-sm">
                   <span
-                    className="grid size-9 place-items-center rounded-full text-paper lg:hidden"
+                    className="grid size-9 place-items-center rounded-xl text-white lg:hidden"
                     style={{ background: color }}
                     aria-hidden
                   >
@@ -277,7 +277,7 @@ export default function HowItWorks({
                   <span className="font-semibold">{step.name}</span>
                   <span className="text-ink-2">· {step.analogy}</span>
                 </p>
-                <h3 className="mt-4 font-display text-xl leading-tight font-bold font-stretch-112% sm:text-2xl">
+                <h3 className="mt-4 font-display text-xl leading-tight font-semibold sm:text-2xl">
                   {step.title}
                 </h3>
                 <p className="mt-3 max-w-[44ch] text-lg text-ink-2">

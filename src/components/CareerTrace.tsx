@@ -51,7 +51,7 @@ export default function CareerTrace({ spans, axis, now, lang, t }: Props) {
     <div>
       <div className="grid grid-cols-1 md:grid-cols-[15rem_1fr]">
         <div className="hidden md:block" />
-        <div className="relative h-6 border-b border-ink">
+        <div className="relative h-6 border-b border-rule">
           {years.map((y) => (
             <span
               key={y}

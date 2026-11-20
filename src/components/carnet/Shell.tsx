@@ -20,8 +20,8 @@ export default function Shell({ cle, open, children }: { cle: string; open: bool
         <div className="mx-auto flex h-14 max-w-304 items-center justify-between gap-4 px-4 sm:px-8">
           <Link href={open ? `/${cle}` : "/"} className="flex min-w-0 items-baseline gap-3 whitespace-nowrap">
             {/* Sur un téléphone, le titre long pousserait le thème et le verrou hors de l'écran. */}
-            <span className="font-display text-base font-bold font-stretch-135% sm:hidden">Carnet</span>
-            <span className="hidden font-display text-base font-bold font-stretch-135% sm:inline">Construire en avançant</span>
+            <span className="font-display text-base font-semibold sm:hidden">Carnet</span>
+            <span className="hidden font-display text-base font-semibold sm:inline">Construire en avançant</span>
             <span className="hidden text-xs text-ink-2 md:inline">carnet de Stéphane Konan</span>
           </Link>
           <div className="flex items-center gap-3">

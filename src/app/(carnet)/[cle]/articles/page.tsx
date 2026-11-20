@@ -42,7 +42,7 @@ export default async function Page({ params, searchParams }: Props) {
 
   return (
     <Shell cle={cle} open>
-      <h1 className="font-display text-3xl font-extrabold font-stretch-140%">Articles</h1>
+      <h1 className="font-display text-3xl font-semibold">Articles</h1>
       <p className="mt-4 max-w-[56ch] text-lg text-ink-2">{LEAD}</p>
 
       {used.length > 1 && (

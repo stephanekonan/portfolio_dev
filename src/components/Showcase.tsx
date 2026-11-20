@@ -89,7 +89,7 @@ export default function Showcase({ products, lang, t }: Props) {
               data-reveal
               className="card flex flex-col overflow-hidden lg:w-[min(40rem,52vw)] lg:shrink-0"
             >
-              <div className="relative aspect-[16/10] overflow-hidden border-b-2 border-ink bg-paper lg:aspect-[2/1]">
+              <div className="relative aspect-[16/10] overflow-hidden border-b border-rule bg-paper lg:aspect-[2/1]">
                 <img
                   data-shot
                   src={p.image.src}
@@ -107,7 +107,7 @@ export default function Showcase({ products, lang, t }: Props) {
                   <span className="chip">0{i + 1}</span>
                   <span className="chip">{t.kinds[p.id]}</span>
                 </p>
-                <h3 className="font-display text-2xl font-bold tracking-tight sm:text-3xl">
+                <h3 className="font-display text-2xl font-semibold tracking-tight sm:text-3xl">
                   {p.product}
                 </h3>
                 <p className="max-w-[58ch] text-ink-2 sm:text-lg">

@@ -24,8 +24,7 @@ import { DUR, EASE, SCRAMBLE_CHARS, STAGGER, loadGsap } from "@/lib/motion";
  *
  * Les liens vers une ancre de la page défilent sous la conduite de GSAP.
  *
- * Une barre safran sous l'en-tête suit la lecture. La pile 3D de l'accueil a
- * sa propre chorégraphie (StackScene), la trame du papier aussi (PaperField).
+ * Une barre bleue tout en haut suit la lecture.
  *
  * Sans JavaScript, ou avant son chargement, tout est déjà en place : les états
  * de départ ne sont posés qu'au moment de lancer l'animation. Mouvement réduit :
@@ -68,8 +67,7 @@ export default function ScrollMotion() {
             autoSplit: true,
             onSplit: (self) =>
               gsap.from(self.chars, {
-                yPercent: 120,
-                rotate: 6,
+                yPercent: 100,
                 duration: DUR.reveal,
                 stagger: STAGGER.chars,
                 ease,
@@ -79,7 +77,7 @@ export default function ScrollMotion() {
         );
 
         all("[data-reveal]").forEach((el) =>
-          gsap.from(el, { y: 80, opacity: 0, duration: DUR.reveal, ease, scrollTrigger: enter(el) }),
+          gsap.from(el, { y: 28, opacity: 0, duration: DUR.reveal, ease, scrollTrigger: enter(el) }),
         );
 
         // Un groupe vide (rangée de logos d'une compétence qui n'en a pas)
@@ -87,17 +85,16 @@ export default function ScrollMotion() {
         const filled = (sel: string) => all(sel).filter((el) => el.children.length > 0);
 
         filled("[data-reveal-group]").forEach((el) =>
-          gsap.from(el.children, { y: 60, opacity: 0, duration: DUR.reveal, stagger: STAGGER.items, ease, scrollTrigger: enter(el) }),
+          gsap.from(el.children, { y: 20, opacity: 0, duration: DUR.reveal, stagger: STAGGER.items, ease, scrollTrigger: enter(el) }),
         );
 
         filled("[data-pop]").forEach((el) =>
           gsap.from(el.children, {
-            scale: 0.3,
-            rotate: -35,
+            scale: 0.6,
             opacity: 0,
             duration: 0.8,
             stagger: 0.06,
-            ease: "back.out(2.2)",
+            ease: "back.out(1.6)",
             scrollTrigger: enter(el),
           }),
         );
@@ -267,7 +264,7 @@ export default function ScrollMotion() {
     <div
       ref={bar}
       aria-hidden
-      className="fixed inset-x-0 top-0 z-50 h-1 origin-left scale-x-0 rounded-r-full bg-signal"
+      className="fixed inset-x-0 top-0 z-50 h-0.5 origin-left scale-x-0 rounded-r-full bg-signal"
     />
   );
 }

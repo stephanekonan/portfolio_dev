@@ -1,7 +1,4 @@
-import Image from "next/image";
 import Link from "next/link";
-
-import { ArrowRight } from "lucide-react";
 
 import { AXIS, CAREER } from "@/data/career";
 import { PROJECTS } from "@/data/projects";
@@ -9,22 +6,13 @@ import { SKILLS } from "@/data/skills";
 import { TRACES } from "@/data/traces";
 import { base, CONTACT, type Lang, ui } from "@/i18n/ui";
 import { getPosts } from "@/lib/blog";
-// Importée, la photo est servie sous une adresse qui porte son empreinte :
-// une nouvelle photo change d'adresse, ni le service worker ni l'optimiseur
-// d'images ne peuvent resservir l'ancienne.
-import me from "../../public/me-small.png";
-// Les écrans du téléphone : de vraies captures de mes applications.
-import shotAboutik from "../../public/aboutik.jpg";
-import shotDjaxa from "../../public/djaxa.png";
-import shotResi from "../../public/phone/resi.jpg";
-import shotWadibu from "../../public/phone/wadibu.jpg";
 
 import BrandIcon from "./BrandIcon";
 import CareerTrace from "./CareerTrace";
 import ContactForm from "./ContactForm";
 import CopyEmail from "./CopyEmail";
 import HowItWorks from "./HowItWorks";
-import PhoneScene, { type PhoneApp } from "./PhoneScene";
+import HeroDesk from "./HeroDesk";
 import PostList from "./PostList";
 import ProjectIndex from "./ProjectIndex";
 import SectionHead from "./SectionHead";
@@ -43,88 +31,9 @@ const NOW = new Date().toISOString().slice(0, 7);
 export default function HomePage({ lang }: { lang: Lang }) {
   const t = ui[lang];
   const posts = getPosts(lang).slice(0, 3);
-  // Wadibu : la PWA de commande ; Resi : son site au format téléphone ;
-  // Aboutik : l'écran de sa maquette, recadré ; djaxa .r : une capture.
-  const apps: PhoneApp[] = [
-    { id: "wadibu", name: "Wadibu", caption: t.hero.apps.wadibu, src: shotWadibu.src },
-    { id: "resi", name: "Resi", caption: t.hero.apps.resi, src: shotResi.src },
-    { id: "aboutik", name: "Aboutik", caption: t.hero.apps.aboutik, src: shotAboutik.src, crop: [86, 92, 434, 783] },
-    { id: "djaxa", name: "djaxa .r", caption: t.hero.apps.djaxa, src: shotDjaxa.src },
-  ];
-
   return (
     <>
-      {/* L'ouverture tient dans l'écran, sous l'en-tête flottant. Sur grand
-          écran, elle reste en place le temps que le téléphone raconte une
-          commande (PhoneScene). */}
-      <section className="relative mx-auto grid max-w-304 items-center gap-6 px-4 pt-8 pb-16 sm:px-8 lg:h-[calc(100svh-4.25rem)] lg:min-h-[40rem] lg:grid-cols-[minmax(0,1.1fr)_minmax(0,0.9fr)] lg:pt-2 lg:pb-10">
-        <div data-hero-text className="relative z-10">
-          <p className="flex items-center gap-3">
-            <Image
-              src={me}
-              alt=""
-              width={48}
-              height={48}
-              priority
-              className="size-12 rounded-full border-2 border-ink object-cover"
-            />
-            <span className="leading-tight">
-              <span className="block font-semibold">Stéphane Konan</span>
-              <span className="block text-sm text-ink-2">{t.hero.role}</span>
-            </span>
-          </p>
-          <h1
-            data-split
-            className="mt-6 font-display text-[clamp(2.3rem,4.3vw,4rem)] leading-[1] font-extrabold tracking-[-0.035em]"
-          >
-            {t.hero.headline}
-          </h1>
-          <p className="mt-5 max-w-[48ch] text-lg text-ink-2">{t.hero.lead}</p>
-          <div className="mt-7 flex flex-wrap items-center gap-4">
-            <a data-magnetic href="#contact" className="btn btn-primary">
-              {t.hero.ctaProject}
-              <ArrowRight className="size-4" aria-hidden />
-            </a>
-            <a data-magnetic href="#realisations" className="btn">
-              {t.hero.ctaWork}
-            </a>
-          </div>
-          <div className="mt-7 flex flex-wrap items-center gap-x-5 gap-y-3 text-sm">
-            <span className="chip">
-              <span className="size-2 rounded-full bg-go" aria-hidden />
-              {t.hero.available}
-            </span>
-            <CopyEmail
-              email={CONTACT.email}
-              copy={t.hero.copy}
-              copied={t.hero.copied}
-            />
-          </div>
-        </div>
-
-        <div className="h-[26rem] sm:h-[30rem] lg:h-[min(42rem,85%)]">
-          <PhoneScene apps={apps} hint={t.hero.apps.hint} />
-        </div>
-
-        {/* Signe « défiler » : son trait se dessine en boucle (DrawSVG). */}
-        <div
-          data-scroll-cue
-          aria-hidden
-          className="absolute bottom-5 left-1/2 z-10 hidden -translate-x-1/2 flex-col items-center gap-2 text-ink-2 lg:flex"
-        >
-          <span className="font-mono text-xs">{t.hero.scroll}</span>
-          <svg
-            viewBox="0 0 10 48"
-            className="h-12 w-2.5"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="1.5"
-          >
-            <path d="M5 0v46" />
-            <path d="M1 41l4 5 4-5" />
-          </svg>
-        </div>
-      </section>
+      <HeroDesk t={t.hero} />
 
       <HowItWorks t={t.how} index="01" />
 
@@ -142,7 +51,7 @@ export default function HomePage({ lang }: { lang: Lang }) {
         <div className="mt-24">
           <h3
             data-reveal
-            className="font-display text-2xl font-bold tracking-tight"
+            className="font-display text-2xl font-semibold tracking-tight"
           >
             {t.work.title}
           </h3>
@@ -163,7 +72,7 @@ export default function HomePage({ lang }: { lang: Lang }) {
             <article key={g.layer} data-reveal className="card p-6 sm:p-8">
               <div className="grid gap-6 md:grid-cols-[15rem_1fr]">
                 <div>
-                  <h3 className="flex items-center gap-3 font-display text-xl font-bold">
+                  <h3 className="flex items-center gap-3 font-display text-xl font-semibold tracking-tight">
                     <span
                       className="size-3 rounded-full bg-signal"
                       aria-hidden
@@ -175,7 +84,7 @@ export default function HomePage({ lang }: { lang: Lang }) {
                   </p>
                 </div>
                 <div>
-                  <p className="max-w-[46ch] text-xl leading-snug font-semibold">
+                  <p className="max-w-[46ch] text-xl leading-snug font-medium tracking-tight">
                     {t.skills.plain[g.layer]}
                   </p>
                   <ul
@@ -248,19 +157,19 @@ export default function HomePage({ lang }: { lang: Lang }) {
       )}
 
       <section id="contact" className="mx-auto max-w-304 px-4 pb-24 sm:px-8">
-        <div className="card grid gap-12 bg-ink p-6 text-paper sm:p-10 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.1fr)] lg:p-14">
+        <div className="card grid gap-12 p-6 sm:p-10 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.1fr)] lg:p-14">
           <div>
             <h2
               data-split
-              className="font-display text-[clamp(2.4rem,5vw,4rem)] leading-[0.98] font-extrabold tracking-[-0.03em]"
+              className="font-display text-[clamp(2.2rem,4.6vw,3.6rem)] leading-[1.04] font-semibold tracking-[-0.04em]"
             >
               {t.contact.title}
             </h2>
-            <p data-reveal className="mt-5 max-w-[40ch] text-lg">
+            <p data-reveal className="mt-5 max-w-[40ch] text-lg text-ink-2">
               {t.contact.lead}
             </p>
             <div className="mt-10 space-y-3 text-sm">
-              <p>{t.contact.or}</p>
+              <p className="text-ink-2">{t.contact.or}</p>
               <CopyEmail
                 email={CONTACT.email}
                 copy={t.hero.copy}
@@ -280,7 +189,7 @@ export default function HomePage({ lang }: { lang: Lang }) {
           </div>
           <div
             data-reveal
-            className="rounded-[1.25rem] border-2 border-paper bg-raised p-6 text-ink sm:p-8"
+            className="rounded-2xl border border-rule bg-paper/70 p-6 sm:p-8"
           >
             <ContactForm lang={lang} t={t.contact} />
           </div>
