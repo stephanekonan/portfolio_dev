@@ -121,7 +121,7 @@ export function Screen({
 
       {/* Fixes : la petite étiquette et les actions de l'écran. */}
       <div className="flex flex-wrap items-center justify-between gap-3 px-4 pt-5 pb-3 sm:px-8 sm:pt-6">
-        <p className="chip chip-signal font-mono">{kicker}</p>
+        <p className="chip chip-accent font-mono">{kicker}</p>
         {aside}
       </div>
 

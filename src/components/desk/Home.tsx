@@ -187,8 +187,8 @@ export default function Home({ t, s }: { t: Ui["hero"]; s: Ui["screens"] }) {
               <span className="block text-xs text-ink-2">
                 {d.releaseDetail}
               </span>
-              <span className="mt-3 inline-flex items-center gap-1.5 rounded-md bg-signal-soft px-2 py-1 text-xs font-medium text-signal">
-                <span className="size-1.5 rounded-full bg-signal" />
+              <span className="mt-3 inline-flex items-center gap-1.5 rounded-md bg-accent-soft px-2 py-1 text-xs font-medium text-accent-ink">
+                <span className="size-1.5 rounded-full bg-accent" />
                 {d.releaseTag}
               </span>
             </a>
@@ -232,7 +232,7 @@ export default function Home({ t, s }: { t: Ui["hero"]; s: Ui["screens"] }) {
                     </span>
                     <span className="mt-2 block h-1 rounded-full bg-sunken">
                       <span
-                        className="block h-full rounded-full bg-[#38bdf8]"
+                        className="block h-full rounded-full bg-accent"
                         style={{ width: r.bar }}
                       />
                     </span>

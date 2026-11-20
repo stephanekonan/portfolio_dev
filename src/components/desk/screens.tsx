@@ -733,7 +733,7 @@ function How({ ctx }: { ctx: Ctx }) {
                 >
                   <Icon className="size-5" strokeWidth={1.75} aria-hidden />
                 </span>
-                <p className="mt-4 font-mono text-xs text-ink-3">0{i + 1}</p>
+                <p className="mt-4 font-mono text-xs text-accent-ink">0{i + 1}</p>
                 <p className="font-semibold">{step.name}</p>
                 <p className="text-sm text-ink-2">{step.analogy}</p>
               </CardLink>
@@ -1088,7 +1088,7 @@ function StoreScreen({ id, ctx }: { id: string; ctx: Ctx }) {
                   className="p-3.5"
                 >
                   <span className="flex items-baseline gap-3 pr-8">
-                    <span className="font-mono text-xs text-ink-3">
+                    <span className="font-mono text-xs text-accent-ink">
                       {String(i + 1).padStart(2, "0")}
                     </span>
                     <span className="text-sm font-semibold">{sec.title}</span>

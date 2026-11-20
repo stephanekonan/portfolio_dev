@@ -38,6 +38,9 @@
   --color-rule: var(--rule);
   --color-signal: var(--signal);
   --color-signal-soft: var(--signal-soft);
+  --color-accent: var(--accent);
+  --color-accent-ink: var(--accent-ink);
+  --color-accent-soft: var(--accent-soft);
   --color-go: var(--go);
   --color-note: var(--note);
   --color-web: var(--layer-web);
@@ -75,6 +78,7 @@
   /* La grille technique du fond. */
   --grid: rgb(17 19 24 / 0.07);
   --glow: rgb(47 91 255 / 0.10);
+  --glow-2: rgb(6 182 212 / 0.10);
   /* Une fiche posée dessus, et le gris d'un dossier ou d'une piste. */
   --raised: #ffffff;
   --sunken: #eceef2;
@@ -84,6 +88,11 @@
   --rule: #e3e5ea;
   --signal: #2f5bff;
   --signal-soft: #eaefff;
+  /* Accent cyan « terminal » : repères techniques (étiquettes en mono,
+     numéros, états, pistes), jamais les actions, qui restent en bleu. */
+  --accent: #06b6d4;
+  --accent-ink: #0e7490;
+  --accent-soft: #e3f8fc;
   --go: #16a34a;
   --note: #fbe97a;
   --layer-web: #2f5bff;
@@ -109,6 +118,7 @@
     --paper: #0e1013;
     --grid: rgb(255 255 255 / 0.06);
   --glow: rgb(107 139 255 / 0.14);
+  --glow-2: rgb(34 211 238 / 0.10);
     --raised: #171a1f;
     --sunken: #1d2026;
     --ink: #f2f3f5;
@@ -117,6 +127,9 @@
     --rule: #272b32;
     --signal: #6b8bff;
     --signal-soft: #1a2147;
+    --accent: #22d3ee;
+    --accent-ink: #67e8f9;
+    --accent-soft: #0c2a33;
     --go: #34c46b;
     --note: #e9d465;
     --layer-web: #6b8bff;
@@ -136,6 +149,7 @@
   --paper: #0e1013;
   --grid: rgb(255 255 255 / 0.06);
   --glow: rgb(107 139 255 / 0.14);
+  --glow-2: rgb(34 211 238 / 0.10);
   --raised: #171a1f;
   --sunken: #1d2026;
   --ink: #f2f3f5;
@@ -144,6 +158,9 @@
   --rule: #272b32;
   --signal: #6b8bff;
   --signal-soft: #1a2147;
+  --accent: #22d3ee;
+  --accent-ink: #67e8f9;
+  --accent-soft: #0c2a33;
   --go: #34c46b;
   --note: #e9d465;
   --layer-web: #6b8bff;
@@ -209,7 +226,9 @@ body::before {
   mask-image: radial-gradient(ellipse 75% 70% at 50% 40%, #000 35%, transparent 100%);
 }
 body::after {
-  background: radial-gradient(ellipse 60% 45% at 50% -8%, var(--glow), transparent 70%);
+  background:
+    radial-gradient(ellipse 45% 40% at 38% -8%, var(--glow), transparent 70%),
+    radial-gradient(ellipse 45% 40% at 64% -6%, var(--glow-2), transparent 70%);
 }
 
 h1,
@@ -372,6 +391,11 @@ html[data-network="offline"] body {
     border-color: transparent;
     background: var(--signal-soft);
     color: var(--signal);
+  }
+  .chip-accent {
+    border-color: transparent;
+    background: var(--accent-soft);
+    color: var(--accent-ink);
   }
 
   /* Contrôle segmenté : une piste grise, l'option choisie en fiche blanche. */
