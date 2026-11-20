@@ -119,23 +119,23 @@ export function Screen({
         </div>
       </div>
 
-      <div className="flex flex-wrap items-end justify-between gap-4 px-4 pt-5 sm:px-8 sm:pt-7">
-        <div>
-          <p className="chip chip-signal font-mono">{kicker}</p>
-          <h2
-            data-screen-title
-            tabIndex={-1}
-            className="mt-3 font-display text-[clamp(1.7rem,3.2vw,2.6rem)] leading-[1.08] font-semibold tracking-[-0.04em] outline-none"
-          >
-            {title}
-            {title2 && <span className="block text-ink-2">{title2}</span>}
-          </h2>
-        </div>
+      {/* Fixes : la petite étiquette et les actions de l'écran. */}
+      <div className="flex flex-wrap items-center justify-between gap-3 px-4 pt-5 pb-3 sm:px-8 sm:pt-6">
+        <p className="chip chip-signal font-mono">{kicker}</p>
         {aside}
       </div>
 
-      <div className="scroll-soft min-h-0 flex-1 overflow-y-auto px-4 pt-5 pb-6 sm:px-8 sm:pt-6 sm:pb-8">
-        {children}
+      {/* Le grand titre défile avec le contenu. */}
+      <div className="scroll-soft min-h-0 flex-1 overflow-y-auto px-4 pb-6 sm:px-8 sm:pb-8">
+        <h2
+          data-screen-title
+          tabIndex={-1}
+          className="pt-1 font-display text-[clamp(1.7rem,3.2vw,2.6rem)] leading-[1.08] font-semibold tracking-[-0.04em] outline-none"
+        >
+          {title}
+          {title2 && <span className="block text-ink-2">{title2}</span>}
+        </h2>
+        <div className="mt-5 sm:mt-6">{children}</div>
       </div>
     </div>
   );

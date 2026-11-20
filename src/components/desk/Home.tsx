@@ -15,12 +15,11 @@ const ROWS = [
   { id: "wadibu", name: "Wadibu", initial: "W", color: "#f97316", bar: "82%" },
   { id: "resi", name: "Resi", initial: "R", color: "#16a34a", bar: "64%" },
   {
-    id: "bright-idea",
-    key: "brightidea",
-    name: "Bright Idea",
-    initial: "B",
-    color: "#2563eb",
-    bar: "91%",
+    id: "sensation",
+    name: "Sensation",
+    initial: "S",
+    color: "#c8174f",
+    bar: "48%",
   },
 ] as const;
 
@@ -228,7 +227,7 @@ export default function Home({ t, s }: { t: Ui["hero"]; s: Ui["screens"] }) {
                       </span>
                       <span className="font-semibold">{r.name}</span>
                       <span className="truncate text-ink-3">
-                        {d.rows["key" in r ? r.key : r.id]}
+                        {d.rows[r.id]}
                       </span>
                     </span>
                     <span className="mt-2 block h-1 rounded-full bg-sunken">

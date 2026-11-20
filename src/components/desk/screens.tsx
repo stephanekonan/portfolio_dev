@@ -280,11 +280,15 @@ function Work({ ctx }: { ctx: Ctx }) {
               className="flex items-center gap-3 p-3"
             >
               <span className="block h-12 w-16 shrink-0 overflow-hidden rounded-lg border border-rule bg-sunken">
-                <img
-                  src={p.image}
-                  alt=""
-                  className={`size-full ${p.portrait ? "object-contain" : "object-cover object-top"}`}
-                />
+                {p.image ? (
+                  <img
+                    src={p.image}
+                    alt=""
+                    className={`size-full ${p.portrait ? "object-contain" : "object-cover object-top"}`}
+                  />
+                ) : (
+                  <Initial name={p.name} className="size-full text-lg" />
+                )}
               </span>
               <span className="min-w-0 pr-8">
                 <span className="block truncate text-sm font-semibold">
@@ -518,7 +522,14 @@ function Project({ id, ctx }: { id: string; ctx: Ctx }) {
       }
     >
       <div className="grid gap-5 lg:grid-cols-[minmax(0,1.2fr)_minmax(0,0.8fr)]">
-        <Shot src={p.image} alt={p.name} portrait={p.portrait} />
+        {p.image ? (
+          <Shot src={p.image} alt={p.name} portrait={p.portrait} />
+        ) : (
+          <Initial
+            name={p.name}
+            className="aspect-[16/10] w-full rounded-2xl border border-rule text-6xl"
+          />
+        )}
         <div className="space-y-5">
           <p className="text-lg leading-snug">{p.summary[lang]}</p>
           {p.stack.length > 0 && (
@@ -1256,5 +1267,26 @@ function StoreShot({
         </div>
       </div>
     </Screen>
+  );
+}
+
+/**
+ * Vignette d'un projet sans capture publique : son initiale sur la trame
+ * du plan de travail.
+ */
+function Initial({
+  name,
+  className = "",
+}: {
+  name: string;
+  className?: string;
+}) {
+  return (
+    <span
+      aria-hidden
+      className={`grid place-items-center bg-sunken bg-[radial-gradient(var(--dot)_1px,transparent_1.2px)] bg-[size:14px_14px] font-semibold tracking-tight text-ink-3 ${className}`}
+    >
+      {name.charAt(0)}
+    </span>
   );
 }

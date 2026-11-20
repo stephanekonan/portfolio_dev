@@ -5,13 +5,23 @@ export interface Project {
   kind: "web" | "mobile";
   stack: string[];
   summary: T;
-  image: string;
+  /** Capture publique ; absente pour un projet encore privé. */
+  image?: string;
   /** Les captures d'app mobile sont en portrait : elles se posent autrement. */
   portrait?: boolean;
   href?: string;
 }
 
 export const PROJECTS: Project[] = [
+  {
+    name: "Sensation",
+    kind: "web",
+    stack: ["Next.js 16", "React 19"],
+    summary: {
+      fr: "Boutique en ligne à Abidjan, en cours de construction : catalogue, fiches produit, panier et paiement Mobile Money, avec son back-office.",
+      en: "Online shop in Abidjan, under construction: catalogue, product pages, cart and Mobile Money payment, with its back-office.",
+    },
+  },
   {
     name: "Bright Idea",
     kind: "web",
