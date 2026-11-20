@@ -1,20 +1,21 @@
 @import "tailwindcss";
 
 /*
- * Design system « Abidjan ». Un crème chaud pour le fond, un noir chaud pour
- * l'encre, et les deux couleurs du drapeau ivoirien : l'orange porte
- * l'action et ce qui est vivant (boutons, état, mise en avant), le vert
- * porte ce qui est réussi ou disponible. Les formes sont franches et
- * arrondies : cartes à bord net et ombre décalée, boutons en pilule. On voit
- * tout de suite ce qui se touche.
+ * Design system « Atelier ». Un plan de travail clair, sur une grille
+ * technique fine (plan d'ingénieur), sur lequel tout est posé comme des fiches : cartes blanches à filet
+ * gris d'un pixel et ombre douce, dossiers à onglet, un post-it. Le texte
+ * est presque noir ; un gris moyen prolonge les titres (deuxième ligne) et
+ * porte le texte secondaire. Une seule couleur d'action, le cyan, pour les
+ * boutons principaux, les liens actifs et ce qui est mis en avant ; le vert
+ * dit « disponible » ou « réussi ».
  *
- * Profondeur, de bas en haut : le fond vivant en WebGL (Ambient, toile
- * fixe), le contenu, les aperçus qui suivent le curseur (z-30), l'en-tête
- * flottant (z-40). `body` reste transparent pour laisser voir le fond.
+ * Profondeur, de bas en haut : le plan à points (`body`), le contenu, les
+ * aperçus qui suivent le curseur (z-30), l'en-tête (z-40).
  *
  * Mouvement : `--ease-out-quint` côté CSS, `src/lib/motion.ts` côté GSAP
  * (mêmes courbes). Ce qui défile s'anime par attributs `data-*`
- * (ScrollMotion, sur toutes les pages).
+ * (ScrollMotion, sur toutes les pages). Des entrées courtes et douces :
+ * rien ne doit secouer le plan de travail.
  */
 
 /* `inline` : les variables de police sont posées sur <html> par next/font,
@@ -22,6 +23,7 @@
 @theme inline {
   --font-sans: var(--font-text-face), system-ui, sans-serif;
   --font-display: var(--font-display-face), var(--font-text-face), sans-serif;
+  --font-hand: var(--font-hand-face), cursive;
 }
 
 @theme {
@@ -29,11 +31,19 @@
 
   --color-paper: var(--paper);
   --color-raised: var(--raised);
+  --color-sunken: var(--sunken);
   --color-ink: var(--ink);
   --color-ink-2: var(--ink-2);
+  --color-ink-3: var(--ink-3);
   --color-rule: var(--rule);
   --color-signal: var(--signal);
+  --color-signal-soft: var(--signal-soft);
+  --color-on-signal: var(--on-signal);
+  --color-accent: var(--accent);
+  --color-accent-ink: var(--accent-ink);
+  --color-accent-soft: var(--accent-soft);
   --color-go: var(--go);
+  --color-note: var(--note);
   --color-web: var(--layer-web);
   --color-mobile: var(--layer-mobile);
   --color-api: var(--layer-api);
@@ -42,42 +52,61 @@
   --color-career: var(--layer-career);
 
   --text-xs: 0.8125rem;
-  --text-xs--line-height: 1.35;
+  --text-xs--line-height: 1.4;
   --text-sm: 0.9375rem;
   --text-sm--line-height: 1.5;
   --text-base: 1.0625rem;
   --text-base--line-height: 1.6;
-  --text-lg: 1.25rem;
-  --text-lg--line-height: 1.5;
-  --text-xl: 1.5rem;
+  --text-lg: 1.1875rem;
+  --text-lg--line-height: 1.55;
+  --text-xl: 1.4375rem;
   --text-xl--line-height: 1.3;
-  --text-2xl: 2.25rem;
-  --text-2xl--line-height: 1.1;
-  --text-3xl: 3.25rem;
-  --text-3xl--line-height: 1;
+  --text-2xl: 2rem;
+  --text-2xl--line-height: 1.15;
+  --text-3xl: 3rem;
+  --text-3xl--line-height: 1.05;
 
-  --radius-card: 1.75rem;
+  --radius-card: 1.25rem;
   --ease-out-quint: cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 :root {
   color-scheme: light;
-  --paper: #f5efe6;
-  --raised: #fffcf7;
-  --ink: #17130f;
-  --ink-2: #5e554b;
-  --rule: #e2d8c9;
-  /* Orange et vert du drapeau, réglés pour le texte comme pour les aplats. */
-  --signal: #ff6a1a;
-  --go: #0b8a5c;
-  --layer-web: #3a6ee8;
-  --layer-mobile: #8a57f0;
-  --layer-api: #0b8a5c;
-  --layer-infra: #e2a400;
-  --layer-data: #6c6258;
-  --layer-career: #17130f;
-  /* Ombre décalée des cartes et des boutons : un trait d'encre, pas un flou. */
-  --shadow-hard: 4px 4px 0 var(--ink);
+  /* Les titres sont en Inter, comme le texte. */
+  --font-display-face: var(--font-text-face);
+  /* Le plan de travail et ses points. */
+  --paper: #f4f5f7;
+  /* La grille technique du fond. */
+  --grid: rgb(17 19 24 / 0.07);
+  --glow: rgb(8 145 178 / 0.10);
+  --glow-2: rgb(6 182 212 / 0.10);
+  /* Une fiche posée dessus, et le gris d'un dossier ou d'une piste. */
+  --raised: #ffffff;
+  --sunken: #eceef2;
+  --ink: #111318;
+  --ink-2: #6b717d;
+  --ink-3: #9aa0ab;
+  --rule: #e3e5ea;
+  --signal: #0891b2;
+  --signal-soft: #e3f8fc;
+  /* Le texte posé sur la couleur principale. */
+  --on-signal: #ffffff;
+  /* Accent cyan « terminal » : repères techniques (étiquettes en mono,
+     numéros, états, pistes), même famille que la couleur principale, en plus clair. */
+  --accent: #06b6d4;
+  --accent-ink: #0e7490;
+  --accent-soft: #e3f8fc;
+  --go: #16a34a;
+  --note: #fbe97a;
+  --layer-web: #0891b2;
+  --layer-mobile: #7c5cf0;
+  --layer-api: #16a34a;
+  --layer-infra: #e8a317;
+  --layer-data: #6b717d;
+  --layer-career: #475569;
+  --shadow-card: 0 1px 2px rgb(17 19 24 / 0.04), 0 8px 24px -12px rgb(17 19 24 / 0.12);
+  --shadow-float: 0 2px 4px rgb(17 19 24 / 0.04), 0 18px 40px -18px rgb(17 19 24 / 0.22);
+  --shadow-signal: 0 1px 2px rgb(8 145 178 / 0.3), 0 10px 24px -8px rgb(8 145 178 / 0.5);
 }
 
 /*
@@ -89,60 +118,75 @@
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) {
     color-scheme: dark;
-    --paper: #14110e;
-    --raised: #1f1a15;
-    --ink: #f5eee4;
-    --ink-2: #b4a899;
-    --rule: #332c25;
-    --signal: #ff7a2e;
-    --go: #2fbf86;
-    --layer-web: #7fa2ff;
-    --layer-mobile: #b79bff;
-    --layer-api: #2fbf86;
-    --layer-infra: #f2c14e;
-    --layer-data: #a89d91;
-    --layer-career: #f5eee4;
-    --shadow-hard: 4px 4px 0 #000;
+    --paper: #0e1013;
+    --grid: rgb(255 255 255 / 0.06);
+  --glow: rgb(34 211 238 / 0.12);
+  --glow-2: rgb(34 211 238 / 0.10);
+    --raised: #171a1f;
+    --sunken: #1d2026;
+    --ink: #f2f3f5;
+    --ink-2: #9ba1ac;
+    --ink-3: #6c727d;
+    --rule: #272b32;
+    --signal: #22d3ee;
+    --signal-soft: #0c2a33;
+  --on-signal: #04212a;
+    --accent: #22d3ee;
+    --accent-ink: #67e8f9;
+    --accent-soft: #0c2a33;
+    --go: #34c46b;
+    --note: #e9d465;
+    --layer-web: #0891b2;
+    --layer-mobile: #a18bff;
+    --layer-api: #34c46b;
+    --layer-infra: #f0bd4f;
+    --layer-data: #9ba1ac;
+    --layer-career: #a3adbd;
+    --shadow-card: 0 1px 2px rgb(0 0 0 / 0.4), 0 8px 24px -12px rgb(0 0 0 / 0.6);
+    --shadow-float: 0 2px 4px rgb(0 0 0 / 0.4), 0 18px 40px -18px rgb(0 0 0 / 0.75);
+    --shadow-signal: 0 1px 2px rgb(0 0 0 / 0.4), 0 10px 24px -8px rgb(34 211 238 / 0.35);
   }
 }
 
 :root[data-theme="dark"] {
   color-scheme: dark;
-  --paper: #14110e;
-  --raised: #1f1a15;
-  --ink: #f5eee4;
-  --ink-2: #b4a899;
-  --rule: #332c25;
-  --signal: #ff7a2e;
-  --go: #2fbf86;
-  --layer-web: #7fa2ff;
-  --layer-mobile: #b79bff;
-  --layer-api: #2fbf86;
-  --layer-infra: #f2c14e;
-  --layer-data: #a89d91;
-  --layer-career: #f5eee4;
-  --shadow-hard: 4px 4px 0 #000;
+  --paper: #0e1013;
+  --grid: rgb(255 255 255 / 0.06);
+  --glow: rgb(34 211 238 / 0.12);
+  --glow-2: rgb(34 211 238 / 0.10);
+  --raised: #171a1f;
+  --sunken: #1d2026;
+  --ink: #f2f3f5;
+  --ink-2: #9ba1ac;
+  --ink-3: #6c727d;
+  --rule: #272b32;
+  --signal: #22d3ee;
+  --signal-soft: #0c2a33;
+  --on-signal: #04212a;
+  --accent: #22d3ee;
+  --accent-ink: #67e8f9;
+  --accent-soft: #0c2a33;
+  --go: #34c46b;
+  --note: #e9d465;
+  --layer-web: #0891b2;
+  --layer-mobile: #a18bff;
+  --layer-api: #34c46b;
+  --layer-infra: #f0bd4f;
+  --layer-data: #9ba1ac;
+  --layer-career: #a3adbd;
+  --shadow-card: 0 1px 2px rgb(0 0 0 / 0.4), 0 8px 24px -12px rgb(0 0 0 / 0.6);
+  --shadow-float: 0 2px 4px rgb(0 0 0 / 0.4), 0 18px 40px -18px rgb(0 0 0 / 0.75);
+  --shadow-signal: 0 1px 2px rgb(0 0 0 / 0.4), 0 10px 24px -8px rgb(34 211 238 / 0.35);
 }
 
-/* Le changement de thème passe par une View Transition : la nouvelle teinte
-   descend sur la page comme un rideau, du haut vers le bas. */
+/* Le changement de thème passe par une View Transition : un fondu court. */
 ::view-transition-old(root),
 ::view-transition-new(root) {
-  animation: none;
-  mix-blend-mode: normal;
-}
-::view-transition-new(root) {
-  animation: reprint 560ms var(--ease-out-quint) both;
-}
-@keyframes reprint {
-  from {
-    clip-path: inset(0 0 100% 0);
-  }
-  to {
-    clip-path: inset(0 0 0 0);
-  }
+  animation-duration: 280ms;
+  animation-timing-function: var(--ease-out-quint);
 }
 @media (prefers-reduced-motion: reduce) {
+  ::view-transition-old(root),
   ::view-transition-new(root) {
     animation: none;
   }
@@ -157,12 +201,39 @@ html {
 }
 
 body {
-  /* Transparent : le fond vivant (Ambient) est derrière. */
+  /* Transparent : la couleur du fond est sur <html>, la grille et la
+     lueur (body::before, body::after) passent entre les deux. */
   background: transparent;
   font-family: var(--font-text-face), system-ui, sans-serif;
   font-size: var(--text-base);
   line-height: 1.6;
+  font-feature-settings: "cv11", "ss01";
   font-variant-numeric: lining-nums;
+}
+
+
+/* Le fond : une grille technique fine, comme un plan d'ingénieur, qui
+   s'efface vers les bords ; une lueur cyan descend du haut de l'écran. */
+body::before,
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+}
+body::before {
+  background-image:
+    linear-gradient(var(--grid) 1px, transparent 1px),
+    linear-gradient(90deg, var(--grid) 1px, transparent 1px);
+  background-size: 48px 48px;
+  background-position: center top;
+  mask-image: radial-gradient(ellipse 75% 70% at 50% 40%, #000 35%, transparent 100%);
+}
+body::after {
+  background:
+    radial-gradient(ellipse 45% 40% at 38% -8%, var(--glow), transparent 70%),
+    radial-gradient(ellipse 45% 40% at 64% -6%, var(--glow-2), transparent 70%);
 }
 
 h1,
@@ -190,7 +261,7 @@ h3 {
 
 ::selection {
   background: var(--signal);
-  color: #17130f;
+  color: var(--on-signal);
 }
 
 :focus-visible {
@@ -217,97 +288,196 @@ html[data-network="offline"] body {
 /* --- Composants --------------------------------------------------------
    Dans leur couche : un utilitaire Tailwind (`bg-signal`…) passe devant. */
 @layer components {
-
-  /* Bouton en pilule. `btn-primary` : l'action principale, orange. */
+  /* Bouton : rectangle aux coins doux. Par défaut une fiche blanche à
+     filet ; `btn-primary` : l'action principale, cyan, avec son halo. */
   .btn {
     display: inline-flex;
     align-items: center;
+    justify-content: center;
     gap: 0.5rem;
-    border: 2px solid var(--ink);
-    border-radius: 999px;
-    padding: 0.75rem 1.4rem;
-    font-weight: 600;
+    border: 1px solid var(--rule);
+    border-radius: 0.75rem;
+    padding: 0.7rem 1.25rem;
+    font-weight: 500;
     line-height: 1.2;
     background: var(--raised);
     color: var(--ink);
-    box-shadow: var(--shadow-hard);
+    box-shadow: 0 1px 2px rgb(17 19 24 / 0.06);
     transition:
-      box-shadow 160ms var(--ease-out-quint),
-      translate 160ms var(--ease-out-quint),
-      background-color 160ms ease;
+      box-shadow 180ms var(--ease-out-quint),
+      background-color 180ms ease,
+      border-color 180ms ease,
+      scale 160ms var(--ease-out-quint);
   }
   .btn:active {
-    box-shadow: 0 0 0 var(--ink);
-    translate: 3px 3px;
+    scale: 0.97;
   }
   .btn:disabled {
     opacity: 0.55;
   }
   .btn-primary {
+    border-color: transparent;
     background: var(--signal);
-    color: #17130f;
+    color: var(--on-signal);
+    box-shadow: var(--shadow-signal);
   }
   .btn-sm {
-    padding: 0.45rem 0.95rem;
+    padding: 0.45rem 0.9rem;
+    border-radius: 0.625rem;
     font-size: var(--text-sm);
-    box-shadow: 3px 3px 0 var(--ink);
   }
   @media (hover: hover) and (pointer: fine) {
     .btn:hover {
-      box-shadow: 6px 6px 0 var(--ink);
-      translate: -2px -2px;
+      border-color: color-mix(in oklab, var(--ink) 18%, var(--rule));
+      box-shadow: var(--shadow-card);
     }
-    .btn:active {
-      box-shadow: 0 0 0 var(--ink);
-      translate: 3px 3px;
+    .btn-primary:hover {
+      border-color: transparent;
+      background: color-mix(in oklab, var(--signal) 88%, #000);
+      box-shadow: var(--shadow-signal);
     }
   }
 
-  /* Carte : bord franc, coins arrondis, ombre décalée. */
+  /* Carte : une fiche blanche posée sur le plan. */
   .card {
-    border: 2px solid var(--ink);
+    border: 1px solid var(--rule);
     border-radius: var(--radius-card);
     background: var(--raised);
-    box-shadow: 6px 6px 0 var(--ink);
+    box-shadow: var(--shadow-card);
   }
 
-  /* Étiquette en pilule : numéros de section, catégories, état. */
+  /* Dossier : un gris translucide, un onglet en haut à gauche, des fiches
+     blanches à l'intérieur. Le titre se pose dans `.folder-title`. */
+  .folder {
+    position: relative;
+    border: 1px solid var(--rule);
+    border-radius: 0 1.25rem 1.25rem 1.25rem;
+    background: color-mix(in oklab, var(--sunken) 88%, transparent);
+    box-shadow: var(--shadow-float);
+    backdrop-filter: blur(8px);
+  }
+  .folder::before {
+    content: "";
+    position: absolute;
+    bottom: calc(100% - 1px);
+    left: -1px;
+    width: 42%;
+    height: 0.9rem;
+    border: 1px solid var(--rule);
+    border-bottom: 0;
+    border-radius: 0.75rem 0.75rem 0 0;
+    background: inherit;
+  }
+
+  /* Pastille d'icône : un carré blanc arrondi, comme une app sur un bureau. */
+  .tile {
+    display: grid;
+    place-items: center;
+    border: 1px solid var(--rule);
+    border-radius: 0.875rem;
+    background: var(--raised);
+    box-shadow: var(--shadow-card);
+  }
+
+  /* Étiquette discrète : numéros de section, catégories, état. */
   .chip {
     display: inline-flex;
     align-items: center;
     gap: 0.45rem;
-    border: 1.5px solid var(--ink);
+    border: 1px solid var(--rule);
     border-radius: 999px;
-    padding: 0.25rem 0.75rem;
+    padding: 0.25rem 0.7rem;
     font-size: var(--text-xs);
-    font-weight: 600;
+    font-weight: 500;
+    color: var(--ink-2);
     background: var(--raised);
   }
   .chip-signal {
-    background: var(--signal);
-    color: #17130f;
+    border-color: transparent;
+    background: var(--signal-soft);
+    color: var(--signal);
+  }
+  .chip-accent {
+    border-color: transparent;
+    background: var(--accent-soft);
+    color: var(--accent-ink);
+  }
+
+  /* Contrôle segmenté : une piste grise, l'option choisie en fiche blanche. */
+  .segmented {
+    display: flex;
+    border-radius: 0.75rem;
+    background: var(--sunken);
+    padding: 0.2rem;
+  }
+  .segmented-thumb {
+    position: absolute;
+    inset: 0;
+    border-radius: 0.6rem;
+    background: var(--raised);
+    box-shadow: 0 1px 3px rgb(17 19 24 / 0.12);
+  }
+
+  /* Champ de formulaire. */
+  .field {
+    display: block;
+    width: 100%;
+    border: 1px solid var(--rule);
+    border-radius: 0.75rem;
+    background: var(--raised);
+    padding: 0.7rem 0.9rem;
+    font-size: var(--text-base);
+    outline: none;
+    transition:
+      border-color 160ms ease,
+      box-shadow 160ms ease;
+  }
+  .field::placeholder {
+    color: var(--ink-3);
+  }
+  .field:focus {
+    border-color: var(--signal);
+    box-shadow: 0 0 0 4px color-mix(in oklab, var(--signal) 18%, transparent);
   }
 }
 
+/* Les fiches flottantes de l'accueil dérivent doucement, chacune à son
+   rythme (`--float-d`). */
+@keyframes drift {
+  from {
+    translate: 0 0;
+  }
+  to {
+    translate: 0 -10px;
+  }
+}
+@media (prefers-reduced-motion: no-preference) {
+  [data-float] {
+    animation: drift var(--float-d, 6s) ease-in-out infinite alternate;
+  }
+}
+
+
+/* L'accueil en application (Desk) : la page ne défile plus, le pied de
+   page s'efface ; seul le contenu d'un écran défile s'il dépasse. */
+html:has([data-desk]) {
+  overflow: hidden;
+}
+body:has([data-desk]) > footer {
+  display: none;
+}
+/* Le titre d'un écran reçoit le focus à l'ouverture (lecteurs d'écran) : sans cadre. */
+[data-screen-title]:focus-visible,
+[data-desk] [role="dialog"]:focus-visible {
+  outline: none;
+}
+.scroll-soft {
+  scrollbar-width: thin;
+  scrollbar-color: var(--rule) transparent;
+  overscroll-behavior: contain;
+}
+
 /* --- Scènes ------------------------------------------------------------ */
-
-/* Le fond vivant (Ambient) apparaît une fois sa première image prête. */
-.ambient > canvas {
-  opacity: 0;
-  transition: opacity 1200ms var(--ease-out-quint);
-}
-.ambient[data-ready] > canvas {
-  opacity: 1;
-}
-
-/* Le téléphone 3D de l'ouverture (PhoneScene) : rien avant sa première image. */
-.phone-scene > canvas {
-  opacity: 0;
-  transition: opacity 900ms var(--ease-out-quint) 200ms;
-}
-.phone-scene[data-ready] > canvas {
-  opacity: 1;
-}
 
 /* « Comment ça marche », grand écran : l'étape lue reste pleine, les autres
    pâlissent ; les étapes atteintes s'allument sur le schéma. `data-scrolly`
@@ -332,7 +502,7 @@ html[data-network="offline"] body {
   transition: color 400ms var(--ease-out-quint);
 }
 [data-station][data-active] .glyph {
-  color: var(--paper);
+  color: var(--on-signal);
 }
 
 /* Hachures du temps passé sans réseau, dans les traces. */
@@ -356,7 +526,8 @@ html[data-network="offline"] body {
 }
 .prose-article h2 {
   font-family: var(--font-display-face), sans-serif;
-  font-weight: 700;
+  font-weight: 600;
+  letter-spacing: -0.02em;
   font-size: var(--text-xl);
   line-height: 1.25;
   margin-top: 2.2em;
@@ -400,9 +571,9 @@ html[data-network="offline"] body {
   font-size: 0.85rem;
   line-height: 1.6;
   background: var(--raised);
-  border: 2px solid var(--ink);
+  border: 1px solid var(--rule);
   border-radius: 1rem;
-  box-shadow: 4px 4px 0 var(--ink);
+  box-shadow: var(--shadow-card);
   padding: 1rem 1.25rem;
   overflow-x: auto;
   tab-size: 4;
@@ -414,7 +585,7 @@ html[data-network="offline"] body {
 }
 .prose-article img {
   border-radius: 1rem;
-  border: 2px solid var(--ink);
+  border: 1px solid var(--rule);
 }
 .prose-article blockquote {
   border-left: 3px solid var(--signal);

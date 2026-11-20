@@ -39,7 +39,7 @@ export default function DayRibbon({ cle, start, entries }: { cle: string; start:
   return (
     <section aria-label="Plan de 30 jours">
       <div className="flex flex-wrap items-end gap-x-6 gap-y-2">
-        <p className="c-day font-display text-[clamp(3.75rem,12vw,7.5rem)] leading-[0.85] font-extrabold font-stretch-150%">
+        <p className="c-day font-display text-[clamp(3.75rem,12vw,7.5rem)] leading-[0.85] font-semibold">
           {headline}
         </p>
         <p className="pb-1 text-ink-2">{caption}</p>

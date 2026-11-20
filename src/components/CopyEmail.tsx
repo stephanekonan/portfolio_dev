@@ -25,13 +25,13 @@ export default function CopyEmail({ email, copy, copied }: Props) {
 
   return (
     <span className="inline-flex flex-wrap items-center gap-x-4 gap-y-2">
-      <a href={`mailto:${email}`} className="font-semibold underline">
+      <a href={`mailto:${email}`} className="font-medium underline decoration-rule underline-offset-4 hover:decoration-ink">
         {email}
       </a>
       <button
         data-magnetic
         onClick={onCopy}
-        className="chip cursor-pointer text-ink"
+        className="chip cursor-pointer text-ink hover:border-ink-3"
       >
         <AnimatePresence mode="wait" initial={false}>
           <motion.span

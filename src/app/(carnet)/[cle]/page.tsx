@@ -23,8 +23,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 function Heading({ children, action }: { children: React.ReactNode; action?: React.ReactNode }) {
   return (
-    <div className="mb-6 flex items-baseline justify-between gap-4 border-t border-ink pt-5">
-      <h2 className="font-display text-xl font-bold font-stretch-120%">{children}</h2>
+    <div className="mb-6 flex items-baseline justify-between gap-4 border-t border-rule pt-5">
+      <h2 className="font-display text-xl font-semibold">{children}</h2>
       {action}
     </div>
   );
@@ -55,7 +55,7 @@ export default async function Page({ params }: Props) {
           <p className="text-sm text-ink-2">Dernière entrée</p>
           {last ? (
             <>
-              <p className="mt-2 font-display text-lg font-bold font-stretch-118%">
+              <p className="mt-2 font-display text-lg font-semibold">
                 <Link href={`/${cle}/journal#${last.id}`} className="hover:underline">
                   {last.title}
                 </Link>
@@ -97,14 +97,14 @@ export default async function Page({ params }: Props) {
                 href={`/${cle}/${a.slug}`}
                 className="group grid grid-cols-[2.5rem_minmax(0,1fr)] gap-x-4 py-6 sm:grid-cols-[4rem_minmax(0,1fr)_auto] sm:gap-x-6"
               >
-                <span className="font-display text-3xl leading-none font-extrabold text-ink-2 font-stretch-150% group-hover:text-ink">
+                <span className="font-display text-3xl leading-none font-semibold text-ink-2 group-hover:text-ink">
                   {i + 1}
                 </span>
                 <span>
                   <span className="block text-sm text-ink-2">
                     {a.categories.map((c) => ARTICLE_CATEGORIES[c]).join(", ")}
                   </span>
-                  <span className="mt-1 block font-display text-lg font-bold font-stretch-118% group-hover:underline">
+                  <span className="mt-1 block font-display text-lg font-semibold group-hover:underline">
                     {a.title}
                   </span>
                   <span className="mt-2 block max-w-[62ch] text-ink-2">{a.description}</span>

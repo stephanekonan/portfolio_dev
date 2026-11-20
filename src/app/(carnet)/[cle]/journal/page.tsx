@@ -40,7 +40,7 @@ export default async function Page({ params, searchParams }: Props) {
 
   return (
     <Shell cle={cle} open>
-      <h1 className="font-display text-3xl font-extrabold font-stretch-140%">Journal</h1>
+      <h1 className="font-display text-3xl font-semibold">Journal</h1>
       <p className="mt-4 max-w-[56ch] text-lg text-ink-2">{LEAD}</p>
 
       <nav aria-label="Filtrer par catégorie" className="mt-10">
@@ -96,7 +96,7 @@ export default async function Page({ params, searchParams }: Props) {
                 )}
               </div>
               <article className="min-w-0">
-                <h2 className="font-display text-xl font-bold font-stretch-118%">
+                <h2 className="font-display text-xl font-semibold">
                   <a href={`#${e.id}`} className="hover:underline">
                     {e.title}
                   </a>

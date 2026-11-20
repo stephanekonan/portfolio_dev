@@ -36,6 +36,18 @@ export const CAREER: CareerSpan[] = [
     ],
   },
   {
+    id: "autodidacte",
+    name: "Autodidacte",
+    kind: "study",
+    // Après le BTS et jusqu'à aujourd'hui : pas de fin.
+    start: "2021-07",
+    role: {
+      fr: "Autoformation depuis le BTS : je continue de me former moi-même, projet après projet",
+      en: "Self-taught since my BTS diploma: I keep training myself, project after project",
+    },
+    attributes: [],
+  },
+  {
     id: "weni",
     name: "Weni Livraison",
     kind: "job",
