@@ -8,6 +8,8 @@ import ImageGuard from "./ImageGuard";
 import { hand, text } from "@/lib/fonts";
 import { ui, type Lang } from "@/i18n/ui";
 import { THEME_SCRIPT } from "@/lib/theme";
+import { DISCRETION_SCRIPT } from "@/lib/discretion";
+import Discretion from "./Discretion";
 import "@/styles/global.css";
 
 interface Props {
@@ -33,7 +35,7 @@ export default function RootDocument({ lang, children, chrome = true, tracking =
     // <html> avant React, l'écart avec le rendu serveur est voulu.
     <html lang={lang} className={`${text.variable} ${hand.variable}`} suppressHydrationWarning>
       <head>
-        <script dangerouslySetInnerHTML={{ __html: THEME_SCRIPT }} />
+        <script dangerouslySetInnerHTML={{ __html: DISCRETION_SCRIPT + THEME_SCRIPT }} />
       </head>
       <body>
         <a
@@ -55,7 +57,10 @@ export default function RootDocument({ lang, children, chrome = true, tracking =
         )}
         <ServiceWorker />
         <ImageGuard />
-        {tracking && <Analytics />}
+        <Discretion />
+        {/* Script et envoi sous `/m`, réécrit vers `/_vercel/insights` dans
+            next.config.ts : l'adresse d'origine trahit Vercel. */}
+        {tracking && <Analytics scriptSrc="/m/s.js" endpoint="/m" />}
         {tracking && (
           <Script id="hotjar" strategy="afterInteractive">
             {`(function(h,o,t,j){h.hj=h.hj||function(){(h.hj.q=h.hj.q||[]).push(arguments)};h._hjSettings={hjid:6485478,hjsv:6};var a=o.getElementsByTagName('head')[0];var r=o.createElement('script');r.async=1;r.src=t+h._hjSettings.hjid+j+h._hjSettings.hjsv;a.appendChild(r);})(window,document,'https://static.hotjar.com/c/hotjar-','.js?sv=');`}

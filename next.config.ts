@@ -1,6 +1,16 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
+  // Pas d'en-tête `X-Powered-By: Next.js` (discrétion sur la pile, voir
+  // `src/lib/discretion.ts`).
+  poweredByHeader: false,
+  // Mesure d'audience Vercel servie sous une adresse neutre (RootDocument).
+  async rewrites() {
+    return [
+      { source: "/m/s.js", destination: "/_vercel/insights/script.js" },
+      { source: "/m/:path*", destination: "/_vercel/insights/:path*" },
+    ];
+  },
   // Deux layouts racines, `(fr)` et `(en)` : aucun ne peut porter seul la
   // page 404, d'où `global-not-found.tsx`.
   experimental: {
