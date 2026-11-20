@@ -17,7 +17,9 @@ import type { Ui } from "@/i18n/ui";
 
 import BrandIcon, { type BrandSlug } from "../BrandIcon";
 import BrandMark from "../BrandMark";
-import { href } from "./kit";
+import { useContext } from "react";
+
+import { Controls, href } from "./kit";
 
 /** Les projets du dossier « en cours » : une initiale colorée, une piste. */
 const ROWS = [
@@ -39,6 +41,10 @@ const STACK: { slug: BrandSlug; color: string; layer: string }[] = [
   { slug: "go", color: "#00add8", layer: "api" },
   { slug: "nextdotjs", color: "currentColor", layer: "web" },
   { slug: "firebase", color: "#f5a623", layer: "data" },
+  { slug: "adonisjs", color: "#5a45ff", layer: "api" },
+  { slug: "postgresql", color: "#336791", layer: "data" },
+  { slug: "cloudflare", color: "#f38020", layer: "infra" },
+  { slug: "tailwindcss", color: "#06b6d4", layer: "web" },
 ];
 
 const DOCK = [
@@ -67,6 +73,7 @@ const EASE = [0.22, 1, 0.36, 1] as const;
  */
 export default function Home({ t, s }: { t: Ui["hero"]; s: Ui["screens"] }) {
   const reduce = useReducedMotion();
+  const controls = useContext(Controls);
   const d = t.desk;
   const up = (i: number) => ({
     initial: { opacity: 0, y: reduce ? 0 : 14 },
@@ -82,8 +89,8 @@ export default function Home({ t, s }: { t: Ui["hero"]; s: Ui["screens"] }) {
     "transition-[translate,box-shadow] duration-200 ease-out hover:-translate-y-1 focus-visible:-translate-y-1";
 
   return (
-    <div className="scroll-soft relative h-full overflow-x-hidden overflow-y-auto">
-      <div className="relative flex min-h-full flex-col items-center justify-between">
+    <div className="relative h-full">
+      <div className="relative flex h-full flex-col items-center justify-between">
         {/* --- Le centre ------------------------------------------------ */}
         <div className="relative z-10 flex w-full max-w-[52rem] flex-1 flex-col items-center justify-center px-5 pt-10 pb-6 text-center sm:pt-12">
           <motion.a
@@ -136,7 +143,7 @@ export default function Home({ t, s }: { t: Ui["hero"]; s: Ui["screens"] }) {
           aria-label={s.dockLabel}
           className="relative z-10 mb-4 px-3 sm:mb-6"
         >
-          <ul className="grid grid-cols-4 gap-x-3 gap-y-2 rounded-[1.4rem] border border-rule bg-raised/80 p-2.5 shadow-[var(--shadow-float)] backdrop-blur-md sm:flex sm:gap-1.5">
+          <ul className="grid grid-cols-4 gap-x-2 gap-y-1.5 rounded-[1.4rem] border border-rule bg-raised/80 p-2.5 shadow-[var(--shadow-float)] backdrop-blur-md">
             {DOCK.map(({ key, to, Icon }) => (
               <li key={key}>
                 <a
@@ -151,6 +158,8 @@ export default function Home({ t, s }: { t: Ui["hero"]; s: Ui["screens"] }) {
               </li>
             ))}
           </ul>
+          {/* Thème et langue, sous le dock : il n'y a plus d'en-tête. */}
+          <div className="mt-3 flex justify-center">{controls}</div>
         </motion.nav>
       </div>
 
@@ -184,21 +193,7 @@ export default function Home({ t, s }: { t: Ui["hero"]; s: Ui["screens"] }) {
           </div>
         </motion.div>
 
-        {/* Chronomètre : « Parcours ». Livraisons : le dernier produit sorti. */}
-        <motion.div
-          {...pop(1)}
-          className="absolute top-8 right-[17.5rem] hidden lg:block"
-        >
-          <a
-            href={href("parcours")}
-            aria-label={s.career.kicker}
-            data-float
-            style={{ "--float-d": "5.5s" } as React.CSSProperties}
-            className={`tile pointer-events-auto size-11 ${lift}`}
-          >
-            <Clock3 className="size-5 text-ink" aria-hidden />
-          </a>
-        </motion.div>
+        {/* Livraisons : le dernier produit sorti. */}
         <motion.div
           {...pop(2)}
           className="absolute top-16 -right-16 w-72 lg:-right-4"
@@ -235,12 +230,12 @@ export default function Home({ t, s }: { t: Ui["hero"]; s: Ui["screens"] }) {
         {/* Projets en cours : chaque ligne ouvre son projet. */}
         <motion.div
           {...pop(3)}
-          className="absolute -bottom-24 left-6 hidden w-80 lg:block"
+          className="absolute -bottom-10 left-6 hidden w-80 lg:block"
         >
           <div
             data-float
             style={{ "--float-d": "8s" } as React.CSSProperties}
-            className="folder p-3"
+            className="folder h-[15rem] p-3"
           >
             <a
               href={href("realisations")}
@@ -283,12 +278,12 @@ export default function Home({ t, s }: { t: Ui["hero"]; s: Ui["screens"] }) {
         {/* Ma pile : chaque logo ouvre la couche où l'outil sert. */}
         <motion.div
           {...pop(4)}
-          className="absolute right-12 -bottom-12 hidden w-64 lg:block"
+          className="absolute right-12 -bottom-10 hidden w-72 lg:block"
         >
           <div
             data-float
             style={{ "--float-d": "6s" } as React.CSSProperties}
-            className="folder p-4 pb-14"
+            className="folder h-[15rem] p-4"
           >
             <a
               href={href("savoir-faire")}
@@ -296,7 +291,7 @@ export default function Home({ t, s }: { t: Ui["hero"]; s: Ui["screens"] }) {
             >
               {d.stack}
             </a>
-            <div className="mt-4 flex gap-3">
+            <div className="mt-4 grid grid-cols-4 gap-3">
               {STACK.map((st) => (
                 <a
                   key={st.slug}

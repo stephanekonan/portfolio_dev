@@ -5,6 +5,7 @@ import Link from "next/link";
 import {
   ArrowUpRight,
   BrainCircuit,
+  Check,
   ChevronLeft,
   ChevronRight,
   Database,
@@ -21,6 +22,7 @@ import {
 import { AXIS, CAREER } from "@/data/career";
 import { PROJECTS } from "@/data/projects";
 import { SKILLS } from "@/data/skills";
+import { STORE_APPS } from "@/data/stores";
 import { TRACES, type Layer } from "@/data/traces";
 import { base, CONTACT, type Lang, type Ui } from "@/i18n/ui";
 
@@ -132,7 +134,7 @@ function Chips({ items }: { items: string[] }) {
    ------------------------------------------------------------------------ */
 
 export function renderScreen(seg: string[], ctx: Ctx): React.ReactNode {
-  const [head, a, b] = seg;
+  const [head, a, b, c] = seg;
   switch (head) {
     case "apropos":
       return <About ctx={ctx} />;
@@ -141,6 +143,12 @@ export function renderScreen(seg: string[], ctx: Ctx): React.ReactNode {
       if (TRACES.some((p) => p.id === a)) {
         if (!b) return <Product id={a} ctx={ctx} />;
         if (b === "trace") return <Trace id={a} ctx={ctx} />;
+        if (STORE_APPS.some((x) => x.id === b && x.product === a)) {
+          if (!c) return <StoreScreen id={b} ctx={ctx} />;
+          if (c.startsWith("ecran-"))
+            return <StoreShot id={b} index={Number(c.slice(6))} ctx={ctx} />;
+          return <StoreSection id={b} index={Number(c)} ctx={ctx} />;
+        }
         return <Surface id={a} layer={b} ctx={ctx} />;
       }
       return b ? null : <Project id={a} ctx={ctx} />;
@@ -330,12 +338,13 @@ function Product({ id, ctx }: { id: string; ctx: Ctx }) {
     >
       <div className="grid gap-5 lg:grid-cols-[minmax(0,1.05fr)_minmax(0,1fr)]">
         <div className="space-y-4">
+          <p className="text-ink-2">{t.showcase.pitch[p.id]}</p>
+          <StoreCards product={p.id} ctx={ctx} />
           <Shot
             src={p.image.src}
             alt={p.image.alt[lang]}
             portrait={p.image.portrait}
           />
-          <p className="text-ink-2">{t.showcase.pitch[p.id]}</p>
         </div>
         <div className="space-y-5">
           <Group title={s.product.figures}>
@@ -936,5 +945,316 @@ function Pager({
         </a>
       )}
     </div>
+  );
+}
+
+/* --- Fiches Play Store ---------------------------------------------------- */
+
+const appOf = (id: string) => STORE_APPS.find((x) => x.id === id)!;
+const productOf = (id: string) =>
+  TRACES.find((p) => p.id === appOf(id).product)!;
+const appCrumbs = (id: string, ctx: Ctx): Crumb[] => {
+  const app = appOf(id);
+  const p = productOf(id);
+  return [
+    workCrumb(ctx.t.screens),
+    { label: p.product, path: href("realisations", p.id) },
+    { label: app.role[ctx.lang], path: href("realisations", p.id, app.id) },
+  ];
+};
+
+/** Les applis d'un produit publiées sur le Play Store, en fiches à ouvrir. */
+function StoreCards({ product, ctx }: { product: string; ctx: Ctx }) {
+  const apps = STORE_APPS.filter((x) => x.product === product);
+  if (apps.length === 0) return null;
+  return (
+    <Group title={ctx.t.screens.product.store}>
+      <div className="grid gap-3 sm:grid-cols-2">
+        {apps.map((app) => (
+          <CardLink
+            key={app.id}
+            to={href("realisations", app.product, app.id)}
+            className="p-4"
+          >
+            <span className="flex items-center gap-3 pr-8">
+              <img
+                src={app.icon}
+                alt=""
+                className="size-11 shrink-0 rounded-xl border border-rule"
+              />
+              <span className="min-w-0">
+                <span className="block truncate text-sm font-semibold">
+                  {app.name}
+                </span>
+                <span className="block text-xs text-ink-3">
+                  {app.role[ctx.lang]}
+                </span>
+              </span>
+            </span>
+            <span className="mt-3 line-clamp-2 block text-sm text-ink-2">
+              {app.brief[ctx.lang]}
+            </span>
+          </CardLink>
+        ))}
+      </div>
+    </Group>
+  );
+}
+
+/** Bascule entre les applis d'un même produit (client, livreur…). */
+function AppSwitch({ id, ctx }: { id: string; ctx: Ctx }) {
+  const app = appOf(id);
+  const siblings = STORE_APPS.filter((x) => x.product === app.product);
+  if (siblings.length < 2) return null;
+  return (
+    <div className="segmented">
+      {siblings.map((x) => (
+        <a
+          key={x.id}
+          href={href("realisations", x.product, x.id)}
+          aria-current={x.id === id ? "page" : undefined}
+          className={`rounded-[0.6rem] px-4 py-1.5 text-sm font-medium ${
+            x.id === id
+              ? "bg-raised text-ink shadow-sm"
+              : "text-ink-2 hover:text-ink"
+          }`}
+        >
+          {x.role[ctx.lang]}
+        </a>
+      ))}
+    </div>
+  );
+}
+
+function StoreScreen({ id, ctx }: { id: string; ctx: Ctx }) {
+  const { t, lang } = ctx;
+  const s = t.screens;
+  const app = appOf(id);
+  const p = productOf(id);
+  return (
+    <Screen
+      t={s}
+      crumbs={appCrumbs(id, ctx)}
+      kicker={`${p.product} · ${s.product.store}`}
+      title={app.name}
+      title2={app.brief[lang]}
+      aside={<AppSwitch id={id} ctx={ctx} />}
+    >
+      <div className="grid gap-5 lg:grid-cols-[minmax(0,1.1fr)_minmax(0,0.9fr)]">
+        <div className="space-y-4">
+          <div className="flex items-center gap-4">
+            <img
+              src={app.icon}
+              alt=""
+              className="size-14 rounded-2xl border border-rule shadow-sm"
+            />
+            <div>
+              <p className="font-semibold">{app.name}</p>
+              <p className="text-sm text-ink-2">{app.role[lang]}</p>
+            </div>
+          </div>
+          <img
+            src={app.banner}
+            alt={app.name}
+            className="block aspect-[1024/500] w-full rounded-2xl border border-rule object-cover"
+          />
+          {lang === "fr" ? (
+            app.intro.map((para) => (
+              <p key={para} className="text-ink-2">
+                {para}
+              </p>
+            ))
+          ) : (
+            <p className="text-sm text-ink-3">{s.product.frenchOnly}</p>
+          )}
+        </div>
+        <Group title={s.product.about}>
+          <ol className="grid gap-2.5">
+            {app.sections.map((sec, i) => (
+              <li key={sec.title}>
+                <CardLink
+                  to={href("realisations", app.product, app.id, String(i + 1))}
+                  className="p-3.5"
+                >
+                  <span className="flex items-baseline gap-3 pr-8">
+                    <span className="font-mono text-xs text-ink-3">
+                      {String(i + 1).padStart(2, "0")}
+                    </span>
+                    <span className="text-sm font-semibold">{sec.title}</span>
+                  </span>
+                </CardLink>
+              </li>
+            ))}
+          </ol>
+        </Group>
+      </div>
+      <Group title={s.product.screens} className="mt-7">
+        <ul className="scroll-soft -mx-1 flex snap-x gap-3 overflow-x-auto px-1 pb-2">
+          {app.shots.map((shot, i) => (
+            <li key={shot.src} className="shrink-0 snap-start">
+              <a
+                href={href(
+                  "realisations",
+                  app.product,
+                  app.id,
+                  `ecran-${i + 1}`,
+                )}
+                className="group block"
+              >
+                <img
+                  src={shot.src}
+                  alt={shot.label[lang]}
+                  className="h-64 w-auto rounded-xl border border-rule shadow-sm transition-[translate,box-shadow] duration-200 group-hover:-translate-y-1 group-hover:shadow-[var(--shadow-float)]"
+                />
+                <span className="mt-2 block text-center text-xs text-ink-2 group-hover:text-ink">
+                  {shot.label[lang]}
+                </span>
+              </a>
+            </li>
+          ))}
+        </ul>
+      </Group>
+    </Screen>
+  );
+}
+
+function StoreSection({
+  id,
+  index,
+  ctx,
+}: {
+  id: string;
+  index: number;
+  ctx: Ctx;
+}) {
+  const { t, lang } = ctx;
+  const s = t.screens;
+  const app = appOf(id);
+  const sec = app.sections[index - 1];
+  if (!sec) return null;
+  const prev = app.sections[index - 2];
+  const next = app.sections[index];
+  const to = (i: number) =>
+    href("realisations", app.product, app.id, String(i));
+  return (
+    <Screen
+      t={s}
+      crumbs={[...appCrumbs(id, ctx), { label: sec.title, path: to(index) }]}
+      kicker={`${app.name} · ${index} / ${app.sections.length}`}
+      title={sec.title}
+    >
+      <div className="grid gap-5 lg:grid-cols-[minmax(0,1.3fr)_minmax(0,0.7fr)]">
+        <div className="card space-y-4 p-6 sm:p-7">
+          {sec.text && <p className="text-lg leading-snug">{sec.text}</p>}
+          {sec.bullets.length > 0 && (
+            <ul className="space-y-3">
+              {sec.bullets.map((b) => (
+                <li key={b} className="flex gap-3">
+                  <span className="mt-1 grid size-5 shrink-0 place-items-center rounded-md bg-signal-soft text-signal">
+                    <Check className="size-3.5" strokeWidth={2.5} aria-hidden />
+                  </span>
+                  <span>{b}</span>
+                </li>
+              ))}
+            </ul>
+          )}
+          {lang === "en" && (
+            <p className="text-sm text-ink-3">{s.product.frenchOnly}</p>
+          )}
+        </div>
+        <div className="grid content-start gap-3">
+          <CardLink
+            to={href("realisations", app.product, app.id)}
+            className="p-4"
+          >
+            <span className="flex items-center gap-3 pr-8">
+              <img
+                src={app.icon}
+                alt=""
+                className="size-10 rounded-xl border border-rule"
+              />
+              <span>
+                <span className="block text-sm font-semibold">{app.name}</span>
+                <span className="block text-xs text-ink-3">
+                  {app.role[lang]}
+                </span>
+              </span>
+            </span>
+          </CardLink>
+          <Pager
+            prev={prev && { to: to(index - 1), label: prev.title }}
+            next={next && { to: to(index + 1), label: next.title }}
+            s={s}
+          />
+        </div>
+      </div>
+    </Screen>
+  );
+}
+
+function StoreShot({
+  id,
+  index,
+  ctx,
+}: {
+  id: string;
+  index: number;
+  ctx: Ctx;
+}) {
+  const { t, lang } = ctx;
+  const s = t.screens;
+  const app = appOf(id);
+  const shot = app.shots[index - 1];
+  if (!shot) return null;
+  const to = (i: number) =>
+    href("realisations", app.product, app.id, `ecran-${i}`);
+  const prev = app.shots[index - 2];
+  const next = app.shots[index];
+  return (
+    <Screen
+      t={s}
+      crumbs={[
+        ...appCrumbs(id, ctx),
+        { label: shot.label[lang], path: to(index) },
+      ]}
+      kicker={`${app.name} · ${s.product.screens} ${index} / ${app.shots.length}`}
+      title={shot.label[lang]}
+    >
+      <div className="grid gap-6 md:grid-cols-[auto_minmax(0,1fr)]">
+        <img
+          src={shot.src}
+          alt={shot.label[lang]}
+          className="mx-auto h-[min(34rem,62svh)] w-auto rounded-2xl border border-rule shadow-[var(--shadow-float)]"
+        />
+        <div className="grid content-start gap-4">
+          <ul className="flex flex-wrap gap-2">
+            {app.shots.map((x, i) => (
+              <li key={x.src}>
+                <a
+                  href={to(i + 1)}
+                  aria-current={i + 1 === index ? "page" : undefined}
+                  className={`block overflow-hidden rounded-lg border-2 ${
+                    i + 1 === index
+                      ? "border-signal"
+                      : "border-transparent opacity-70 hover:opacity-100"
+                  }`}
+                >
+                  <img
+                    src={x.src}
+                    alt={x.label[lang]}
+                    className="h-24 w-auto"
+                  />
+                </a>
+              </li>
+            ))}
+          </ul>
+          <Pager
+            prev={prev && { to: to(index - 1), label: prev.label[lang] }}
+            next={next && { to: to(index + 1), label: next.label[lang] }}
+            s={s}
+          />
+        </div>
+      </div>
+    </Screen>
   );
 }

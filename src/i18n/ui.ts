@@ -44,9 +44,9 @@ const fr = {
   hero: {
     role: "Ingénieur logiciel",
     /** Le titre de l'accueil, en deux lignes : la seconde en gris. */
-    headline: "Je conçois, je code et je livre",
-    headline2: "vos applications, de A à Z",
-    lead: "De l'idée à l'application dans votre poche : l'écran, les paiements Wave et tout ce qui tourne en coulisses, même quand le réseau coupe.",
+    headline: "Je conçois et je livre",
+    headline2: "vos applications",
+    lead: "De l'idée à l'appli dans votre poche, même quand le réseau coupe.",
     ctaProject: "Parler de mon projet",
     ctaWork: "Voir mes réalisations",
     available: "Ouvert aux missions et aux postes",
@@ -240,6 +240,10 @@ const fr = {
       traceLead: "Le chemin d'une vraie requête, couche par couche, avec les noms du code.",
       surfaces: "Ce qui a été livré",
       figures: "En chiffres",
+      store: "Sur le Play Store",
+      screens: "Captures d'écran",
+      about: "La fiche",
+      frenchOnly: "",
     },
     skills: {
       kicker: "Savoir-faire",
@@ -306,9 +310,9 @@ const en: Ui = {
   },
   hero: {
     role: "Software Engineer",
-    headline: "I design, code and ship",
-    headline2: "your apps, end to end",
-    lead: "From the idea to the app in your pocket: the screen, Wave payments and everything running behind the scenes, even when the network drops.",
+    headline: "I design and ship",
+    headline2: "your apps",
+    lead: "From the idea to the app in your pocket, even when the network drops.",
     ctaProject: "Talk about my project",
     ctaWork: "See my work",
     available: "Open to contracts and full-time roles",
@@ -497,6 +501,10 @@ const en: Ui = {
       traceLead: "The path of a real request, layer by layer, with the names from the code.",
       surfaces: "What was shipped",
       figures: "In numbers",
+      store: "On the Play Store",
+      screens: "Screenshots",
+      about: "The listing",
+      frenchOnly: "The full listing is written in French.",
     },
     skills: {
       kicker: "Expertise",

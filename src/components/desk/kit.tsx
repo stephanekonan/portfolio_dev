@@ -1,3 +1,6 @@
+"use client";
+import { createContext, useContext } from "react";
+
 import { ArrowUpRight, ChevronLeft, ChevronRight, House } from "lucide-react";
 
 import type { Lang, Ui } from "@/i18n/ui";
@@ -40,6 +43,9 @@ export const pick = (
   lang: Lang,
 ) => (typeof v === "string" ? v : v?.[lang]);
 
+/** Thème et langue : fournis par Desk, posés en haut à droite de chaque écran. */
+export const Controls = createContext<React.ReactNode>(null);
+
 export interface Crumb {
   label: string;
   path: string;
@@ -69,6 +75,7 @@ export function Screen({
   t: Ui["screens"];
 }) {
   const parent = crumbs.at(-2) ?? { label: t.home, path: "#/" };
+  const controls = useContext(Controls);
   return (
     <div className="flex h-full flex-col">
       <div className="flex items-center justify-between gap-3 px-4 pt-4 sm:px-8 sm:pt-6">
@@ -99,14 +106,17 @@ export function Screen({
             ))}
           </ol>
         </nav>
-        <a
-          href="#/"
-          aria-label={t.toHome}
-          title={t.toHome}
-          className="tile size-9 rounded-xl hover:border-ink-3"
-        >
-          <House className="size-4" aria-hidden />
-        </a>
+        <div className="flex items-center gap-3">
+          <span className="hidden sm:block">{controls}</span>
+          <a
+            href="#/"
+            aria-label={t.toHome}
+            title={t.toHome}
+            className="tile size-9 rounded-xl hover:border-ink-3"
+          >
+            <House className="size-4" aria-hidden />
+          </a>
+        </div>
       </div>
 
       <div className="flex flex-wrap items-end justify-between gap-4 px-4 pt-5 sm:px-8 sm:pt-7">
