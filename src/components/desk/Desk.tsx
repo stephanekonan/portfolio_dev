@@ -89,9 +89,10 @@ export default function Desk({ lang, t, posts, now }: Props) {
         </div>
       }
     >
-      <section data-desk className="h-dvh p-2 sm:p-3">
+      <section data-desk className="h-dvh">
         {screen && <h1 className="sr-only">Stéphane Konan</h1>}
-        <div className="relative mx-auto h-full max-w-[90rem] overflow-hidden rounded-[1.75rem] border border-rule bg-raised/55 shadow-[var(--shadow-card)] sm:rounded-[2rem]">
+        {/* Pas de cadre : le contenu est posé directement sur la page. */}
+        <div className="relative h-full overflow-hidden">
           <AnimatePresence initial={false} custom={dir}>
             <motion.div
               key={path || "home"}

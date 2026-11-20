@@ -7,7 +7,7 @@ fin de tâche et les résumés. Commentaires, commits et textes en français.
 
 ## Ce qu'il faut savoir avant de toucher au site
 
-- **L'accueil est une application en un seul écran, sans défilement de
+- **L'accueil est une application en un seul écran, sans cadre, sans défilement de
   page et sans en-tête** (`src/components/desk/`). Tout passe par des
   écrans adressés par le fragment d'URL (`#/realisations/resi/trace`) :
   `Desk.tsx` (cadre, transitions, Échap), `Home.tsx` (plan de travail,
