@@ -259,6 +259,29 @@ h3 {
   }
 }
 
+/* Images protégées (voir aussi `ImageGuard` et `src/proxy.ts`) : ni
+   glisser-déposer, ni menu « Enregistrer l'image » au clic droit ou à
+   l'appui long (le clic traverse l'image et atteint son parent), ni
+   sélection. À l'impression (« Enregistrer en PDF »), les images
+   disparaissent. */
+img,
+picture,
+video,
+canvas {
+  -webkit-user-drag: none;
+  -webkit-touch-callout: none;
+  user-select: none;
+  pointer-events: none;
+}
+@media print {
+  img,
+  picture,
+  video,
+  canvas {
+    visibility: hidden !important;
+  }
+}
+
 ::selection {
   background: var(--signal);
   color: var(--on-signal);

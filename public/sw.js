@@ -42,8 +42,11 @@ self.addEventListener("fetch", (event) => {
   const url = new URL(request.url);
   if (url.origin !== self.location.origin || url.pathname.startsWith("/api/")) return;
 
+  // Une image ouverte seule dans un onglet n'est jamais servie par le cache :
+  // le serveur la refuse (voir `src/proxy.ts`).
   const isAsset =
-    url.pathname.startsWith("/_next/static/") || /\.(png|jpe?g|webp|svg|ico|woff2)$/.test(url.pathname);
+    request.mode !== "navigate" &&
+    (url.pathname.startsWith("/_next/static/") || /\.(png|jpe?g|webp|svg|ico|woff2)$/.test(url.pathname));
 
   if (isAsset) {
     event.respondWith(

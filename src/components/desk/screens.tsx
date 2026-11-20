@@ -351,18 +351,6 @@ function Product({ id, ctx }: { id: string; ctx: Ctx }) {
           />
         </div>
         <div className="space-y-5">
-          <Group title={s.product.figures}>
-            <dl className="grid grid-cols-2 gap-3">
-              {p.figures.map((f) => (
-                <div key={f.label[lang]} className="card p-4">
-                  <dt className="text-xs text-ink-2">{f.label[lang]}</dt>
-                  <dd className="mt-1 text-2xl font-semibold tracking-tight">
-                    {f.value}
-                  </dd>
-                </div>
-              ))}
-            </dl>
-          </Group>
           <Group title={s.product.surfaces}>
             <div className="grid gap-3">
               {p.surfaces.map((sf) => (

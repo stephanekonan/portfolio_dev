@@ -3,6 +3,20 @@ import { base, ui, type Lang } from "@/i18n/ui";
 
 export const SITE_URL = "https://developer.wadibu.ci";
 
+/**
+ * Image d'aperçu des liens partagés (WhatsApp, LinkedIn, Facebook, X,
+ * Telegram…), tirée de `public/portfolio_developpeur_neon.png` : recadrée au
+ * format 1200 × 630 et compressée en JPEG (85 Ko), car WhatsApp ignore les
+ * images trop lourdes.
+ */
+export const SHARE_IMAGE = {
+  url: "/apercu.jpg",
+  width: 1200,
+  height: 630,
+  type: "image/jpeg",
+  alt: "Stéphane Konan, développeur fullstack : du backend au mobile",
+};
+
 export function siteMetadata(lang: Lang): Metadata {
   const t = ui[lang].meta;
   return {
@@ -17,7 +31,7 @@ export function siteMetadata(lang: Lang): Metadata {
       title: t.title,
       description: t.description,
       locale: lang === "fr" ? "fr_CI" : "en_US",
-      images: [{ url: "/resi.png", width: 1360, height: 850 }],
+      images: [SHARE_IMAGE],
     },
     icons: { icon: "/favicon.ico" },
     manifest: "/manifest.webmanifest",
