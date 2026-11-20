@@ -58,9 +58,9 @@ export default function RootDocument({ lang, children, chrome = true, tracking =
         <ServiceWorker />
         <ImageGuard />
         <Discretion />
-        {/* Script et envoi sous `/m`, réécrit vers `/_vercel/insights` dans
-            next.config.ts : l'adresse d'origine trahit Vercel. */}
-        {tracking && <Analytics scriptSrc="/m/s.js" endpoint="/m" />}
+        {/* Adresse native `/_vercel/insights` : Vercel refuse qu'une
+            réécriture y mène (essayé sous `/m`, 404 en production). */}
+        {tracking && <Analytics />}
         {tracking && (
           <Script id="hotjar" strategy="afterInteractive">
             {`(function(h,o,t,j){h.hj=h.hj||function(){(h.hj.q=h.hj.q||[]).push(arguments)};h._hjSettings={hjid:6485478,hjsv:6};var a=o.getElementsByTagName('head')[0];var r=o.createElement('script');r.async=1;r.src=t+h._hjSettings.hjid+j+h._hjSettings.hjsv;a.appendChild(r);})(window,document,'https://static.hotjar.com/c/hotjar-','.js?sv=');`}
