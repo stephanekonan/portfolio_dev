@@ -413,7 +413,8 @@ body:has([data-desk]) > footer {
   display: none;
 }
 /* Le titre d'un écran reçoit le focus à l'ouverture (lecteurs d'écran) : sans cadre. */
-[data-screen-title]:focus-visible {
+[data-screen-title]:focus-visible,
+[data-desk] [role="dialog"]:focus-visible {
   outline: none;
 }
 .scroll-soft {

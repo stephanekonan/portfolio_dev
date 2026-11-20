@@ -207,6 +207,8 @@ const fr = {
     previous: "Précédent",
     hint: "Touchez une fiche pour l'ouvrir",
     dockLabel: "Rubriques",
+    more: "Plus",
+    close: "Fermer",
     dock: {
       work: "Projets",
       skills: "Savoir-faire",
@@ -468,6 +470,8 @@ const en: Ui = {
     previous: "Previous",
     hint: "Tap a card to open it",
     dockLabel: "Sections",
+    more: "More",
+    close: "Close",
     dock: {
       work: "Projects",
       skills: "Expertise",

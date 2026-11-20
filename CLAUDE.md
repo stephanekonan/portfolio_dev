@@ -10,8 +10,11 @@ fin de tâche et les résumés. Commentaires, commits et textes en français.
 - **L'accueil est une application en un seul écran, sans cadre, sans défilement de
   page et sans en-tête** (`src/components/desk/`). Tout passe par des
   écrans adressés par le fragment d'URL (`#/realisations/resi/trace`) :
-  `Desk.tsx` (cadre, transitions, Échap), `Home.tsx` (plan de travail,
-  fiches cliquables, dock en deux lignes, thème et langue sous le dock),
+  `Desk.tsx` (transitions, Échap), `Home.tsx` (plan de travail, fiches
+  cliquables, thème et langue au-dessus du titre, « Je » du titre qui
+  ouvre le profil), `Dock.tsx` (juste sous le contenu, pas collé en bas :
+  trois rubriques et « Plus », qui ouvre
+  une fenêtre avec les huit),
   `screens.tsx` (`renderScreen` : un écran par adresse), `kit.tsx`
   (cadre d'écran, fil d'Ariane, `CardLink`). Un nouveau contenu s'ajoute
   comme un écran, jamais comme une section à faire défiler. L'accueil

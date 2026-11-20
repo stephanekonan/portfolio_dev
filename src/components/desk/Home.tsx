@@ -1,24 +1,13 @@
 "use client";
-import {
-  ArrowRight,
-  BookOpen,
-  Check,
-  Clock3,
-  FolderOpen,
-  Layers,
-  Mail,
-  Route,
-  SquareTerminal,
-  UserRound,
-} from "lucide-react";
+import { ArrowRight, Check } from "lucide-react";
 import { motion, useReducedMotion } from "motion/react";
 
 import type { Ui } from "@/i18n/ui";
 
 import BrandIcon, { type BrandSlug } from "../BrandIcon";
-import BrandMark from "../BrandMark";
 import { useContext } from "react";
 
+import Dock from "./Dock";
 import { Controls, href } from "./kit";
 
 /** Les projets du dossier « en cours » : une initiale colorée, une piste. */
@@ -47,34 +36,22 @@ const STACK: { slug: BrandSlug; color: string; layer: string }[] = [
   { slug: "tailwindcss", color: "#06b6d4", layer: "web" },
 ];
 
-const DOCK = [
-  { key: "work", to: href("realisations"), Icon: FolderOpen },
-  { key: "skills", to: href("savoir-faire"), Icon: Layers },
-  { key: "career", to: href("parcours"), Icon: Clock3 },
-  { key: "how", to: href("comment"), Icon: Route },
-  { key: "about", to: href("apropos"), Icon: UserRound },
-  {
-    key: "code",
-    to: href("realisations", "resi", "trace"),
-    Icon: SquareTerminal,
-  },
-  { key: "blog", to: href("blog"), Icon: BookOpen },
-  { key: "contact", to: href("contact"), Icon: Mail },
-] as const;
-
 const EASE = [0.22, 1, 0.36, 1] as const;
 
 /**
  * L'écran d'accueil : le plan de travail, le titre au centre, et des fiches
  * posées autour. Chaque fiche est une porte : le post-it ouvre « À propos »,
  * les dossiers ouvrent les réalisations, une ligne ouvre son projet, un
- * logo ouvre la couche où l'outil sert. Le dock du bas reprend toutes les
- * rubriques, et c'est lui qui reste sur petit écran.
+ * logo ouvre la couche où l'outil sert. Le dock (Dock), sous le titre, montre trois
+ * rubriques et ouvre les autres, et c'est lui qui reste sur petit écran.
  */
 export default function Home({ t, s }: { t: Ui["hero"]; s: Ui["screens"] }) {
   const reduce = useReducedMotion();
   const controls = useContext(Controls);
   const d = t.desk;
+  // Le premier mot du titre (« Je », « I ») ouvre le profil.
+  const [first, ...words] = t.headline.split(" ");
+  const rest = words.join(" ");
   const up = (i: number) => ({
     initial: { opacity: 0, y: reduce ? 0 : 14 },
     animate: { opacity: 1, y: 0 },
@@ -90,24 +67,32 @@ export default function Home({ t, s }: { t: Ui["hero"]; s: Ui["screens"] }) {
 
   return (
     <div className="relative h-full">
-      <div className="relative flex h-full flex-col items-center justify-between">
+      <div className="relative flex h-full flex-col items-center">
         {/* --- Le centre ------------------------------------------------ */}
         <div className="relative z-10 flex w-full max-w-[52rem] flex-1 flex-col items-center justify-center px-5 pt-10 pb-6 text-center sm:pt-12">
-          <motion.a
+          {/* Thème et langue, à la place de l'ancienne pastille : il n'y a
+              plus d'en-tête. */}
+          <motion.div
             {...up(0)}
-            href={href("apropos")}
-            aria-label={s.dock.about}
-            whileHover={reduce ? undefined : { rotate: -8, scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-            className="tile size-14 sm:size-[4.25rem]"
+            className="rounded-2xl border border-rule bg-raised py-1.5 pr-3.5 pl-1.5 shadow-[var(--shadow-card)]"
           >
-            <BrandMark className="size-7 sm:size-8" />
-          </motion.a>
+            {controls}
+          </motion.div>
           <motion.h1
             {...up(1)}
             className="mt-6 font-display text-[clamp(2.1rem,4.2vw,3.4rem)] leading-[1.06] font-semibold tracking-[-0.045em] sm:mt-7"
           >
-            <span className="block">{t.headline}</span>
+            {/* « Je » est une porte : il ouvre mon profil. */}
+            <span className="block">
+              <a
+                href={href("apropos")}
+                title={s.dock.about}
+                className="underline decoration-signal decoration-[0.07em] underline-offset-[0.14em] transition-colors hover:text-signal"
+              >
+                {first}
+              </a>{" "}
+              {rest}
+            </span>
             <span className="block text-ink-2">{t.headline2}</span>
           </motion.h1>
           <motion.p
@@ -135,32 +120,16 @@ export default function Home({ t, s }: { t: Ui["hero"]; s: Ui["screens"] }) {
             <span className="size-2 rounded-full bg-go" aria-hidden />
             {t.available}
           </motion.p>
-        </div>
 
-        {/* --- Le dock -------------------------------------------------- */}
-        <motion.nav
-          {...up(5)}
-          aria-label={s.dockLabel}
-          className="relative z-10 mb-4 px-3 sm:mb-6"
-        >
-          <ul className="grid grid-cols-4 gap-x-2 gap-y-1.5 rounded-[1.4rem] border border-rule bg-raised/80 p-2.5 shadow-[var(--shadow-float)] backdrop-blur-md">
-            {DOCK.map(({ key, to, Icon }) => (
-              <li key={key}>
-                <a
-                  href={to}
-                  className="group flex flex-col items-center gap-1 rounded-xl px-1.5 py-1 text-[0.68rem] text-ink-2 hover:text-ink sm:w-[4.4rem]"
-                >
-                  <span className="grid size-11 place-items-center rounded-xl border border-rule bg-raised shadow-sm transition-[translate,background-color,color] duration-200 ease-out group-hover:-translate-y-1 group-hover:bg-signal group-hover:text-white">
-                    <Icon className="size-5" strokeWidth={1.75} aria-hidden />
-                  </span>
-                  <span className="truncate">{s.dock[key]}</span>
-                </a>
-              </li>
-            ))}
-          </ul>
-          {/* Thème et langue, sous le dock : il n'y a plus d'en-tête. */}
-          <div className="mt-3 flex justify-center">{controls}</div>
-        </motion.nav>
+          {/* --- Le dock : juste sous le contenu, pas collé en bas -------- */}
+          <motion.nav
+            {...up(5)}
+            aria-label={s.dockLabel}
+            className="relative z-10 mt-8 sm:mt-10"
+          >
+            <Dock s={s} />
+          </motion.nav>
+        </div>
       </div>
 
       {/* --- Les fiches autour (portes) ---------------------------------- */}
