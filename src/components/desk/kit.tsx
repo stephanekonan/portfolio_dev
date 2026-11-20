@@ -160,7 +160,7 @@ export function CardLink({
       className={`card group relative block p-5 transition-[translate,box-shadow,border-color] duration-200 ease-out hover:-translate-y-0.5 hover:border-ink-3/60 hover:shadow-[var(--shadow-float)] ${className}`}
     >
       {children}
-      <span className="absolute top-4 right-4 grid size-7 place-items-center rounded-lg bg-sunken text-ink-2 transition-colors group-hover:bg-signal group-hover:text-white">
+      <span className="absolute top-4 right-4 grid size-7 place-items-center rounded-lg bg-sunken text-ink-2 transition-colors group-hover:bg-signal group-hover:text-on-signal">
         {external ? (
           <ArrowUpRight className="size-3.5" aria-hidden />
         ) : (

@@ -154,7 +154,7 @@ export default function Home({ t, s }: { t: Ui["hero"]; s: Ui["screens"] }) {
               aria-label={s.how.kicker}
               className={`tile pointer-events-auto absolute -bottom-10 left-7 size-12 rotate-[-4deg] ${lift}`}
             >
-              <span className="grid size-7 place-items-center rounded-lg bg-signal text-white">
+              <span className="grid size-7 place-items-center rounded-lg bg-signal text-on-signal">
                 <Check className="size-4" strokeWidth={3} aria-hidden />
               </span>
             </a>

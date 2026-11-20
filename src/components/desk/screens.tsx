@@ -729,7 +729,7 @@ function How({ ctx }: { ctx: Ctx }) {
             <li key={step.name}>
               <CardLink to={href("comment", String(i + 1))} className="h-full">
                 <span
-                  className={`grid size-10 place-items-center rounded-xl text-white ${i === 4 ? "bg-go" : "bg-signal"}`}
+                  className={`grid size-10 place-items-center rounded-xl ${i === 4 ? "bg-go text-white" : "bg-signal text-on-signal"}`}
                 >
                   <Icon className="size-5" strokeWidth={1.75} aria-hidden />
                 </span>
@@ -768,7 +768,7 @@ function Step({ index, ctx }: { index: number; ctx: Ctx }) {
       <div className="grid gap-5 lg:grid-cols-[minmax(0,1.2fr)_minmax(0,0.8fr)]">
         <div className="card flex flex-col gap-5 p-6 sm:p-8">
           <span
-            className={`grid size-14 place-items-center rounded-2xl text-white ${index === steps.length ? "bg-go" : "bg-signal"}`}
+            className={`grid size-14 place-items-center rounded-2xl ${index === steps.length ? "bg-go text-white" : "bg-signal text-on-signal"}`}
           >
             <Icon className="size-7" strokeWidth={1.5} aria-hidden />
           </span>

@@ -51,7 +51,7 @@ function Item({
       href={to}
       className="group flex w-[4.9rem] flex-col items-center gap-1 rounded-xl px-1.5 py-1 text-[0.68rem] text-ink-2 hover:text-ink"
     >
-      <span className="grid size-11 place-items-center rounded-xl border border-rule bg-raised shadow-sm transition-[translate,background-color,color] duration-200 ease-out group-hover:-translate-y-1 group-hover:bg-signal group-hover:text-white">
+      <span className="grid size-11 place-items-center rounded-xl border border-rule bg-raised shadow-sm transition-[translate,background-color,color] duration-200 ease-out group-hover:-translate-y-1 group-hover:bg-signal group-hover:text-on-signal">
         <Icon className="size-5" strokeWidth={1.75} aria-hidden />
       </span>
       <span className="max-w-full truncate">{label}</span>
@@ -157,8 +157,8 @@ export default function Dock({ s }: { s: Ui["screens"] }) {
             <span
               className={`grid size-11 place-items-center rounded-xl border shadow-sm transition-[translate,background-color,color] duration-200 ease-out group-hover:-translate-y-1 ${
                 open
-                  ? "border-transparent bg-signal text-white"
-                  : "border-rule bg-raised group-hover:bg-signal group-hover:text-white"
+                  ? "border-transparent bg-signal text-on-signal"
+                  : "border-rule bg-raised group-hover:bg-signal group-hover:text-on-signal"
               }`}
             >
               {open ? (

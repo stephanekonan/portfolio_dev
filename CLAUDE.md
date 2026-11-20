@@ -20,9 +20,9 @@ fin de tâche et les résumés. Commentaires, commits et textes en français.
   comme un écran, jamais comme une section à faire défiler. L'accueil
   lui-même n'est pas une zone défilante.
 - **Design « Atelier »** (jetons et composants dans
-  `src/styles/global.css`) : plan clair sur grille technique fine, bleu électrique `#2f5bff` pour les actions, accent cyan (`--accent`, `chip-accent`) pour les repères techniques (étiquettes mono, numéros, états, pistes), cartes blanches à filet
+  `src/styles/global.css`) : plan clair sur grille technique fine, couleur principale **cyan** (`--signal` : `#0891b2` en clair, `#22d3ee` en sombre, texte posé dessus en `--on-signal` ; plus aucun bleu), cyan clair `--accent` / `chip-accent` pour les repères techniques, cartes blanches à filet
   gris, `folder`, `tile`, `chip`, `segmented`, `btn` / `btn-primary`,
-  `field` ; un seul bleu d'action. Pas de bordure noire épaisse ni d'ombre
+  `field` ; une seule couleur d'action, le cyan. Pas de bordure noire épaisse ni d'ombre
   décalée.
 - **Fiches Play Store** : `src/data/stores.ts` est généré depuis les
   `design/play-store*/fiche.txt` de Wadibu (mobile, livreur) et de Resi
