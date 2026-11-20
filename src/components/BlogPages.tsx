@@ -14,6 +14,7 @@ import {
   getSlugs,
 } from "@/lib/blog";
 
+import { SHARE_IMAGE } from "@/lib/metadata";
 import AudioReader from "./AudioReader";
 import PostList from "./PostList";
 
@@ -80,7 +81,15 @@ export function blogArticleMetadata(lang: Lang, slug: string): Metadata {
       canonical: url(post.lang),
       languages: Object.fromEntries(post.langs.map((l) => [l, url(l)])),
     },
-    openGraph: { type: "article", title: post.title, description: post.description, publishedTime: post.date },
+    // L'openGraph d'une page remplace celui du site en entier : l'image
+    // d'aperçu doit donc être redonnée ici.
+    openGraph: {
+      type: "article",
+      title: post.title,
+      description: post.description,
+      publishedTime: post.date,
+      images: [SHARE_IMAGE],
+    },
   };
 }
 
