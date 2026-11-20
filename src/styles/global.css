@@ -403,6 +403,25 @@ html[data-network="offline"] body {
   }
 }
 
+
+/* L'accueil en application (Desk) : la page ne défile plus, le pied de
+   page s'efface ; seul le contenu d'un écran défile s'il dépasse. */
+html:has([data-desk]) {
+  overflow: hidden;
+}
+body:has([data-desk]) > footer {
+  display: none;
+}
+/* Le titre d'un écran reçoit le focus à l'ouverture (lecteurs d'écran) : sans cadre. */
+[data-screen-title]:focus-visible {
+  outline: none;
+}
+.scroll-soft {
+  scrollbar-width: thin;
+  scrollbar-color: var(--rule) transparent;
+  overscroll-behavior: contain;
+}
+
 /* --- Scènes ------------------------------------------------------------ */
 
 /* « Comment ça marche », grand écran : l'étape lue reste pleine, les autres

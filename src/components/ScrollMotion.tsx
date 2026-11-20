@@ -46,7 +46,8 @@ export default function ScrollMotion() {
 
       const ease = EASE.out;
       const enter = (el: Element) => ({ trigger: el, start: "top 85%", once: true });
-      const all = (sel: string) => gsap.utils.toArray<HTMLElement>(sel);
+      // L'accueil en écrans (Desk) ne défile pas : ses éléments ne sont pas animés ici.
+      const all = (sel: string) => gsap.utils.toArray<HTMLElement>(sel).filter((el) => !el.closest("[data-desk]"));
       const mm = gsap.matchMedia();
 
       const progress = gsap.fromTo(

@@ -222,41 +222,41 @@ export default function TraceViewer({ traces, lang, t }: Props) {
 
   return (
     <div>
-      <div
-        role="tablist"
-        aria-label={t.tabsLabel}
-        className="segmented max-w-full scrollbar-none overflow-x-auto sm:inline-flex"
-      >
-        {traces.map((tr, i) => (
-          <button
-            key={tr.id}
-            role="tab"
-            id={`tab-${tr.id}`}
-            aria-selected={i === active}
-            aria-controls={`panel-${tr.id}`}
-            onClick={() => switchTrace(i)}
-            className="relative flex-1 rounded-[0.6rem] px-5 py-2 text-sm font-medium whitespace-nowrap sm:flex-none"
-          >
-            {i === active && (
-              <span
-                data-flip-id="trace-tab"
-                className="segmented-thumb"
-              />
-            )}
-            <span
-              className={`relative ${i === active ? "text-ink" : "text-ink-2"}`}
+      {/* Une seule trace : pas d'onglets à choisir. */}
+      {traces.length > 1 && (
+        <div
+          role="tablist"
+          aria-label={t.tabsLabel}
+          className="segmented max-w-full scrollbar-none overflow-x-auto sm:inline-flex"
+        >
+          {traces.map((tr, i) => (
+            <button
+              key={tr.id}
+              role="tab"
+              id={`tab-${tr.id}`}
+              aria-selected={i === active}
+              aria-controls={`panel-${tr.id}`}
+              onClick={() => switchTrace(i)}
+              className="relative flex-1 rounded-[0.6rem] px-5 py-2 text-sm font-medium whitespace-nowrap sm:flex-none"
             >
-              {tr.product}
-            </span>
-          </button>
-        ))}
-      </div>
+              {i === active && (
+                <span data-flip-id="trace-tab" className="segmented-thumb" />
+              )}
+              <span
+                className={`relative ${i === active ? "text-ink" : "text-ink-2"}`}
+              >
+                {tr.product}
+              </span>
+            </button>
+          ))}
+        </div>
+      )}
 
       <div
-        role="tabpanel"
+        role={traces.length > 1 ? "tabpanel" : undefined}
         id={`panel-${trace.id}`}
-        aria-labelledby={`tab-${trace.id}`}
-        className="mt-10"
+        aria-labelledby={traces.length > 1 ? `tab-${trace.id}` : undefined}
+        className={traces.length > 1 ? "mt-10" : ""}
       >
         <h3 className="font-display text-xl leading-tight font-semibold sm:text-2xl">
           {trace.scenario[lang]}

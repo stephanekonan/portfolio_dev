@@ -32,15 +32,16 @@ export default function Header({ lang, t }: Props) {
 
   const home = base(lang) || "/";
   const onHome = pathname === home;
-  // Hors de l'accueil, les ancres renvoient vers l'accueil avant de défiler.
+  // Chaque rubrique est un écran de l'accueil (`#/…`) ; ailleurs, le lien
+  // ramène d'abord à l'accueil.
   const anchor = (id: string) =>
-    onHome ? `#${id}` : `${home === "/" ? "" : home}/#${id}`;
+    onHome ? `#/${id}` : `${home === "/" ? "" : home}/#/${id}`;
 
   const links = [
     { href: anchor("comment"), label: t.nav.how },
     { href: anchor("realisations"), label: t.nav.work },
-    { href: anchor("competences"), label: t.nav.skills },
-    { href: `${base(lang)}/blog`, label: t.nav.blog },
+    { href: anchor("savoir-faire"), label: t.nav.skills },
+    { href: anchor("blog"), label: t.nav.blog },
   ];
   const contact = { href: anchor("contact"), label: t.nav.contact };
 
