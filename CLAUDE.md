@@ -20,7 +20,7 @@ fin de tâche et les résumés. Commentaires, commits et textes en français.
   comme un écran, jamais comme une section à faire défiler. L'accueil
   lui-même n'est pas une zone défilante.
 - **Design « Atelier »** (jetons et composants dans
-  `src/styles/global.css`) : plan clair à points, cartes blanches à filet
+  `src/styles/global.css`) : plan clair sur grille technique fine, bleu électrique `#2f5bff`, cartes blanches à filet
   gris, `folder`, `tile`, `chip`, `segmented`, `btn` / `btn-primary`,
   `field` ; un seul bleu d'action. Pas de bordure noire épaisse ni d'ombre
   décalée.

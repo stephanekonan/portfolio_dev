@@ -1271,8 +1271,8 @@ function StoreShot({
 }
 
 /**
- * Vignette d'un projet sans capture publique : son initiale sur la trame
- * du plan de travail.
+ * Vignette d'un projet sans capture publique : son initiale sur la grille
+ * du fond.
  */
 function Initial({
   name,
@@ -1284,7 +1284,7 @@ function Initial({
   return (
     <span
       aria-hidden
-      className={`grid place-items-center bg-sunken bg-[radial-gradient(var(--dot)_1px,transparent_1.2px)] bg-[size:14px_14px] font-semibold tracking-tight text-ink-3 ${className}`}
+      className={`grid place-items-center bg-sunken bg-[linear-gradient(var(--grid)_1px,transparent_1px),linear-gradient(90deg,var(--grid)_1px,transparent_1px)] bg-[size:20px_20px] font-semibold tracking-tight text-ink-3 ${className}`}
     >
       {name.charAt(0)}
     </span>

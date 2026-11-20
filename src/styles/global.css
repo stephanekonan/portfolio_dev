@@ -1,8 +1,8 @@
 @import "tailwindcss";
 
 /*
- * Design system « Atelier ». Un plan de travail clair, quadrillé de points
- * fins, sur lequel tout est posé comme des fiches : cartes blanches à filet
+ * Design system « Atelier ». Un plan de travail clair, sur une grille
+ * technique fine (plan d'ingénieur), sur lequel tout est posé comme des fiches : cartes blanches à filet
  * gris d'un pixel et ombre douce, dossiers à onglet, un post-it. Le texte
  * est presque noir ; un gris moyen prolonge les titres (deuxième ligne) et
  * porte le texte secondaire. Une seule couleur d'action, le bleu, pour les
@@ -72,7 +72,9 @@
   --font-display-face: var(--font-text-face);
   /* Le plan de travail et ses points. */
   --paper: #f4f5f7;
-  --dot: #d5d8de;
+  /* La grille technique du fond. */
+  --grid: rgb(17 19 24 / 0.07);
+  --glow: rgb(47 91 255 / 0.10);
   /* Une fiche posée dessus, et le gris d'un dossier ou d'une piste. */
   --raised: #ffffff;
   --sunken: #eceef2;
@@ -80,11 +82,11 @@
   --ink-2: #6b717d;
   --ink-3: #9aa0ab;
   --rule: #e3e5ea;
-  --signal: #2563eb;
-  --signal-soft: #e8efff;
+  --signal: #2f5bff;
+  --signal-soft: #eaefff;
   --go: #16a34a;
   --note: #fbe97a;
-  --layer-web: #2563eb;
+  --layer-web: #2f5bff;
   --layer-mobile: #7c5cf0;
   --layer-api: #16a34a;
   --layer-infra: #e8a317;
@@ -92,7 +94,7 @@
   --layer-career: #475569;
   --shadow-card: 0 1px 2px rgb(17 19 24 / 0.04), 0 8px 24px -12px rgb(17 19 24 / 0.12);
   --shadow-float: 0 2px 4px rgb(17 19 24 / 0.04), 0 18px 40px -18px rgb(17 19 24 / 0.22);
-  --shadow-signal: 0 1px 2px rgb(37 99 235 / 0.3), 0 10px 24px -8px rgb(37 99 235 / 0.55);
+  --shadow-signal: 0 1px 2px rgb(47 91 255 / 0.3), 0 10px 24px -8px rgb(47 91 255 / 0.55);
 }
 
 /*
@@ -105,18 +107,19 @@
   :root:not([data-theme="light"]) {
     color-scheme: dark;
     --paper: #0e1013;
-    --dot: #262a31;
+    --grid: rgb(255 255 255 / 0.06);
+  --glow: rgb(107 139 255 / 0.14);
     --raised: #171a1f;
     --sunken: #1d2026;
     --ink: #f2f3f5;
     --ink-2: #9ba1ac;
     --ink-3: #6c727d;
     --rule: #272b32;
-    --signal: #4f86ff;
-    --signal-soft: #18233d;
+    --signal: #6b8bff;
+    --signal-soft: #1a2147;
     --go: #34c46b;
     --note: #e9d465;
-    --layer-web: #6f9bff;
+    --layer-web: #6b8bff;
     --layer-mobile: #a18bff;
     --layer-api: #34c46b;
     --layer-infra: #f0bd4f;
@@ -124,25 +127,26 @@
     --layer-career: #a3adbd;
     --shadow-card: 0 1px 2px rgb(0 0 0 / 0.4), 0 8px 24px -12px rgb(0 0 0 / 0.6);
     --shadow-float: 0 2px 4px rgb(0 0 0 / 0.4), 0 18px 40px -18px rgb(0 0 0 / 0.75);
-    --shadow-signal: 0 1px 2px rgb(0 0 0 / 0.4), 0 10px 24px -8px rgb(79 134 255 / 0.5);
+    --shadow-signal: 0 1px 2px rgb(0 0 0 / 0.4), 0 10px 24px -8px rgb(107 139 255 / 0.5);
   }
 }
 
 :root[data-theme="dark"] {
   color-scheme: dark;
   --paper: #0e1013;
-  --dot: #262a31;
+  --grid: rgb(255 255 255 / 0.06);
+  --glow: rgb(107 139 255 / 0.14);
   --raised: #171a1f;
   --sunken: #1d2026;
   --ink: #f2f3f5;
   --ink-2: #9ba1ac;
   --ink-3: #6c727d;
   --rule: #272b32;
-  --signal: #4f86ff;
-  --signal-soft: #18233d;
+  --signal: #6b8bff;
+  --signal-soft: #1a2147;
   --go: #34c46b;
   --note: #e9d465;
-  --layer-web: #6f9bff;
+  --layer-web: #6b8bff;
   --layer-mobile: #a18bff;
   --layer-api: #34c46b;
   --layer-infra: #f0bd4f;
@@ -150,7 +154,7 @@
   --layer-career: #a3adbd;
   --shadow-card: 0 1px 2px rgb(0 0 0 / 0.4), 0 8px 24px -12px rgb(0 0 0 / 0.6);
   --shadow-float: 0 2px 4px rgb(0 0 0 / 0.4), 0 18px 40px -18px rgb(0 0 0 / 0.75);
-  --shadow-signal: 0 1px 2px rgb(0 0 0 / 0.4), 0 10px 24px -8px rgb(79 134 255 / 0.5);
+  --shadow-signal: 0 1px 2px rgb(0 0 0 / 0.4), 0 10px 24px -8px rgb(107 139 255 / 0.5);
 }
 
 /* Le changement de thème passe par une View Transition : un fondu court. */
@@ -175,16 +179,37 @@ html {
 }
 
 body {
-  /* Le plan de travail : une trame de points fixe, sur toutes les pages. */
-  background-color: var(--paper);
-  background-image: radial-gradient(var(--dot) 1px, transparent 1.2px);
-  background-size: 22px 22px;
-  background-attachment: fixed;
+  /* Transparent : la couleur du fond est sur <html>, la grille et la
+     lueur (body::before, body::after) passent entre les deux. */
+  background: transparent;
   font-family: var(--font-text-face), system-ui, sans-serif;
   font-size: var(--text-base);
   line-height: 1.6;
   font-feature-settings: "cv11", "ss01";
   font-variant-numeric: lining-nums;
+}
+
+
+/* Le fond : une grille technique fine, comme un plan d'ingénieur, qui
+   s'efface vers les bords ; une lueur bleue descend du haut de l'écran. */
+body::before,
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+}
+body::before {
+  background-image:
+    linear-gradient(var(--grid) 1px, transparent 1px),
+    linear-gradient(90deg, var(--grid) 1px, transparent 1px);
+  background-size: 48px 48px;
+  background-position: center top;
+  mask-image: radial-gradient(ellipse 75% 70% at 50% 40%, #000 35%, transparent 100%);
+}
+body::after {
+  background: radial-gradient(ellipse 60% 45% at 50% -8%, var(--glow), transparent 70%);
 }
 
 h1,
