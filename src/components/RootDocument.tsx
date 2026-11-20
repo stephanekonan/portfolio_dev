@@ -4,6 +4,7 @@ import Header from "./Header";
 import Footer from "./Footer";
 import ScrollMotion from "./ScrollMotion";
 import ServiceWorker from "./ServiceWorker";
+import ImageGuard from "./ImageGuard";
 import { hand, text } from "@/lib/fonts";
 import { ui, type Lang } from "@/i18n/ui";
 import { THEME_SCRIPT } from "@/lib/theme";
@@ -53,6 +54,7 @@ export default function RootDocument({ lang, children, chrome = true, tracking =
           children
         )}
         <ServiceWorker />
+        <ImageGuard />
         {tracking && <Analytics />}
         {tracking && (
           <Script id="hotjar" strategy="afterInteractive">
