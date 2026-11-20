@@ -27,6 +27,15 @@ fin de tâche et les résumés. Commentaires, commits et textes en français.
 - **Fiches Play Store** : `src/data/stores.ts` est généré depuis les
   `design/play-store*/fiche.txt` de Wadibu (mobile, livreur) et de Resi
   (pro, client) ; visuels compressés dans `public/stores/<appli>/`.
+- **Images protégées et pile technique masquée** : images insensibles au
+  clic droit et au glisser, Ctrl+S bloqué (`ImageGuard`, `global.css`), une
+  image ouverte seule renvoie vers l'accueil (`src/proxy.ts`). Les
+  détecteurs type Wappalyzer ne doivent rien reconnaître : variables
+  globales des librairies cachées (`src/lib/discretion.ts`, à compléter si
+  une librairie en pose une nouvelle), `--tw-*` renommées
+  (`scripts/postcss-discretion.cjs`), classes `lucide` retirées
+  (`Discretion.tsx`). Image de partage des liens : `public/apercu.jpg`
+  (`SHARE_IMAGE`), à redonner dans tout `openGraph` de page.
 - Textes FR/EN dans `src/i18n/ui.ts` (le français fixe le type, l'anglais
   doit suivre clé pour clé).
 - Vérifier avant de committer : `npm run typecheck` et `npm run lint`.
