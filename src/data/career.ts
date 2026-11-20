@@ -21,18 +21,31 @@ const same = (s: string): T => ({ fr: s, en: s });
  */
 export const CAREER: CareerSpan[] = [
   {
-    id: "autodidacte",
-    name: "Autodidacte",
+    id: "bts",
+    name: "BTS Informatique",
     kind: "study",
     start: "2019-10",
     end: "2021-07",
     role: {
-      fr: "Autoformation au développement d'applications : je me suis formé moi-même",
-      en: "Self-taught application development: I trained myself",
+      fr: "Développeur d'applications, École pratique de la CCI de Côte d'Ivoire",
+      en: "Application development, École pratique of the Côte d'Ivoire CCI",
     },
     attributes: [
+      { key: { fr: "Lieu", en: "Location" }, value: same("Plateau, Abidjan") },
       { key: { fr: "Avant", en: "Before" }, value: { fr: "Bac D, lycée municipal 2 de Koumassi, 2019", en: "Science baccalaureate, Koumassi, 2019" } },
     ],
+  },
+  {
+    id: "autodidacte",
+    name: "Autodidacte",
+    kind: "study",
+    // Après le BTS et jusqu'à aujourd'hui : pas de fin.
+    start: "2021-07",
+    role: {
+      fr: "Autoformation depuis le BTS : je continue de me former moi-même, projet après projet",
+      en: "Self-taught since my BTS diploma: I keep training myself, project after project",
+    },
+    attributes: [],
   },
   {
     id: "weni",
