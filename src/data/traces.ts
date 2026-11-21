@@ -251,8 +251,11 @@ export const TRACES: ProductTrace[] = [
       },
     ],
     image: {
-      src: "/resi.png",
-      alt: { fr: "Page d'accueil du site Resi, avec la démo de synchronisation", en: "Resi website home page, with the sync demo" },
+      src: "/resi.jpg",
+      alt: {
+        fr: "Accueil du site Resi : choix propriétaire ou voyageur, et l'écran de saisie d'une réservation dans Resi Pro",
+        en: "Resi website home: host or traveller choice, and the booking entry screen of Resi Pro",
+      },
     },
     href: { fr: "https://resi-site-rho.vercel.app/fr", en: "https://resi-site-rho.vercel.app/en" },
   },
