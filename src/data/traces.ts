@@ -247,14 +247,17 @@ export const TRACES: ProductTrace[] = [
           en: "Bilingual site with a network-outage demo. Admin back-office as a backend-for-frontend: tokens never leave httpOnly cookies.",
         },
         stack: ["Next.js 16", "React 19", "Tailwind 4"],
-        href: { fr: "https://resi-site-rho.vercel.app/fr", en: "https://resi-site-rho.vercel.app/en" },
+        href: { fr: "https://resi.africa/fr", en: "https://resi.africa/en" },
       },
     ],
     image: {
-      src: "/resi.png",
-      alt: { fr: "Page d'accueil du site Resi, avec la démo de synchronisation", en: "Resi website home page, with the sync demo" },
+      src: "/resi.jpg",
+      alt: {
+        fr: "Accueil du site Resi : choix propriétaire ou voyageur, et l'écran de saisie d'une réservation dans Resi Pro",
+        en: "Resi website home: host or traveller choice, and the booking entry screen of Resi Pro",
+      },
     },
-    href: { fr: "https://resi-site-rho.vercel.app/fr", en: "https://resi-site-rho.vercel.app/en" },
+    href: { fr: "https://resi.africa/fr", en: "https://resi.africa/en" },
   },
   {
     id: "wadibu",
